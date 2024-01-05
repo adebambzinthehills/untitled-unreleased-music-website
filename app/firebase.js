@@ -1,30 +1,26 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import { } from 'firebase/firestore';
-import { } from 'firebase/auth';
-import { } from 'firebase/functions';
-import { } from 'firebase/storage';
-import { } from 'firebase/database';
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+import { } from 'firebase/firestore';
+import { } from 'firebase/storage';
+import { } from 'firebase/database';
+import { } from 'firebase/auth';
 
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCrRSdp_suVtamrsAGSs63NX2muwGF5dXs",
-  authDomain: "unreleased-music-player.firebaseapp.com",
-  projectId: "unreleased-music-player",
-  storageBucket: "unreleased-music-player.appspot.com",
-  messagingSenderId: "240600029507",
-  appId: "1:240600029507:web:49d380de0da17cba6fb7f6",
-  measurementId: "G-R3JSLP5GRL"
+  apiKey: "AIzaSyCdOCKjotyHlchRNHfqhEU4XGqzrn-r5wM",
+  authDomain: "spotify-preview.firebaseapp.com",
+  projectId: "spotify-preview",
+  storageBucket: "spotify-preview.appspot.com",
+  messagingSenderId: "714672435438",
+  appId: "1:714672435438:web:6a6d0f34f7993f995903ff",
+  measurementId: "G-NZE067WLCP"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
-
-export const auth = getAuth(app);
-export default app;
