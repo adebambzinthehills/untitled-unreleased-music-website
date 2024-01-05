@@ -12,7 +12,7 @@ function Login({loggedIn, setLoggedIn}){
         <p>This website is built for artists to simulate what 
           their unreleased music will look and sound like on the platform way before it goes live,
           helping you to make more creative decisions, and focus on the experience of the music.</p>
-        <button className='loginBtn btn btn-success' onClick={() => setLoggedIn(!loggedIn)} > Login into Spotify Preview </button>
+        <button className='loginBtn btn btn-success' onClick={() => setLoggedIn(!loggedIn)} > Let's start your Spotify Preview experience</button>
         <p className='small'>This is a solo student developer project by Ayomide Balogun as part 
         of his third year project. </p>
       </div>
