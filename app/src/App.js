@@ -1,22 +1,22 @@
 import React from "react";
-import logo from "./logo.svg";
-import "./App.css";
+import Login from "./components/Login";
+import Header from "./components/Header";
+import "./css/App.css";
 
 function App() {
-  const [data, setData] = React.useState(null);
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
-  React.useEffect(() => {
-    fetch("/endpoint")
-      .then((res) => res.text())
-      .then((data) => setData(data));
-  }, []);
+  let display;
+  if (loggedIn) {
+    display = <Header loggedIn={loggedIn} setLoggedIn={setLoggedIn}>You are logged in.</Header>;
+  }
+  else{
+    display = <Login loggedIn={loggedIn} setLoggedIn={setLoggedIn}/>
+  }
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{!data ? "Loading..." : data}</p>
-      </header>
+      {display}
     </div>
   );
 }

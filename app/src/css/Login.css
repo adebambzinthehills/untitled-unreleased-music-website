@@ -1,0 +1,15 @@
+.login{
+    margin:0 auto;
+    text-align: center;
+    padding: 5%;
+    width:70%;
+}
+
+.loginBtn{
+    margin:10px;
+}
+
+.loginImg{
+    width:20%;
+    margin-bottom:20px;
+}
