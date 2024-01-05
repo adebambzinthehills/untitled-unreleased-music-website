@@ -1,5 +1,5 @@
 
-import '../css/Login.css';
+import '../css/Welcome.css';
 import icon from '../images/spotify-white-icon.png';
 
 function Login({loggedIn, setLoggedIn}){
