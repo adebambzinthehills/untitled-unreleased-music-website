@@ -1,9 +1,11 @@
-
 import '../css/Welcome.css';
 import icon from '../images/spotify-white-icon.png';
+import { NavLink, useNavigate } from 'react-router-dom';
+import React, {useState, useEffect, useContext} from "react";
 
 function Login({loggedIn, setLoggedIn}){
     
+  const navigate = useNavigate();
 
     return (
       <div className='login container'>
@@ -12,7 +14,7 @@ function Login({loggedIn, setLoggedIn}){
         <p>This website is built for artists to simulate what 
           their unreleased music will look and sound like on the platform way before it goes live,
           helping you to make more creative decisions, and focus on the experience of the music.</p>
-        <button className='loginBtn btn btn-success' onClick={() => setLoggedIn(!loggedIn)} > Let's start your Spotify Preview experience</button>
+        <button className='loginBtn btn btn-success' onClick={() => navigate("/login")} > Let's start your Spotify Preview experience.</button>
         <p className='small'>This is a solo student developer project by Ayomide Balogun as part 
         of his third year project. </p>
       </div>
