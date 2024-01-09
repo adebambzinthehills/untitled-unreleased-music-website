@@ -1,7 +1,7 @@
 import React from 'react'
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
-import { useAuth, logOut} from '../contexts/AuthContext';
+import { logOut} from '../contexts/AuthContext';
 
 function Account() {
 
