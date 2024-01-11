@@ -2,6 +2,8 @@ import React from 'react'
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { logOut} from '../contexts/AuthContext';
+import { MdAccountCircle } from "react-icons/md";
+import '../css/Account.css';
 
 function Account() {
 
@@ -20,10 +22,18 @@ function Account() {
     }
 
     return (
-        <div className=''>
+        <div className='fullBackgroundBlack'>
             <Header></Header>
-            <h3>This is the account page.</h3>
-            <button className='logOutBtn btn btn-danger' onClick={() => handleLogOut()}>Log Out</button>
+            <div className='container'>
+                <div className='accountDetails'>
+                    <h1>Your Account</h1>
+                    <MdAccountCircle className='accountIcon'/>
+                    <div className='section'>
+                        <h3>Edit Details</h3>
+                    </div>
+                    <button className='logOutBtn' onClick={() => handleLogOut()}>Log Out</button>
+                </div>
+            </div>
         </div>
     )
 }
