@@ -2,7 +2,9 @@ import React, {useState, useEffect, useContext} from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
+import googleLogo from '../images/google.png';
 import "../css/App.css";
+import "../css/LoginCreateAccount.css";
 
 function Login() {
 
@@ -37,22 +39,32 @@ function Login() {
     }
 
     return (
-        <div className=''>
-            <h3>Login to Spotify Preview</h3>
-            <form>
-                <div className="form-group">
-                    <label htmlFor="loginEmail">Email address</label>
-                    <input type="email" value={email} autoComplete='email' required className='form-control' id="loginEmail" placeholder='Enter your email address used for your account.'
-                    onChange={(e) => setEmail(e.target.value)}/>
+        <div className='fullBackgroundBlack'>
+            <div className='container'>
+                <div className='enterDetails'>
+                    <h1>Login to Spotify Preview</h1>
+                    <button className='googleButton'>
+                        <img alt='Google Logo' src={googleLogo}/>
+                        <span>Sign in with Google</span>
+                    </button>
+                    <hr></hr>
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="loginEmail">Email address</label>
+                            <input type="email" value={email} autoComplete='email' required className='form-control' id="loginEmail" placeholder='Enter your email address used for your account.'
+                            onChange={(e) => setEmail(e.target.value)}/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="loginPassword">Password</label>
+                            <input type="password" value={password} autoComplete='password' required className='form-control' id="loginPassword" placeholder='Enter your password.'
+                            onChange={(e) => setPassword(e.target.value)}/>
+                        </div>
+                        <button type="submit" className=' detailsButton' onClick={formHandler}> Log In </button> 
+                        <p className='forgotPassword'><Link className='switchPageLink'>Forgot Password?</Link></p>
+                        <p className='small detailsParagraph'><span>Don't have an account? </span><br></br><Link className='switchPageLink' to="/createaccount">Create one!</Link></p>
+                    </form> 
                 </div>
-                <div className="form-group">
-                    <label htmlFor="loginPassword">Password</label>
-                    <input type="password" value={password} autoComplete='password' required className='form-control' id="loginPassword" placeholder='Enter your password.'
-                    onChange={(e) => setPassword(e.target.value)}/>
-                </div>
-                <button type="submit" className='btn btn-success' onClick={formHandler}> Log In </button> 
-                <p className='small'><Link to="/createaccount">Don't have an account? Create one!</Link></p>
-            </form>
+            </div>
         </div>
     )
 }

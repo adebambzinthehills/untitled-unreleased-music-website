@@ -1,0 +1,115 @@
+.enterDetails h1 {
+    margin-bottom: 30px;
+}
+
+.form-group input {
+    background-color: #121212;
+    color:white;
+    border-radius:4px;
+    box-shadow: inset 0 0 0 1px #878787;
+    border-color:#878787;
+    border:1px;
+    font-weight:450;
+    height:45px;
+}
+
+.form-group ::placeholder{
+    color:gray;
+}
+
+.form-group input:hover {
+    border-color:white;
+}
+
+.form-group {
+    margin:20px;
+}
+
+::placeholder{
+    color:red;
+    opacity:1;
+}
+
+.form-group label {
+    font-weight:bold;
+    margin-bottom: 5px;
+}
+
+h1 {
+    font-weight:700;
+}
+
+::placeholder, ::-webkit-input-placeholder, :-moz-placeholder {
+    color:lightgray;
+}
+
+.enterDetails {
+    width: 100%;
+   padding: 10%;
+   max-width: 800px;
+   margin-left: auto;
+   margin-right: auto;
+}
+
+.detailsButton {
+    background-color:#1ed760;
+    display:flex;
+    border-radius:500px;
+    align-items: center;
+    justify-content: center;
+    width: 94%;
+    color:black;
+    font-weight: bold;
+    padding:8px;
+    margin: 0 auto;
+    border:none;
+}
+
+.googleButton {
+    align-items: center;
+    display:flex;
+    justify-content: center;
+    margin:0 auto;
+    border:1px solid darkgray;
+    border-radius:700px;
+    width:95%;
+    padding:5px;
+    background-color: transparent;
+    color:white;
+    font-weight:bold;
+}
+
+.googleButton:hover {
+    border-color:white;
+}
+
+.googleButton img {
+    width:2rem;
+    height:2rem;
+}
+
+.detailsParagraph {
+    margin-top:10px;
+    padding:5px;
+    text-align:center;
+    font-weight:500;
+    font-size:16px;
+}
+
+.detailsParagraph span {
+    color:#878787;
+}
+
+.switchPageLink {
+   color:white;
+}
+
+.switchPageLink:hover {
+    color:#1ed760;
+}
+
+.forgotPassword {
+    margin-top:15px;
+    padding:5px;
+    text-align: center;
+}

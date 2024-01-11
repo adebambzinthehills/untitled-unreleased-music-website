@@ -2,7 +2,9 @@ import React, {useState, useEffect, useContext } from 'react';
 import { NavLink, useNavigate, Link } from 'react-router-dom';
 import { auth } from '../firebase';
 import { useAuth } from '../contexts/AuthContext';
+import googleLogo from '../images/google.png';
 import "../css/App.css";
+import "../css/LoginCreateAccount.css";
 
 function CreateAccount() {
 
@@ -49,29 +51,38 @@ function CreateAccount() {
     }
 
     return (
-        <div className=''>
-            <h3>Create an Account for Spotify Preview</h3>
-            <form>
-                <div className="form-group">
-                    <label htmlFor="createEmail">Email address</label>
-                    <input type="email" value={email} required className='form-control' id="createEmail" placeholder='Enter your email address to sign up with'
-                    onChange={(e) => setEmail(e.target.value)}/>
+        <div className='fullBackgroundBlack'>
+            <div className='container'>
+                <div className='enterDetails'>
+                    <h1>Create an Account for Spotify Preview</h1>
+                    <button className='googleButton'>
+                        <img alt='Google Logo' src={googleLogo}/>
+                        <span>Sign up with Google</span>
+                    </button>
+                    <hr></hr>
+                    <form>
+                        <div className="form-group">
+                            <label htmlFor="createEmail">Email address</label>
+                            <input type="email" value={email} required className='form-control' id="createEmail" placeholder='Enter your email address to sign up with'
+                            onChange={(e) => setEmail(e.target.value)}/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="createPassword">Password</label>
+                            <input type="password" value={password} required className='form-control' id="createPassword" placeholder='Enter your password.'
+                            onChange={(e) => setPassword(e.target.value)}/>
+                        </div>
+                        <div className="form-group">
+                            <label htmlFor="createConfirmPassword">Confirm Password</label>
+                            <input type="password" value={confirmPassword} required className='form-control' id="createConfirmPassword" placeholder='Confirm your password.'
+                            onChange={(e) => setConfirmPassword(e.target.value)}/>
+                        </div>
+                        <button type="submit" className='detailsButton' disabled={waiting} onClick={formHandler}> Create Account </button> 
+                        <p className='small detailsParagraph'><span>Already have an account? </span><br></br><Link className="switchPageLink" to="/login">Login!</Link></p>
+                    </form>  
                 </div>
-                <div className="form-group">
-                    <label htmlFor="createPassword">Password</label>
-                    <input type="password" value={password} required className='form-control' id="createPassword" placeholder='Enter your password.'
-                    onChange={(e) => setPassword(e.target.value)}/>
-                </div>
-                <div className="form-group">
-                    <label htmlFor="createConfirmPassword">Password</label>
-                    <input type="password" value={confirmPassword} required className='form-control' id="createConfirmPassword" placeholder='Confirm your password.'
-                    onChange={(e) => setConfirmPassword(e.target.value)}/>
-                </div>
-                <button type="submit" className='btn btn-success' disabled={waiting} onClick={formHandler}> Create Account </button> 
-                <p className='small'><Link to="/login">Already have an account? Login!</Link></p>
-            </form>
-            
+            </div>
         </div>
+        
     )
 }
 
