@@ -36,3 +36,10 @@
     width:10rem;
     height:10rem;
 }
+
+.iconWrapper {
+    width:100%;
+    align-items: center;
+    justify-content: center;
+    display:flex;
+}

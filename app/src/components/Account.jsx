@@ -27,7 +27,9 @@ function Account() {
             <div className='container'>
                 <div className='accountDetails'>
                     <h1>Your Account</h1>
-                    <MdAccountCircle className='accountIcon'/>
+                    <div className='iconWrapper'>
+                        <MdAccountCircle className='accountIcon'/>
+                    </div>
                     <div className='section'>
                         <h3>Edit Details</h3>
                     </div>
