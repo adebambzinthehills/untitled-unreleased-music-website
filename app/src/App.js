@@ -8,6 +8,7 @@ import Library from "./components/Library";
 import "./css/App.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import Account from "./components/Account";
+import Settings from "./components/Settings";
 
 function App() {
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -35,6 +36,7 @@ function App() {
           <Route path="/Login" element={<Login/>}/>
           <Route path="/Library" element={<Library/>}></Route>
           <Route path="/Account" element={<Account/>}></Route>
+          <Route path="/Settings" element={<Settings/>}></Route>
         </Routes>
       </Router>
     </AuthProvider>

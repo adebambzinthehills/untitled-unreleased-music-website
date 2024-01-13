@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import { Link , useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
 import { MdAccountCircle } from "react-icons/md";
+import { IoSettingsSharp } from "react-icons/io5";
 import '../css/Header.css';
 
 function Header() {
@@ -13,10 +14,23 @@ function Header() {
         navigate("/account");
     }
 
+    function toSettings(){
+        navigate("/settings")
+    }
+
     return (
         <div className='header'>
-            <h3>Spotify Preview</h3>
-            <button className='accountLinkButton' onClick={() => toAccount()}><MdAccountCircle/></button>
+            <div className='left'>
+                <Link to="/library"><h3>Preview</h3></Link>
+            </div>
+            <div className='right'>
+                <div className='headerIcon'>
+                    <button className='settingsLinkButton' onClick={() => toSettings()}><IoSettingsSharp/></button>
+                </div>
+                <div className="headerIcon"> 
+                    <button className='accountLinkButton' onClick={() => toAccount()}><MdAccountCircle/></button>
+                </div>
+            </div>
         </div>
     )
 }
