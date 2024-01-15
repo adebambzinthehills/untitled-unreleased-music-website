@@ -12,13 +12,14 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth';
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyCdOCKjotyHlchRNHfqhEU4XGqzrn-r5wM",
-  authDomain: "spotify-preview.firebaseapp.com",
-  projectId: "spotify-preview",
-  storageBucket: "spotify-preview.appspot.com",
-  messagingSenderId: "714672435438",
-  appId: "1:714672435438:web:6a6d0f34f7993f995903ff",
-  measurementId: "G-NZE067WLCP"
+  apiKey: "AIzaSyD0QhZKy44btPwFSfWxPguSmEzuKXReF-4",
+  authDomain: "preview-music-player.firebaseapp.com",
+  databaseURL: "https://preview-music-player-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "preview-music-player",
+  storageBucket: "preview-music-player.appspot.com",
+  messagingSenderId: "598900607958",
+  appId: "1:598900607958:web:4ff93a064473301d3b3277",
+  measurementId: "G-P1V7M26E3S"
 };
 
 // Initialize Firebase

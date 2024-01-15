@@ -22,13 +22,20 @@
 }
 
 .section {
-    background-color: #121212;
+    background-color: #282828;
     border-radius:15px;
+    padding-bottom:15px;
 }
 
-.section h3 {
-    padding:20px;
-    margin-bottom: 20px;
+.section h2 {
+    padding:10px;
+    margin-left:10px;
+    font-weight:700;
+}
+
+.section h4 {
+    font-weight:600;
+    font-size: medium;
 }
 
 .accountIcon {
@@ -43,3 +50,41 @@
     justify-content: center;
     display:flex;
 }
+
+.section hr {
+    width:100%;
+    margin:0 auto;
+    padding-bottom:5px;
+}
+
+.section input {
+    width: 100%;;
+}
+
+.details, .editDetailsHeader {
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
+.editDetailsHeader{
+    padding-top:2%;
+}
+
+.accountPageBackground img{
+    opacity: 0.05;
+    display: block;
+    position: absolute;
+    z-index: -1;
+    background-repeat: repeat;
+    width: 100%;
+    top:0;
+}
+
+.accountPageBackground {
+    position:relative;
+}
+
+.account {
+    position: relative;
+}
+

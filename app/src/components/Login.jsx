@@ -42,7 +42,7 @@ function Login() {
         <div className='fullBackgroundBlack'>
             <div className='container'>
                 <div className='enterDetails'>
-                    <h1>Login to Spotify Preview</h1>
+                    <h1>Login to Preview</h1>
                     <button className='googleButton'>
                         <img alt='Google Logo' src={googleLogo}/>
                         <span>Sign in with Google</span>

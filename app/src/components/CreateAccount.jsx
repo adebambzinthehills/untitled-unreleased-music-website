@@ -54,7 +54,7 @@ function CreateAccount() {
         <div className='fullBackgroundBlack'>
             <div className='container'>
                 <div className='enterDetails'>
-                    <h1>Create an Account for Spotify Preview</h1>
+                    <h1>Create an Account for Preview</h1>
                     <button className='googleButton'>
                         <img alt='Google Logo' src={googleLogo}/>
                         <span>Sign up with Google</span>
