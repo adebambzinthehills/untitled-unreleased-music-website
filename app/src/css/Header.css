@@ -6,14 +6,13 @@
     position: relative;
 }
 
-
-
 .header svg{
     width:100%;
     height:100%;
     fill:white;
     stroke:white;
 }
+
 .left{
     display: inline-block;
 }
@@ -22,12 +21,14 @@
     display: inline;
     float:right;
 }
+
 .headerIcon {
     position: relative;
-    width:2.5rem;
-    height:2.5rem;
+    width:45px;
+    height:45px;
     display: inline-block;
 }
+
 .headerIcon button {
     position: absolute;
     width: 100%;

@@ -16,7 +16,7 @@ function Library() {
   return (
     <div>
       <Header></Header>
-      <div className='container'>
+      <div className='library container'>
         {hasProjects ? (<LibraryCardGrid/>) : (
 
           <div className='noProjectsContainer'>
