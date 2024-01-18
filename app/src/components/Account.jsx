@@ -24,7 +24,7 @@ function Account() {
 
     return (
         <div className='accountPageBackground'>
-            <img src={background}></img>
+            {/* <img src={background}></img> */}
             <Header></Header>
             <div className='container account'>
                 <div className='accountDetails'>
@@ -45,10 +45,25 @@ function Account() {
                                 <h4>Email Address</h4>
                                 <input></input>
                             </div>
-                            <button type="submit" className=' detailsButton' disabled> Save Changes </button> 
+                            <div className='row'>
+                                <div className='col-md-3 col-sm-12 accountButton'>
+                                    <button type="submit" className=' cancelChanges'> Cancel</button> 
+                                </div>
+                                <div className='col-md-9 col-sm-12 accountButton'>
+                                    <button type="submit" className=' detailsButton' > Save Changes </button> 
+                                </div>
+                            </div>
+                            
                         </div>
                     </div>
-                    <button className='logOutBtn' onClick={() => handleLogOut()}>Log Out</button>
+                    <div className="accountButtonsSection row section">
+                        <div className='col-md-6 col-sm-12 accountButton'>
+                            <button className='logOutBtn' onClick={() => handleLogOut()}>Log Out</button>
+                        </div>
+                        <div className='col-md-6 col-sm-12 accountButton'>
+                            <button className='deleteAccountBtn'>Delete Account</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,5 +1,19 @@
 .logOutBtn {
-    background-color:red;
+    background-color:#ff9a0b;
+    display:flex;
+    border-radius:500px;
+    align-items: center;
+    justify-content: center;
+    width: 94%;
+    color:black;
+    font-weight: bold;
+    padding:8px;
+    margin: 0 auto;
+    border:none;
+}
+
+.deleteAccountBtn {
+    background-color:#e94845;
     display:flex;
     border-radius:500px;
     align-items: center;
@@ -25,6 +39,7 @@
     background-color: #282828;
     border-radius:15px;
     padding-bottom:15px;
+    margin-bottom: 20px;;
 }
 
 .section h2 {
@@ -88,3 +103,16 @@
     position: relative;
 }
 
+.accountButton {
+    margin-top: 20px;
+    margin-bottom:10px;
+}
+
+.cancelChanges {
+    color:lightgray;
+    width:94%;
+    border:none;
+    font-weight: bold;
+    background-color: inherit;
+    padding:8px;
+}
