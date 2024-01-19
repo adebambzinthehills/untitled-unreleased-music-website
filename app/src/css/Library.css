@@ -7,6 +7,7 @@
     max-width: 200px;
     display: block;
     justify-content: center;
+    margin:0 auto;
 }
 
 .card-container:hover {
@@ -160,7 +161,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: -1;
+    z-index: 0;
 }
 
 .noProjectsContent {
@@ -244,12 +245,34 @@
 }
 
 .search-bar-wrapper{
-    display: flex;
     position: relative;
+}
+
+.library-search-bar-content {
+    position: fixed;
+    width: 100%;
+    height:75px;
+    top:60px;
+    bottom:0;
+    left:0;
+    right: 0;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
+    display: flex;
+    padding-left:20px;
+    padding-right:20px;
+    z-index: 5;
+    background-color: #121212;
 }
+
+.library-search-bar-block{
+    background-color: inherit;
+    width: 100%;
+    height: 75px;
+    position: relative;
+    z-index: -1;
+}   
 
 .search-bar {
     border-radius: 16px;
@@ -259,6 +282,10 @@
     color:white;
     font-weight: 500;
     width: 400px;
+}
+
+.search-bar:focus {
+    outline:none;
 }
 
 .search-bar-item{
@@ -278,6 +305,11 @@
     padding-left:10px;
     padding-right:10px;
     display: inline;
+    background-color: #313030;
+    color:white;
+    font-size: small;
+    font-weight: 500;
+    height: 30px;
 }
 
 @media screen and (max-width: 768px) {
@@ -303,7 +335,7 @@
         justify-content: center;
     }
 
-    .search-bar-wrapper {
+    .library-search-bar-content{
         display: block;
     }
 }

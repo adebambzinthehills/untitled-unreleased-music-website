@@ -12,13 +12,16 @@ function LibraryCardGrid() {
   return (
     <div className='libraryWrapper'>
       <div className='search-bar-wrapper container'>
-        <div className='search-bar-item'>
-          <input className='search-bar' placeholder='Search for an song, album or playlist here.'></input>
+        <div className='library-search-bar-content'>
+          <div className='search-bar-item'>
+            <input className='search-bar' placeholder='Search for an song, album or playlist here.'></input>
+          </div>
+          <div className='search-bar-row'>
+            <button>Albums</button>
+            <button>Playlists</button>
+          </div>
         </div>
-        <div className='search-bar-row'>
-          <button>Albums</button>
-          <button>Playlists</button>
-        </div>
+        <div className='library-search-bar-block'></div>
       </div>
       <div className='grid-card-container'>
         <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album"></LibraryCard>

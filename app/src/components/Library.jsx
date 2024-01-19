@@ -6,7 +6,7 @@ import '../css/Library.css';
 
 function Library() {
 
-  const [hasProjects, setHasProjects] = useState(true);
+  const [hasProjects, setHasProjects] = useState(false);
 
   function dummyHandle() {
     setHasProjects(true);
@@ -23,7 +23,7 @@ function Library() {
             <div className="noProjectsContent">
               <h3>You have no music projects yet! Let's get started.</h3>
               <div className='addProjects'>
-                
+
                 <button className='addProjectsBtn' onClick={()=>dummyHandle()}>Add Music</button>
               </div>
             </div>
