@@ -76,7 +76,7 @@
 
 .card-contents {
     width:100%;
-    padding-left:10px;
+    padding-left:3px;
     padding-right:8px;
 }
 
@@ -184,8 +184,10 @@
     row-gap:20px;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     margin:0 auto;
+    align-items: center;
     justify-content: center;
     max-width: 900px;
+    padding:20px;
     
 }
 

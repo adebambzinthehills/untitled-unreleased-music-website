@@ -10,9 +10,9 @@ import { FaPlus } from "react-icons/fa";
 function LibraryCardGrid() {
   return (
     <div className='libraryWrapper'>
-      <div className='searchBar'>
-        <div>
-
+      <div className='search-bar-wrapper'>
+        <div className='search-bar'>
+          <input></input>
         </div>
       </div>
       <div className='grid-card-container'>
