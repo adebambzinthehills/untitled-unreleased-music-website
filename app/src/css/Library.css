@@ -84,6 +84,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: -1;
 }
 
 .noProjectsContent {
@@ -109,7 +110,7 @@
     display: grid;
     column-gap:20px;
     row-gap:20px;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
     margin:0 auto;
     justify-content: center;
     max-width: 1000px;
