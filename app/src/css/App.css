@@ -12,6 +12,16 @@
   background-color: black;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+  margin:0 auto;
+  height:100%;
+}
+html, #root {
+  height: 100%;
+}
+
 .fullBackgroundBlack {
   background-color:black;
   width:100%;
