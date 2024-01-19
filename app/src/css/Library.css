@@ -72,6 +72,10 @@
 
 .card-image-wrapper{
     z-index:0;
+    max-width: 150px;
+    max-height:150px;
+    margin: 0 auto;
+    margin-bottom: 12px;
 }
 
 .card-contents {
@@ -237,4 +241,69 @@
 
 .library-footer-button svg {
     width:10px;
+}
+
+.search-bar-wrapper{
+    display: flex;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.search-bar {
+    border-radius: 16px;
+    border:2px solid #878787;
+    background-color: #181818;
+    text-align: center;
+    color:white;
+    font-weight: 500;
+    width: 400px;
+}
+
+.search-bar-item{
+    display: flex;
+    justify-content: center;
+}
+
+.search-bar-row {
+    position: relative;
+    padding-left: 10px;
+}
+
+.search-bar-row button {
+    border-radius: 16px;
+    border:none;
+    margin-right:5px;
+    padding-left:10px;
+    padding-right:10px;
+    display: inline;
+}
+
+@media screen and (max-width: 768px) {
+    .search-bar-item {
+        width: 100%;
+        display:block;
+        margin-bottom: 10px;
+    }
+
+    .search-bar {
+        justify-content: center;
+        display: flex;
+        align-items: center;
+        margin: 0 auto;
+        width:100%;
+    }
+    
+    
+    .search-bar-row{
+        width: 100%;
+        display:flex;
+        margin: 0 auto;
+        justify-content: center;
+    }
+
+    .search-bar-wrapper {
+        display: block;
+    }
 }
