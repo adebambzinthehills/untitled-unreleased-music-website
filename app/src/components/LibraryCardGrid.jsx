@@ -6,9 +6,15 @@ import erys from '../images/erys.webp'
 import syre from '../images/syre.jpeg'
 import { FaPlus } from "react-icons/fa";
 import likedsongs from "../images/liked-songs.jpeg";
+import { MdCreateNewFolder } from "react-icons/md";
+
+import { useState } from 'react';
+
 
 
 function LibraryCardGrid() {
+  const [addButtonClicked, setAddButtonClicked] = useState(false);
+
   return (
     <div className='libraryWrapper'>
       <div className='search-bar-wrapper container'>
@@ -31,8 +37,19 @@ function LibraryCardGrid() {
         <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist"></LibraryCard>
       </div>
       <div className='library-footer'>
-        <div className='library-footer-content'>
-          <button className='library-footer-button'><span><FaPlus/></span>  Add</button>
+        <div className='library-footer-content' >
+          <div className='footer-block-wrapper' onMouseLeave={() => setAddButtonClicked(false)}>
+            {addButtonClicked && (
+            <div className='library-footer-sub-menu'>
+              <ul>
+                <li><button><span><MdCreateNewFolder/></span> New Project</button></li>
+              </ul>
+            </div>
+            )}
+            <div>
+              <button className='library-footer-button' onClick={() => setAddButtonClicked(!addButtonClicked)}><span><FaPlus/></span>  Add</button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

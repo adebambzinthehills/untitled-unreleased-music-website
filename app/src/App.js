@@ -9,6 +9,7 @@ import "./css/App.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import Account from "./components/Account";
 import Settings from "./components/Settings";
+import Album from "./components/Album";
 
 function App() {
   // const [loggedIn, setLoggedIn] = useState(false);
@@ -37,6 +38,7 @@ function App() {
           <Route path="/Library" element={<Library/>}></Route>
           <Route path="/Account" element={<Account/>}></Route>
           <Route path="/Settings" element={<Settings/>}></Route>
+          <Route path="/Album" element={<Album/>}></Route>
         </Routes>
       </Router>
     </AuthProvider>

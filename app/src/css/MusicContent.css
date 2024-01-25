@@ -1,0 +1,86 @@
+.music-header {
+    width:100%;
+    display: flex;
+    max-height: 300px;
+}
+
+.music-header-album-cover {
+    max-width:25%;
+    margin-right:20px;
+}
+
+.music-header-cover-button {
+    border:none;
+    background-color: inherit;
+    width: 100%;
+    height:100%;
+}
+
+.content-cover {
+    width:100%;
+    border-radius: 4px;
+    max-width:270px;
+}
+
+.music-content-information {
+    display: flex;
+    position: relative;
+    bottom:0;
+    width: 75%;
+    vertical-align: bottom;
+    margin:0 auto;
+    align-items: flex-end;
+}
+.music-header-content-wrapper { 
+    position: relative;
+}
+.music-content-information span {
+    display: block;
+    font-weight: 500;
+}
+
+.music-header-content-type {
+    font-size: 0.9em;
+}
+
+.music-header-content-artist {
+    font-size: 0.9em;
+}
+
+.music-content-information h1 {
+    width:100%;
+    font-size:4.5rem;
+}
+
+@media screen and (max-width: 1200px) {
+
+    .music-content-information h1 {
+    font-size:3rem;
+    }
+}
+
+@media screen and (max-width: 770px) {
+
+    .music-content-information h1 {
+    font-size:2rem;
+    }
+}
+
+@media screen and (max-width:580px){
+    .music-header {
+        display: block;
+        width: 100%;
+    }
+    .music-header-album-cover {
+        width:100%;
+        height:100%;
+        margin: 0 auto;
+        max-width: 60%;
+    }
+
+
+    .music-content-information{
+        display: block;
+        width: 90%;
+    }
+}

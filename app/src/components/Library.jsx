@@ -6,7 +6,7 @@ import '../css/Library.css';
 
 function Library() {
 
-  const [hasProjects, setHasProjects] = useState(false);
+  const [hasProjects, setHasProjects] = useState(true);
 
   function dummyHandle() {
     setHasProjects(true);
