@@ -10,8 +10,30 @@
     margin:0 auto;
 }
 
+.card-container, 
+.card-click-button,
+.card-header-button,
+.card-play-button,
+.library-footer-button{
+    transition: all .2s ease-in-out;
+}
+
 .card-container:hover {
     background-color: rgb(34, 34, 34) ;
+    transform: scale(1.05);
+}
+
+.card-play-button:hover {
+    background-color: #3cf47c;
+    transform: scale(1.05);
+}
+
+.card-header-button:hover {
+    transform: scale(1.1);
+}
+
+.library-footer-button:hover {
+    transform: scale(1.05);
 }
 
 .library, .page {
@@ -113,6 +135,7 @@
     height:40px;
     bottom:90px;
     right:20px;
+    z-index: 4;
 }
 
 .card-play-button {
@@ -242,13 +265,13 @@
 }
 
 .library-footer-button:hover {
-    background-color: #4eff8c;
+    background-color: #3cf47c;
 }
-
-button > span > svg {
+/* this code has been moved to App.css */
+/* button > span > svg {
     top: -1.5px;
     position: relative;
-}
+} */
 
 .library-footer-button > span > svg {
     top: -1.5px;

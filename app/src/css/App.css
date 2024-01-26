@@ -28,6 +28,12 @@ html, #root {
   height:100vh;
 }
 
+button > span > svg {
+  top: -1.5px;
+  position: relative;
+}
+
+
 /* .App-logo {
   height: 40vmin;
   pointer-events: none;

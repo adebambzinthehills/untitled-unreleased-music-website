@@ -1,7 +1,7 @@
 .music-header {
     width:100%;
     display: flex;
-    max-height: 300px;
+    margin-bottom: 20px;
 }
 
 .music-header-album-cover {
@@ -83,4 +83,103 @@
         display: block;
         width: 90%;
     }
+
+    .music-content-functions, 
+    .add-tracks-wrapper {
+        width: 90%;
+        margin:0 auto;
+    }
+}
+
+.music-content-functions {
+    display: flex;
+    margin-bottom:20px;
+}
+
+.content-button-wrapper {
+    width: 60px;
+    height: 60px;
+    margin-right:20px;
+}
+
+.content-play-button {
+    width: 100%;
+    height:100%;
+    background-color: #1ed760;
+    border: none;
+    border-radius: 50px;
+    z-index: 3;
+}
+
+.content-play-button > span > svg {
+    width: 1.2em;
+    height: 1.2em;
+    left: 3px;
+    top:-2px;
+}
+
+.add-tracks-wrapper {
+    margin:0 auto;
+}
+
+.content-add-tracks-button {
+    background-color: #1ed760;
+    border-radius: 16px;
+    border: none;
+    width: 100%;
+    height:40px;
+    font-weight: 600;
+}
+
+.content-add-tracks-button:hover, 
+.content-play-button:hover {
+    background-color: #3cf47c;
+}
+
+.content-other-functions {
+    display: flex;
+}
+
+.content-icon-wrapper {
+    margin-right:5px;
+    height: 100%;
+    width:60px;
+}
+
+.content-icon-wrapper button {
+    border: none;
+    height: 100%;
+    width: 100%;
+    background-color: inherit;
+}
+
+.content-icon-wrapper button > span > svg{
+    stroke:rgb(186, 186, 186);
+    fill:rgb(186, 186, 186);
+}
+
+.content-shuffle-button > span > svg {
+    width: 2.5em;
+    height:2.5em;
+    transform:scale(1, -1);
+}
+
+.content-dots-button > span > svg {
+    height: 2em;
+    width: 2em;
+}
+
+.music-header button, 
+.music-content-functions button,
+.add-tracks-wrapper button {
+    transition: all .2s ease-in-out;
+}
+
+.music-header button:hover,
+.music-content-functions button:hover{
+    transform: scale(1.05);
+}
+
+.add-tracks-wrapper button:hover {
+    transform: scale(1.03);
 }
