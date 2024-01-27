@@ -52,6 +52,41 @@
     font-size:4.5rem;
 }
 
+
+.back-button-row {
+    position: relative;
+    height: 60px;
+    width:100%;
+    margin: 0 auto;
+    z-index: 4;
+}
+
+.back-button-row-block {
+    width: 100%;
+    height: 100%;
+}
+
+.back-button-wrapper {
+    position:fixed;
+}
+
+.back-button {
+    margin-top:10px;
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    border:none;
+    background-color: rgb(32 32 32 / 80%);
+}
+
+.back-button > span > svg {
+    fill:white;
+    stroke: white;
+    width: 1.5em;
+    height: 1.5em;
+    left: -1px;
+}
+
 @media screen and (max-width: 1200px) {
 
     .music-content-information h1 {
@@ -85,7 +120,8 @@
     }
 
     .music-content-functions, 
-    .add-tracks-wrapper {
+    .add-tracks-wrapper,
+    .back-button-row {
         width: 90%;
         margin:0 auto;
     }
@@ -93,13 +129,13 @@
 
 .music-content-functions {
     display: flex;
-    margin-bottom:20px;
+    margin-bottom:30px;
 }
 
 .content-button-wrapper {
     width: 60px;
     height: 60px;
-    margin-right:20px;
+    margin-right:10px;
 }
 
 .content-play-button {
@@ -120,6 +156,7 @@
 
 .add-tracks-wrapper {
     margin:0 auto;
+    padding-bottom:20px;
 }
 
 .content-add-tracks-button {
@@ -141,9 +178,10 @@
 }
 
 .content-icon-wrapper {
-    margin-right:5px;
+    margin-right:0px;
     height: 100%;
-    width:60px;
+    width:50px;
+    position: relative;
 }
 
 .content-icon-wrapper button {
@@ -153,12 +191,39 @@
     background-color: inherit;
 }
 
-.content-icon-wrapper button > span > svg{
+.green-content-shuffle-dot {
+    position: absolute;
+    left:0;
+    right:0;
+}
+
+.green-content-shuffle-dot-invisible{
+    position:absolute;
+    display: none;
+}
+
+.green-content-shuffle-dot >  svg {
+    position: relative;
+    left: 20px;
+    top:38px;
+    width: 0.6em;
+    height: 0.6em;
+    stroke: rgb(30, 215, 96);
+    fill: rgb(30, 215, 96);
+}
+
+
+.content-shuffle-button > span > svg {
+    width: 2.5em;
+    height:2.5em;
+    transform:scale(1, -1);
     stroke:rgb(186, 186, 186);
     fill:rgb(186, 186, 186);
 }
 
-.content-shuffle-button > span > svg {
+.green-content-shuffle-button > span > svg{
+    stroke:rgb(30, 215, 96);
+    fill: rgb(30, 215, 96);
     width: 2.5em;
     height:2.5em;
     transform:scale(1, -1);
@@ -167,19 +232,118 @@
 .content-dots-button > span > svg {
     height: 2em;
     width: 2em;
+    stroke:rgb(186, 186, 186);
+    fill:rgb(186, 186, 186);
 }
 
 .music-header button, 
 .music-content-functions button,
-.add-tracks-wrapper button {
+.add-tracks-wrapper button,
+.back-button{
     transition: all .2s ease-in-out;
 }
 
 .music-header button:hover,
-.music-content-functions button:hover{
+.music-content-functions button:hover,
+.back-button:hover{
     transform: scale(1.05);
 }
 
 .add-tracks-wrapper button:hover {
     transform: scale(1.03);
+}
+
+.content-page {
+    height:100%;
+    flex-grow:1;
+}
+
+.fullscreen-album-cover-wrapper{
+    position: absolute;
+    top:60px;
+    bottom:0;
+    width: 100%;
+    background-color: rgb(32 32 32 / 60%);
+}
+
+.fullscreen-album-content {
+    width:100%;
+    height: 100%;
+}
+
+.fullscreen-album-clickable {
+    z-index: 6;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    bottom:0;
+}
+
+.fullscreen-album-image-wrapper{
+    width:50%;
+    height: 100%;
+    min-width: 350px;
+    position: relative;
+    z-index: 7;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.fullscreen-album-cover {
+    width: 100%;
+    height:100%;
+    border-radius: 6px;
+    margin-bottom:30px;
+}
+
+.cover-wrapper {
+    margin:0 auto;
+}
+
+.fullscreen-album-controls-wrapper {
+    display:flex;
+    margin: 0 auto;
+    align-items: center;
+    justify-content: center;
+}
+
+.fullscreen-album-controls {
+    display: block;
+}
+
+.fullscreen-control-wrapper {
+    display: flex;
+}
+
+.fullscreen-control-wrapper button{
+    margin: 0 auto;
+    margin-bottom: 10px;
+    border:none;
+    font-weight:600;
+    transition: all .2s ease-in-out;
+    text-align: center;
+}
+
+.fullscreen-control-wrapper button:hover {
+    transform: scale(1.05);
+}
+
+.fullscreen-close-button{
+    background-color: transparent;
+    color:white;
+}
+
+.fullscreen-change-button {
+    border-radius:15px;
+    width:100%;
+}
+
+#fcw-change-button {
+    width: 100px;
+}
+
+.content-background {
+
 }

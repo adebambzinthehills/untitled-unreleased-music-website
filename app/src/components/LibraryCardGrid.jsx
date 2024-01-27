@@ -4,6 +4,8 @@ import ctv3 from '../images/ctv3.jpeg'
 import ctv30 from '../images/ctv301.jpeg'
 import erys from '../images/erys.webp'
 import syre from '../images/syre.jpeg'
+import wallsocket from '../images/Wallsocket_Album_Cover.jpeg'
+import fishmonger from '../images/fishmonger.jpg'
 import { FaPlus } from "react-icons/fa";
 import likedsongs from "../images/liked-songs.jpeg";
 import { MdCreateNewFolder } from "react-icons/md";
@@ -34,6 +36,8 @@ function LibraryCardGrid() {
         <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album"></LibraryCard>
         <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album"></LibraryCard>
         <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album"></LibraryCard>
+        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album"></LibraryCard>
+        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album"></LibraryCard>
         <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist"></LibraryCard>
       </div>
       <div className='library-footer'>
