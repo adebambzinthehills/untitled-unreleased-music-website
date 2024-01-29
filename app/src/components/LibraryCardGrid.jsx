@@ -1,5 +1,7 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import LibraryCard from './LibraryCard'
+import Player from './Player'
+
 import ctv3 from '../images/ctv3.jpeg'
 import ctv30 from '../images/ctv301.jpeg'
 import erys from '../images/erys.webp'
@@ -14,13 +16,24 @@ import likedsongs from "../images/liked-songs.jpeg";
 import { MdCreateNewFolder } from "react-icons/md";
 
 import { useState } from 'react';
+import { PlayerContext } from '../contexts/PlayerContext'
 
 
 
-function LibraryCardGrid({player}) {
+function LibraryCardGrid() {
   const [addButtonClicked, setAddButtonClicked] = useState(false);
 
+  const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
+  useEffect(() => {
+    if(playerOn){
+      document.getElementsByClassName('library-footer')[0].style.bottom = '100px';
+    }
+    else{
+      document.getElementsByClassName('library-footer')[0].style.bottom = '40px';
+    }
+    console.log(playerOn)
+  }, [playerOn]);
 
   return (
     <div className='libraryWrapper'>
@@ -37,17 +50,19 @@ function LibraryCardGrid({player}) {
         <div className='library-search-bar-block'></div>
       </div>
       <div className='grid-card-container'>
-        <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2} player={player}></LibraryCard>
-        <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3} player={player}></LibraryCard>
-        <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album" songs={3} player={player}></LibraryCard>
-        <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album" songs={3} player={player}></LibraryCard>
-        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album" songs={10} player={player}></LibraryCard>
-        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album" songs={3} player={player}></LibraryCard>
-        <LibraryCard title="to hell with it" artist="PinkPantheress" image={tohellwithit} type="Album" songs={10} player={player}></LibraryCard>
-        <LibraryCard title="What Could Possibly Go Wrong" artist="Dominic Fike" image={wcpgw} type="Album" songs={14} player={player}></LibraryCard>
-        <LibraryCard title="Sunburn" artist="Dominic Fike" image={sunburn} type="Album" songs={5} player={player}></LibraryCard>
-        <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist" player={player}></LibraryCard>
+        <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2}></LibraryCard>
+        <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3}></LibraryCard>
+        <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album" songs={3}></LibraryCard>
+        <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album" songs={3}></LibraryCard>
+        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album" songs={10}></LibraryCard>
+        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album" songs={3}></LibraryCard>
+        <LibraryCard title="to hell with it" artist="PinkPantheress" image={tohellwithit} type="Album" songs={10}></LibraryCard>
+        <LibraryCard title="What Could Possibly Go Wrong" artist="Dominic Fike" image={wcpgw} type="Album" songs={14}></LibraryCard>
+        <LibraryCard title="Sunburn" artist="Dominic Fike" image={sunburn} type="Album" songs={5}></LibraryCard>
+        <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist"></LibraryCard>
       </div>
+
+      {playerOn && <div className='player-block'></div>}
       <div className='library-footer'>
         <div className='library-footer-content' >
           <div className='footer-block-wrapper' onMouseLeave={() => setAddButtonClicked(false)}>
@@ -63,6 +78,7 @@ function LibraryCardGrid({player}) {
             </div>
           </div>
         </div>
+        {playerOn && <Player></Player>}
       </div>
     </div>
   )

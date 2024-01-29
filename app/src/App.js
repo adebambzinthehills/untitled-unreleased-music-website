@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {createContext, useState, useEffect, useContext} from "react";
 import {Routes, Route, BrowserRouter as Router} from 'react-router-dom';
 import Welcome from "./components/Welcome";
 import Login from "./components/Login";
@@ -10,29 +10,26 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Account from "./components/Account";
 import Settings from "./components/Settings";
 import Album from "./components/Album";
+import { PlayerProvider } from "./contexts/PlayerContext";
+
 
 function App() {
-  const [playerEnabled , setPlayerEnabled] = useState(false)
-
-  if(playerEnabled){
-    alert("You have enabled the player!");
-    setPlayerEnabled(false);
-  }
-
 
   return(
     <AuthProvider>
+      <PlayerProvider>
       <Router>                            
         <Routes>                                                                       
           <Route exact path="/" element={<Welcome/>}/>
           <Route path="/CreateAccount" element={<CreateAccount/>}/>
           <Route path="/Login" element={<Login/>}/>
-          <Route path="/Library" element={<Library player={setPlayerEnabled}/>}></Route>
-          <Route path="/Account" element={<Account player={setPlayerEnabled}/>}></Route>
-          <Route path="/Settings" element={<Settings player={setPlayerEnabled}/>}></Route>
-          <Route path="/Album" element={<Album player={setPlayerEnabled}/>}></Route>
+          <Route path="/Library" element={<Library/>}></Route>
+          <Route path="/Account" element={<Account/>}></Route>
+          <Route path="/Settings" element={<Settings/>}></Route>
+          <Route path="/Album" element={<Album/>}></Route>
         </Routes>
       </Router>
+      </PlayerProvider>
     </AuthProvider>
   )
 }

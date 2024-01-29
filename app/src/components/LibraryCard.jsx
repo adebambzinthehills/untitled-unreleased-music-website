@@ -1,24 +1,22 @@
 import React from 'react'
-import { useState } from 'react';
+import { useState, useContext} from 'react';
 import { BsThreeDots } from "react-icons/bs";
 import { FaPlay } from "react-icons/fa";
 import { FaRegEdit } from "react-icons/fa";
 import { CiFolderOn } from "react-icons/ci";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
+import { PlayerContext } from '../contexts/PlayerContext';
 
-function LibraryCard({title, artist, image, type, songs, player}) {
+function LibraryCard({title, artist, image, type, songs}) {
 
   const [buttonClick, setButtonClicked] = useState(false);
   const navigate = useNavigate();
 
-  function cardClickHandler(){
-    const jsonPlayer = JSON.stringify(player);
-    navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs, player: jsonPlayer}});
-  }
+  const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
-  function play(){
-    player(true);
+  function cardClickHandler(){
+    navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs}});
   }
 
   return (
@@ -57,7 +55,7 @@ function LibraryCard({title, artist, image, type, songs, player}) {
       </div>
       <div className='card-play-content'>
         {/* absolute position, floating right, border radius 500, z index 2 */}
-        <button className='card-play-button' onClick={() => play()}><span><FaPlay/></span></button>
+        <button className='card-play-button' onClick={toggle} ><span><FaPlay/></span></button>
       </div>
     </div>
   )
