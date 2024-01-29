@@ -1,11 +1,12 @@
 import { createContext, useState } from 'react'
 import purple from '../images/purple.jpeg'
+import daytrippers from '../images/ctv3.jpeg'
 
 export const PlayerContext = createContext();
 
 export function PlayerProvider({children}){
     const [playerOn, setPlayerOn] = useState(false);
-    const [playerImgSrc, setPlayerImgSrc] = useState(purple);
+    const [playerImgSrc, setPlayerImgSrc] = useState(daytrippers);
 
     const play = () => {
         setPlayerOn(true);

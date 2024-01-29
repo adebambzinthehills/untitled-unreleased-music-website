@@ -1,17 +1,16 @@
-import React from 'react'
+import React, {useEffect, useContext, useState }from 'react'
 import { BsThreeDots } from "react-icons/bs"
 import { FaRegEdit } from "react-icons/fa"
+import { PlayerContext } from '../contexts/PlayerContext';
 
-function TracklistSong({number, title, duration, artist, player}) {
+function TracklistSong({number, title, duration, artist}) {
 
-  function play(){
-    player(true);
-  }
+  const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
   return (
     <div>
       <li className>
-            <button className='tracklist-song-button' onClick={() => play()}>
+            <button className='tracklist-song-button' onClick={toggle}>
                 <div className='row'>
                   <div className='col-0-5 song-number'>
                     <div className='number-wrapper'> 

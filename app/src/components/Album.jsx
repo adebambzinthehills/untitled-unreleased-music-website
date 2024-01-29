@@ -1,5 +1,6 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useContext} from 'react'
 import Tracklist from '../components/Tracklist'
+import Player from './Player'
 import Header from './Header'
 import { useNavigate, useLocation } from 'react-router-dom'
 import "../css/MusicContent.css"
@@ -11,6 +12,7 @@ import { IoChevronBack } from "react-icons/io5"
 import { GoDotFill } from "react-icons/go";
 import ColorThief from 'colorthief';
 import { LuClock3 } from "react-icons/lu";
+import { PlayerContext } from '../contexts/PlayerContext'
 
 
 export async function GetColour() {
@@ -32,8 +34,10 @@ export async function GetColour() {
 }
 
 function Album({player}) {
+
+    const {playerOn, play, stop, toggle} = useContext(PlayerContext);
+
     const {state} = useLocation();
-    console.log(state.songs);
     const navigate = useNavigate();
     const [shuffle, setShuffle] = useState(true);
     const [fullAlbumCover, setFullAlbumCover] = useState(false);
@@ -50,6 +54,7 @@ function Album({player}) {
     const header = document.getElementsByClassName('header')[0];
     header.style.backgroundColor = 'rgb(' + backgroundColour + ')';
 
+    
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
             const contentImage = new Image();
@@ -89,10 +94,6 @@ function Album({player}) {
         navigate(-1);
     }
 
-    function play(){
-        player(true);
-      }
-
     return (
         
         <div className='content-page'>
@@ -126,7 +127,7 @@ function Album({player}) {
                     </div>
                     <div className='music-content-functions'>
                         <div className='content-button-wrapper'>
-                            <button className='content-play-button' onClick={() => play()}><span><FaPlay></FaPlay></span></button>
+                            <button className='content-play-button' onClick={toggle}><span><FaPlay></FaPlay></span></button>
                         </div>
                         <div className='content-other-functions'>
                             <div className='content-icon-wrapper'>
@@ -168,6 +169,9 @@ function Album({player}) {
             </div>
 
             <Tracklist songs={state.songs} player={player}></Tracklist>
+            {playerOn && <div className='player-block'></div>}
+            {playerOn && <Player></Player>}
+
             {fullAlbumCover && <div className='fullscreen-album-cover-wrapper'>
                 <div className='fullscreen-album-content'>
                     <div className='fullscreen-album-image-wrapper'>

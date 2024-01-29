@@ -1,16 +1,17 @@
 .player-container {
     position: fixed;
     background-color: black;
-    height:80px;
+    height:90px;
     bottom:0;
     left: 0;
     right:0;
     width: 100%;
+    z-index: 5;
 }
 
 .player-block {
     position: relative;
-    height: 80px;;
+    height: 90px;;
 }
 
 .left-information-wrapper {
@@ -31,20 +32,41 @@
 }
 
 .player-image-button {
-    width:40px;
+    width:55px;
     border: none;
     background-color: inherit;
     padding: 0;
+    transition: all .2s ease-in-out;
+}
+
+.player-image-button:hover {
+    transform: scale(1.05);
 }
 
 .player-image {
     width:100%;
     height:100%;
+    border-radius: 3px;
 }
 
 .player-container a {
     color:white;
     text-decoration: none;
+}
+
+.player-artist-name {
+    color:#a7a7a7;
+    font-size:0.8em;
+    font-weight:500;
+    position: relative;
+    top: -3px;
+}
+
+.span-information-wrap {
+}
+
+.player-song-name {
+    font-size:0.9em;
 }
 
 .player-container a:hover {
@@ -53,4 +75,268 @@
 
 .player-song-information-wrapper {
     display: block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+/* ------- MIDDLE PLAYER ------- */
+
+
+
+.player-controls-wrapper {
+    display: block;
+    height: 60%;
+}
+
+.player-buttons-wrapper {
+    display: flex;
+    margin:0 auto;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.player-button-wrapper {
+    height:100%;
+    position: relative;
+    top: 12px;
+}
+
+.player-button-wrapper button {
+    margin-left: 10px;
+    margin-right:10px;
+    width: 30px;
+    height:30px;
+    border:none;
+    position: relative;
+    top:6px;
+    transition: all .2s ease-in-out;
+    background-color: inherit;
+}
+
+.player-button-wrapper button:hover {
+    transform:scale(1.1);
+}
+
+.player-button-wrapper button:hover > span > svg {
+    fill:white;
+}
+
+.player-button-wrapper button > span > svg {
+    stroke:#a7a7a7;
+    fill:#a7a7a7;
+    width: 100%;
+    height: 100%;
+}
+
+.player-button-wrapper .player-play-button {
+    width:40px;
+    height: 40px;
+    border:none;
+    border-radius: 100px;
+    background-color: white;
+    top:0px;
+}
+
+.player-button-wrapper .player-play-button:hover > span > svg {
+    stroke: black;
+    fill: black;
+}
+
+.player-button-wrapper .player-repeat-button > span > svg {
+    fill:none;
+    width:20px;
+    left:-1px;
+}
+
+.player-button-wrapper .player-repeat-button:hover > span > svg {
+    stroke:white;
+    fill:none;
+}
+
+.player-button-wrapper .player-shuffle-button > span > svg {
+    width:23px;
+}
+
+.player-button-wrapper .player-skip-button > span > svg {
+    transform: scale(-1, 1);
+}
+
+.player-button-wrapper .player-play-button > span > svg {
+    fill:black;
+    width: 50%;
+    left:1.5px;
+}
+
+.player-button-wrapper .player-rewind-button,
+.player-button-wrapper .player-skip-button {
+    width:35px
+}
+
+.player
+
+
+.player-scrollbar-wrapper {
+    display: flex;
+}
+
+.player-scrollbar {
+    position:relative;
+    display:flex;
+    margin: 0 auto;
+    width: 80%;
+    margin-top:10px;
+    height:100%;
+}
+
+.player-scrollbar-overlay {
+    position:absolute;
+    height:5px;
+    width: 50px;
+    max-width: 80%;
+    background-color: white;
+    z-index: 1;
+    border-radius: 10px;
+    left:33px;
+    top:0;
+}
+
+.player-scrollbar-overlay:hover {
+    background-color: #1ed760;
+}
+
+.player-scrollbar-overlay:hover > .player-scrollbar-dot{
+    display: inline;
+}
+
+
+.player-scrollbar-dot {
+    position: absolute;
+    width: 10px;
+    height:10px;
+    background-color: white;
+    border-radius: 6px;
+    z-index: 2;
+    top:-3px;
+    right: -1px;
+    display: none;
+}
+
+.player-scrollbar-grey {
+    position: relative;
+    background-color: #505050;
+    height:5px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.player-scrollbar-wrapper span {
+    font-size: 0.8em;
+    color:#a7a7a7;
+}
+
+.player-time-left, .player-time-right{
+    position: relative;
+    top:-10px;
+}
+
+.player-time-left {
+    margin-right:5px;
+}
+.player-time-right {
+    margin-left:5px;
+}
+
+
+
+/* ------- RIGHT SIDE --------- */
+
+
+.right-information-wrapper {
+    display: flex;
+    margin:0 auto;
+    height:100%;
+    align-items: center;
+    float:right;
+    margin-right:10px;
+}
+
+.right-information-wrapper button {
+    width: 32px;
+    height: 32px;
+    margin-right:10px;
+    border: none;
+    background-color: inherit;
+    transition: all .2s ease-in-out;
+}
+
+.right-information-wrapper button:hover {
+    transform: scale(1.05);
+}
+
+.right-information-wrapper button:hover > span > svg{
+    stroke:white;
+}
+
+
+.right-information-wrapper button > span > svg {
+    width: 100%;
+    height: 100%;
+    stroke: #a7a7a7;
+}
+
+.player-queue-wrapper .player-queue-button {
+    width: 35px;
+    height: 35px;
+}
+
+
+
+/* ---- CONDITIONAL GREEN BUTTONS ---- */
+
+.player-shuffle-button-dot{
+    position: absolute;
+    width:6px;
+    top:20px;
+    right:0;
+    left:24px;
+}
+
+.player-repeat-button-dot{
+    position: absolute;
+    width:6px;
+    top:20px;
+    right:0;
+    left:23px;
+}
+
+.player-shuffle-button-dot svg {
+    width: 100%;
+    fill:#1ed760;
+}
+
+.player-repeat-button-dot svg {
+    width: 100%;
+    fill:#1ed760;
+}
+
+.player-button-wrapper .green-repeat> span > svg {
+    stroke:#1ed760;
+    fill:none;
+}
+
+.player-button-wrapper .green-repeat:hover> span > svg {
+    stroke:#3cf47c;
+    fill:none;
+}
+
+.player-button-wrapper .green-shuffle> span > svg {
+    fill:#1ed760;
+}
+
+.player-button-wrapper .green-shuffle:hover> span > svg {
+    fill:#3cf47c;
 }

@@ -27,7 +27,7 @@ function LibraryCardGrid() {
 
   useEffect(() => {
     if(playerOn){
-      document.getElementsByClassName('library-footer')[0].style.bottom = '100px';
+      document.getElementsByClassName('library-footer')[0].style.bottom = '110px';
     }
     else{
       document.getElementsByClassName('library-footer')[0].style.bottom = '40px';
