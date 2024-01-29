@@ -150,7 +150,7 @@
 .content-play-button > span > svg {
     width: 1.2em;
     height: 1.2em;
-    left: 3px;
+    left: 2px;
     top:-2px;
 }
 
@@ -239,13 +239,15 @@
 .music-header button, 
 .music-content-functions button,
 .add-tracks-wrapper button,
-.back-button{
+.back-button,
+.song-functions button{
     transition: all .2s ease-in-out;
 }
 
 .music-header button:hover,
 .music-content-functions button:hover,
-.back-button:hover{
+.back-button:hover,
+.song-functions button:hover{
     transform: scale(1.05);
 }
 
@@ -260,10 +262,11 @@
 
 .fullscreen-album-cover-wrapper{
     position: absolute;
-    top:60px;
+    top:0;
     bottom:0;
     width: 100%;
     background-color: rgb(32 32 32 / 60%);
+    z-index: 5;
 }
 
 .fullscreen-album-content {
@@ -296,6 +299,7 @@
     height:100%;
     border-radius: 6px;
     margin-bottom:30px;
+    max-width: 600px;
 }
 
 .cover-wrapper {
@@ -346,4 +350,167 @@
 
 .content-background {
 
+}
+
+.tracklist-header hr {
+   opacity: 20%;
+   color:gray;
+}
+
+/* Tracklist 
+
+--------------------------------
+
+*/
+
+.tracklist ul {
+    width: 100%;
+    padding: 0;
+}
+
+.tracklist li {
+    list-style: none;
+    height:60px;
+    width: 100%;;
+    margin-bottom: 5px;
+}
+
+.tracklist-wrapper {
+    width: 100%;
+    margin:0 auto;
+}
+
+
+.tracklist-song-button {
+    background-color: inherit;
+    border:none;
+    width:100%;
+    height:100%;
+    border-radius: 10px;
+    color: #a7a7a7;
+}
+
+.tracklist-song-button:hover {
+    background-color: #454545;
+}
+
+.song-artist span {
+    font-size:0.9em;
+}
+
+.song-title span {
+    color:white;
+}
+
+.col-0-5 {
+    flex: 0 0 auto;
+    width: 4.166666%;
+}
+
+.number-wrapper, .time-wrapper{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.number-wrapper {
+    padding-left:50%;
+}
+
+.song-information {
+    display: flex;
+}
+
+.number-wrapper span{
+    position: relative;
+}
+
+.song-title span{
+    font-weight:500;
+}
+
+.song-time {
+    margin-right:10px;
+}
+
+.information-wrapper {
+    display: block;
+}
+
+.information-wrapper span {
+    float: left;
+}
+
+.buttons-wrapper {
+    height: 100%;
+    float: right;
+}
+
+.song-functions button {
+    border:none;
+    background-color: inherit;
+    width: 50px;
+    height:100%;
+}
+
+.song-functions button > span > svg{
+    stroke:#a7a7a7;
+    fill:#a7a7a7;
+    width:30px;
+    height: 20px;
+}
+
+.song-options-button, .edit-song-button {
+    position: relative;
+    z-index: 4;
+}
+
+.buttons-wrapper {
+    z-index: 4;
+}
+
+.edit-song-button > span > svg {
+    top:-3px;
+}
+
+.tracklist-header {
+    margin-top: 40px;
+    color:#a7a7a7;
+    font-size: 0.9em;
+}
+
+.clock-wrapper {
+    float: right;
+    padding-right: 126px;
+}
+
+.title-header-wrapper {
+    float: left;
+}
+
+.tracklist-header-row {
+    margin-bottom: -8px;
+}
+
+.number-header-wrapper {
+    width: 100%;
+    padding-left: 80%;
+}
+
+
+@media screen and (max-width:580px){
+    
+
+    .song-time, .song-number {
+        display: none;
+    }
+
+    .tracklist-wrapper {
+        width: 90%;
+    }
+
+    .tracklist-header {
+        display: none;
+    }
 }

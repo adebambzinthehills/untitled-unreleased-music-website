@@ -4,8 +4,11 @@ import ctv3 from '../images/ctv3.jpeg'
 import ctv30 from '../images/ctv301.jpeg'
 import erys from '../images/erys.webp'
 import syre from '../images/syre.jpeg'
-import wallsocket from '../images/Wallsocket_Album_Cover.jpeg'
+import wallsocket from '../images/wallsocket.jpeg'
 import fishmonger from '../images/fishmonger.jpg'
+import wcpgw from '../images/df1.webp'
+import sunburn from '../images/df2.webp'
+import tohellwithit from '../images/pp1.jpeg';
 import { FaPlus } from "react-icons/fa";
 import likedsongs from "../images/liked-songs.jpeg";
 import { MdCreateNewFolder } from "react-icons/md";
@@ -14,8 +17,10 @@ import { useState } from 'react';
 
 
 
-function LibraryCardGrid() {
+function LibraryCardGrid({player}) {
   const [addButtonClicked, setAddButtonClicked] = useState(false);
+
+
 
   return (
     <div className='libraryWrapper'>
@@ -32,13 +37,16 @@ function LibraryCardGrid() {
         <div className='library-search-bar-block'></div>
       </div>
       <div className='grid-card-container'>
-        <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album"></LibraryCard>
-        <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album"></LibraryCard>
-        <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album"></LibraryCard>
-        <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album"></LibraryCard>
-        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album"></LibraryCard>
-        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album"></LibraryCard>
-        <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist"></LibraryCard>
+        <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2} player={player}></LibraryCard>
+        <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3} player={player}></LibraryCard>
+        <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album" songs={3} player={player}></LibraryCard>
+        <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album" songs={3} player={player}></LibraryCard>
+        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album" songs={10} player={player}></LibraryCard>
+        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album" songs={3} player={player}></LibraryCard>
+        <LibraryCard title="to hell with it" artist="PinkPantheress" image={tohellwithit} type="Album" songs={10} player={player}></LibraryCard>
+        <LibraryCard title="What Could Possibly Go Wrong" artist="Dominic Fike" image={wcpgw} type="Album" songs={14} player={player}></LibraryCard>
+        <LibraryCard title="Sunburn" artist="Dominic Fike" image={sunburn} type="Album" songs={5} player={player}></LibraryCard>
+        <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist" player={player}></LibraryCard>
       </div>
       <div className='library-footer'>
         <div className='library-footer-content' >

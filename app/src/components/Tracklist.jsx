@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
+import TracklistSong from './TracklistSong';
 
-function Tracklist() {
+function Tracklist({songs, artist, player}) {
+  const [songNumber, setSongNumber] = useState(songs);
+  let tracklist = [];
+
+  for (let i = 1; i < songNumber + 1; i++ ){
+    tracklist.push(<TracklistSong key={i} number={i} player={player}/>);
+  }
+
   return (
-    <div>
+    <div className='tracklist'>
       <div className='container'>
-          
+        <div className='tracklist-wrapper'>
+          <ul className>
+            {tracklist}
+          </ul> 
+        </div>
       </div>
     </div>
   )

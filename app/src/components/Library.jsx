@@ -4,7 +4,7 @@ import { useState } from 'react';
 import LibraryCardGrid from './LibraryCardGrid';
 import '../css/Library.css';
 
-function Library() {
+function Library({player}) {
 
   const [hasProjects, setHasProjects] = useState(true);
 
@@ -17,7 +17,7 @@ function Library() {
     <div className='page'>
       <Header></Header>
       <div className='library'>
-        {hasProjects ? (<LibraryCardGrid/>) : (
+        {hasProjects ? (<LibraryCardGrid player={player}/>) : (
 
           <div className='noProjectsContainer'>
             <div className="noProjectsContent">

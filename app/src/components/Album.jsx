@@ -10,6 +10,7 @@ import { useState } from 'react'
 import { IoChevronBack } from "react-icons/io5"
 import { GoDotFill } from "react-icons/go";
 import ColorThief from 'colorthief';
+import { LuClock3 } from "react-icons/lu";
 
 
 export async function GetColour() {
@@ -30,8 +31,9 @@ export async function GetColour() {
     return result;
 }
 
-function Album() {
+function Album({player}) {
     const {state} = useLocation();
+    console.log(state.songs);
     const navigate = useNavigate();
     const [shuffle, setShuffle] = useState(true);
     const [fullAlbumCover, setFullAlbumCover] = useState(false);
@@ -42,8 +44,11 @@ function Album() {
 
     const musicHeaderColor ={
         backgroundColor: 'rgb(' + backgroundColour + ')',
-        background: 'linear-gradient(rgb(' + backgroundColour + '), black)'
+        background: 'linear-gradient(rgb(' + backgroundColour + '), #121212)'
     }
+
+    const header = document.getElementsByClassName('header')[0];
+    header.style.backgroundColor = 'rgb(' + backgroundColour + ')';
 
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
@@ -72,7 +77,6 @@ function Album() {
         
         if(fullAlbumCover){
             document.body.style.overflow = 'hidden';
-            document.body.style.paddingRight = '15px';
         }
         else{
             document.body.style.overflow = 'unset';
@@ -84,6 +88,10 @@ function Album() {
     function goBack() {
         navigate(-1);
     }
+
+    function play(){
+        player(true);
+      }
 
     return (
         
@@ -118,7 +126,7 @@ function Album() {
                     </div>
                     <div className='music-content-functions'>
                         <div className='content-button-wrapper'>
-                            <button className='content-play-button'><span><FaPlay></FaPlay></span></button>
+                            <button className='content-play-button' onClick={() => play()}><span><FaPlay></FaPlay></span></button>
                         </div>
                         <div className='content-other-functions'>
                             <div className='content-icon-wrapper'>
@@ -135,10 +143,31 @@ function Album() {
                             <button className='content-add-tracks-button'><span><FaPlus/></span> Add Tracks</button>
                         </div>
                     </div>
+                    <div className='tracklist-header'>
+                        <div className='row tracklist-header-row'>
+                            <div className='col-0-5 song-number song-number-header'>
+                                <div className='number-header-wrapper'>
+                                    <span>#</span>
+                                </div>
+                            </div>
+                            <div className='col song-title-header'>
+                                <div className='title-header-wrapper'></div>
+                                <span>Title</span>
+                            </div>
+                            <div className='col-5 col-sm-4 col-md-3'>
+                                <div className='clock-wrapper'>
+                                    <span>
+                                        <LuClock3/>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <hr></hr>
+                    </div>
                 </div>
-                <Tracklist></Tracklist>
-                
             </div>
+
+            <Tracklist songs={state.songs} player={player}></Tracklist>
             {fullAlbumCover && <div className='fullscreen-album-cover-wrapper'>
                 <div className='fullscreen-album-content'>
                     <div className='fullscreen-album-image-wrapper'>

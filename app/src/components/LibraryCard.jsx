@@ -7,13 +7,18 @@ import { CiFolderOn } from "react-icons/ci";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 
-function LibraryCard({title, artist, image, type}) {
+function LibraryCard({title, artist, image, type, songs, player}) {
 
   const [buttonClick, setButtonClicked] = useState(false);
   const navigate = useNavigate();
 
   function cardClickHandler(){
-    navigate('/album', { state : {image: image, title: title, artist: artist, type: type}});
+    const jsonPlayer = JSON.stringify(player);
+    navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs, player: jsonPlayer}});
+  }
+
+  function play(){
+    player(true);
   }
 
   return (
@@ -52,7 +57,7 @@ function LibraryCard({title, artist, image, type}) {
       </div>
       <div className='card-play-content'>
         {/* absolute position, floating right, border radius 500, z index 2 */}
-        <button className='card-play-button'><span><FaPlay/></span></button>
+        <button className='card-play-button' onClick={() => play()}><span><FaPlay/></span></button>
       </div>
     </div>
   )

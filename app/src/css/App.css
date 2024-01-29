@@ -17,6 +17,7 @@ body {
   flex-direction: column;
   margin:0 auto;
   height:100%;
+  overflow-x: hidden;
 }
 html, #root {
   height: 100%;
