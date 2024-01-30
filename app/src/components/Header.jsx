@@ -1,4 +1,4 @@
-import React from 'react';
+import React , {useEffect, useState} from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Link , useNavigate } from 'react-router-dom';
 import { auth } from '../firebase';
@@ -6,7 +6,7 @@ import { MdAccountCircle } from "react-icons/md";
 import { IoSettingsSharp } from "react-icons/io5";
 import '../css/Header.css';
 
-function Header() {
+function Header({colour}) {
 
     const navigate = useNavigate();
 
@@ -18,8 +18,14 @@ function Header() {
         navigate("/settings")
     }
 
+
+    const [headerColour, setHeaderColour] = useState(colour);
+    useEffect(() => {
+        setHeaderColour(colour)
+    }, [colour])
+
     return (
-        <div className='header'>
+        <div className='header' style={headerColour}>
             <div className='header-content'>
                 <div className='left'>
                     <Link to="/library"><h3>Preview</h3></Link>

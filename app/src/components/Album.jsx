@@ -13,25 +13,8 @@ import { GoDotFill } from "react-icons/go";
 import ColorThief from 'colorthief';
 import { LuClock3 } from "react-icons/lu";
 import { PlayerContext } from '../contexts/PlayerContext'
-
-
-export async function GetColour() {
-    const {state} = useLocation();
-
-    const awaitPromise = new Promise((resolve) => {
-        const contentImage = new Image();
-        contentImage.src = state.image;
-        contentImage.crossOrigin = 'anonymous';
-        contentImage.onload = () => {
-            const colorThief = new ColorThief();
-            resolve(colorThief.getColor(contentImage));
-        }
-    })
-
-    const result = await awaitPromise;
-    //console.log(result);
-    return result;
-}
+import { FaPalette } from "react-icons/fa";
+import PaletteColourPicker from '../components/PaletteColourPicker'
 
 function Album({player}) {
 
@@ -40,18 +23,25 @@ function Album({player}) {
     const {state} = useLocation();
     const navigate = useNavigate();
     const [shuffle, setShuffle] = useState(true);
+    const [paletteActive, setPaletteActive] = useState(false);
     const [fullAlbumCover, setFullAlbumCover] = useState(false);
     const contentShuffleButton = shuffle ? 'green-content-shuffle-button' : 'content-shuffle-button';
     const contentShuffleDotVisible = shuffle? 'green-content-shuffle-dot' : 'green-content-shuffle-dot-invisible';
-    const backgroundColorPrint = 'rgb(' + GetColour() + ')';
     const [backgroundColour, setBackgroundColour] = useState("");
 
-    const musicHeaderColor ={
+
+    const musicHeaderColor = {
         backgroundColor: 'rgb(' + backgroundColour + ')',
         background: 'linear-gradient(rgb(' + backgroundColour + '), #121212)'
     }
 
-    
+    const headerColour = {
+        backgroundColor: 'rgb(' + backgroundColour + ')'
+    }
+
+    const [musicHeaderColourState, setMusicHeaderColourState] = useState(musicHeaderColor);
+
+
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
             const contentImage = new Image();
@@ -64,8 +54,8 @@ function Album({player}) {
         })
 
         awaitPromise.then((res) => {
-            console.log(res);
             setBackgroundColour(res);
+            setMusicHeaderColourState(musicHeaderColor);
 
         }).catch((err) => {
             console.log(err);
@@ -75,8 +65,8 @@ function Album({player}) {
 
     }, [])
 
-    const header = document.getElementsByClassName('header')[0];
-    header.style.backgroundColor = 'rgb(' + backgroundColour + ')';
+    // try{document.body.getElementsByClassName('header')[0].style.backgroundColor = 'rgb(' + backgroundColour + ')';}
+    // catch(err){}
 
     useEffect(() => {
         
@@ -90,6 +80,14 @@ function Album({player}) {
 
     }, [fullAlbumCover]);
 
+    // useEffect(() => {
+
+    //     document.body.getElementsByClassName('content-background').style = musicHeaderColourState;
+    //     document.body.getElementsByClassName('header')[0].style = musicHeaderColourState.backgroundColor;
+
+    // }, [paletteActive])
+
+
     function goBack() {
         navigate(-1);
     }
@@ -97,9 +95,9 @@ function Album({player}) {
     return (
         
         <div className='content-page'>
-            <Header></Header>   
+            <Header colour={headerColour} ></Header>   
             
-            <div className='content-background' style={musicHeaderColor}>
+            <div className='content-background' style={paletteActive ? musicHeaderColourState : musicHeaderColor}>
                 <div className='container'>
                     <div className='back-button-row'>
                         <div className='back-button-wrapper'>
@@ -137,6 +135,9 @@ function Album({player}) {
                             <div className='content-icon-wrapper'>
                                 <button className='content-dots-button'><span><BsThreeDots/></span></button>
                             </div>
+                        </div>
+                        <div className='content-palette-wrapper'>
+                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive}/>
                         </div>
                     </div>
                     <div className='add-tracks-wrapper'>
