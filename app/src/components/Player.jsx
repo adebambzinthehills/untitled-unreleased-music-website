@@ -1,4 +1,4 @@
-import React, { useContext, useState }from 'react'
+import React, { useContext, useEffect, useState }from 'react'
 import '../css/Player.css'
 import { PlayerContext } from '../contexts/PlayerContext';
 
@@ -6,24 +6,62 @@ import { TiArrowShuffle } from "react-icons/ti"
 import { FaPlay, FaPlus } from 'react-icons/fa'
 import { IoIosSkipBackward } from "react-icons/io"
 import { FaPause } from "react-icons/fa6"
+import { IoMdPause } from "react-icons/io"
 import { LuRepeat, LuRepeat1 } from "react-icons/lu";
 import { HiOutlineQueueList } from "react-icons/hi2";
 import { TbMicrophone2 } from "react-icons/tb";
 import { GoDotFill } from "react-icons/go";
+
+import ColorThief from 'colorthief';
 
 function Player() {
     const [shufflePlayer, setShufflePlayer] = useState(false);
     console.log(shufflePlayer);
     const [repeatCount, setRepeatCount] = useState(0);
     const [repeatOn, setRepeatOn] = useState(false);
-    const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage} = useContext(PlayerContext);  
+    const [playPress, setPlayPress] = useState(false);
+    const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer} = useContext(PlayerContext);  
+    const [playerBackgroundColour, setPlayerBackgroundColour] = useState("");
     
+    useEffect(() => {
+        const awaitPromise = new Promise((resolve) => {
+            const contentImage = new Image();
+            contentImage.src = playerImgSrc;
+            contentImage.crossOrigin = 'anonymous';
+            contentImage.onload = () => {
+                const colorThief = new ColorThief();
+                resolve(colorThief.getColor(contentImage));
+            }
+        })
 
+        awaitPromise.then((res) => {
+            console.log(res);
+            setPlayerBackgroundColour(res)
+
+        }).catch((err) => {
+            console.log(err);
+            alert("Couldn't display player background colour!");
+        })
+
+
+    }, [])
+
+    const playerColourValue = 'rgb(' + playerBackgroundColour + ')';
+    let newPlayerColourValues = [];
+    for(let i = 0; i < playerBackgroundColour.length; i++){
+        newPlayerColourValues.push(playerBackgroundColour[i] - 50);
+    }
+    newPlayerColourValues = 'rgb(' + newPlayerColourValues + ')';
+
+    const playerColour ={
+        backgroundColor: newPlayerColourValues
+    }
 
     const handleShuffle = () => {
         setShufflePlayer(!shufflePlayer);
         
     } 
+
     function handleRepeat(){
         let newCount = (repeatCount + 1) % 3;
 
@@ -42,13 +80,33 @@ function Player() {
 
     };
 
+    function handlePlayPress() {
+        setPlayPress(!playPress);
+    }
+
 
     const greenShuffle = shufflePlayer ? 'green-shuffle' : '';
     const greenRepeat = repeatOn? 'green-repeat' : '';
 
 
+    const screenSize = window.innerWidth;
+    const [miniplayerTracker, setMiniplayerTracker] = useState(false);
+
+    useEffect(() => {
+        if(screenSize <= 600){
+            enableMiniplayer();
+            setMiniplayerTracker(true);
+        }
+        else{
+            removeMiniplayer();
+            setMiniplayerTracker(false);
+        }
+    }, [miniplayerTracker])
+
   return (
+
     <div>
+      {
       <div className='player-container'>
         <div className='row player-row'>
             <div className='col-3 player-col'>
@@ -77,7 +135,7 @@ function Player() {
                             <button className='player-rewind-button'><span><IoIosSkipBackward/></span></button>
                         </div>
                         <div className='player-button-wrapper'>
-                            <button className='player-play-button'><span><FaPlay/></span></button>
+                            <button className='player-play-button' onClick={() => handlePlayPress()}><span>{playPress ? <IoMdPause className='player-pause-button'/> : <FaPlay/>}</span></button>
                         </div>
                         <div className='player-button-wrapper'>
                             <button className='player-skip-button'><span><IoIosSkipBackward/></span></button>
@@ -85,7 +143,7 @@ function Player() {
                         <div className='player-button-wrapper'>
                             <button className={'player-repeat-button ' + greenRepeat} onClick={() => handleRepeat()}><span>{repeatCount <= 1? <LuRepeat/> : <LuRepeat1/>}</span></button>
                             {(repeatCount === 1 || repeatCount === 2) && <span className='player-repeat-button-dot'><GoDotFill/></span>}
-                        </div>  
+                        </div>
                     </div>
                     <div className='player-scrollbar-wrapper'>
                         <div className='player-scrollbar'>
@@ -110,7 +168,34 @@ function Player() {
                 </div>
             </div>
         </div>
-      </div>
+      </div>}
+      {
+        <div className='miniplayer-container' style={playerColour}>
+        <div className='row miniplayer-row'>
+            <div className='col-10 player-col'>
+                <div className='miniplayer-left-information-wrapper'>
+                    <div className='miniplayer-image-wrapper'>
+                        <button className='miniplayer-image-button'><img className='miniplayer-image' src={playerImgSrc}></img></button>
+                    </div>
+                    <div className='miniplayer-song-information-wrapper'>
+                        <div>
+                            <span className='player-song-name'><a>Santa Barbara</a></span>
+                        </div>
+                        <div className='span-information-wrap'>
+                            <span className='player-artist-name'>Jaden</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className='col-2 player-col'>
+                <div className='miniplayer-control-wrapper'>
+                    <div className='miniplayer-play-button-wrapper'>
+                        <button className='miniplayer-play-button' onClick={() => handlePlayPress()}><span>{playPress ? <IoMdPause className='miniplayer-pause-button'/> : <FaPlay/>}</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>}
     </div>
   )
 }

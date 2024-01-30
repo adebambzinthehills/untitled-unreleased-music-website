@@ -51,9 +51,6 @@ function Album({player}) {
         background: 'linear-gradient(rgb(' + backgroundColour + '), #121212)'
     }
 
-    const header = document.getElementsByClassName('header')[0];
-    header.style.backgroundColor = 'rgb(' + backgroundColour + ')';
-
     
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
@@ -68,7 +65,7 @@ function Album({player}) {
 
         awaitPromise.then((res) => {
             console.log(res);
-            setBackgroundColour(res)
+            setBackgroundColour(res);
 
         }).catch((err) => {
             console.log(err);
@@ -77,6 +74,9 @@ function Album({player}) {
 
 
     }, [])
+
+    const header = document.getElementsByClassName('header')[0];
+    header.style.backgroundColor = 'rgb(' + backgroundColour + ')';
 
     useEffect(() => {
         

@@ -11,6 +11,9 @@ import fishmonger from '../images/fishmonger.jpg'
 import wcpgw from '../images/df1.webp'
 import sunburn from '../images/df2.webp'
 import tohellwithit from '../images/pp1.jpeg';
+import guts from '../images/guts.webp'
+
+
 import { FaPlus } from "react-icons/fa";
 import likedsongs from "../images/liked-songs.jpeg";
 import { MdCreateNewFolder } from "react-icons/md";
@@ -59,6 +62,7 @@ function LibraryCardGrid() {
         <LibraryCard title="to hell with it" artist="PinkPantheress" image={tohellwithit} type="Album" songs={10}></LibraryCard>
         <LibraryCard title="What Could Possibly Go Wrong" artist="Dominic Fike" image={wcpgw} type="Album" songs={14}></LibraryCard>
         <LibraryCard title="Sunburn" artist="Dominic Fike" image={sunburn} type="Album" songs={5}></LibraryCard>
+        <LibraryCard title="GUTS" artist="Olivia Rodrigo" image={guts} type="Album" songs={5}></LibraryCard>
         <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist"></LibraryCard>
       </div>
 
