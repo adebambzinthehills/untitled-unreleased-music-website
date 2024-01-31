@@ -490,7 +490,7 @@
 .fullscreen-player-header {
     height:10%;
     width: 100%;
-    background-color: #505050;
+    /* background-color: #505050; */
     margin: 0 auto;
     margin-bottom:20px;
     display: flex;
@@ -546,7 +546,7 @@
 
 .fullscreen-player-image-section {
     width: 100%;
-    background-color: aliceblue;
+    /* background-color: aliceblue; */
     height:50%;
     display: flex;
     align-items: center;
@@ -555,7 +555,7 @@
 }
 
 .fullscreen-player-image-wrapper {
-    background-color: green;
+    /* background-color: green; */
     margin:0 auto;
     width: 60%;
     height:100%;
@@ -567,7 +567,7 @@
 .fullscreen-player-image-square {
     width: 100%;
     height: 100%;
-    background-color: red;
+    /* background-color: red; */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -579,8 +579,6 @@
 }
 
 @media screen and (max-width: 580px) {
-    .fullscreen-player-image-section {
-    }
 
     .fullscreen-player-image-wrapper {
         width: 95%;
@@ -589,13 +587,19 @@
     }
 
     .fullscreen-player-image-section{
-        margin-bottom:20px;
-        height:50%;
+        margin-bottom:50px;
+        height:45%;
     }
 
     .fullscreen-player-image {
         width: 100%;
-        max-width: 350px;
+        max-width: 340px;
+    }
+}
+@media screen and (max-width: 580px) and (min-height:600px) {
+    .fullscreen-player-image-section{
+        margin-bottom:20px;
+        height:45%;
     }
 }
 
@@ -613,11 +617,338 @@
     
 }
 
-@media screen and (max-height:800px) {
+@media screen and (max-height:800px) and (min-width:400px) {
 
     .fullscreen-player-image {
         border-radius:10px;
         width: 40vh;
     }
 
+}
+
+
+
+/* ------ TITLE AND ARTIST SECTION INFORMATION ----- */
+
+.fullscreen-player-information-section {
+    width: 100%;
+    height:10%;
+    margin:0 auto;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.fullscreen-player-information-wrapper {
+    width:90%;
+}
+
+.fullscreen-player-artist-name {
+    color:#a7a7a7;
+    margin-top:-5px;
+}
+
+@media screen and (min-width:580px) {
+    .fullscreen-player-information-section {
+        margin-top: 40px;
+    }
+}
+
+
+
+.fullscreen-player-rest-section {
+    width: 100%;
+    height:20%;
+    margin-top:20px;
+}
+
+.fullscreen-scrollbar {
+    position:relative;
+    display:flex;
+    margin: 0 auto;
+    width: 90%;
+    margin-top:10px;
+    height:100%;
+}
+
+.fullscreen-scrollbar-overlay {
+    position:absolute;
+    height:5px;
+    width: 150px;
+    max-width: 81%;
+    background-color: white;
+    z-index: 1;
+    border-radius: 10px;
+    left:33px;
+    top:0;
+}
+
+.fullscreen-scrollbar-overlay:hover {
+    background-color: #1ed760;
+}
+
+.fullscreen-scrollbar-overlay:hover > .player-scrollbar-dot{
+    display: inline;
+}
+
+.player-scrollbar-grey {
+    position: relative;
+    background-color: #505050;
+    height:5px;
+    width: 100%;
+    border-radius: 10px;
+}
+
+.fullscreen-button-wrapper {
+    position: relative;
+}
+
+.fullscreen-button-wrapper button {
+    margin-left: 10px;
+    margin-right:10px;
+    width: 100%;
+    height:100%;
+    border:none;
+    position: relative;
+    top:6px;
+    transition: all .2s ease-in-out;
+    background-color: inherit;
+}
+
+.fullscreen-button-wrapper button:hover {
+    transform:scale(1.1);
+}
+
+.fullscreen-button-wrapper button:hover > span > svg {
+    fill:#a7a7a7;
+}
+
+.fullscreen-button-wrapper button > span > svg {
+    stroke:white;
+    fill:white;
+    width: 100%;
+    height: 100%;
+}
+
+.fullscreen-button-wrapper .player-play-button {
+    width:60px;
+    height: 60px;
+    border:none;
+    border-radius: 100px;
+    background-color: white;
+    top:5px;
+}
+
+.fullscreen-button-wrapper .player-play-button:hover > span > svg {
+    fill:black
+}
+
+.fullscreen-button-wrapper .player-repeat-button > span > svg {
+    fill:none;
+    width:30px;
+    left:-7px;
+}
+
+.fullscreen-button-wrapper .player-repeat-button:hover > span > svg {
+    stroke:white;
+    fill:none;
+}
+
+.fullscreen-button-wrapper .player-shuffle-button > span > svg {
+    width:35px;
+    height:35px;
+    left:-10px;
+}
+
+.fullscreen-button-wrapper .player-skip-button > span > svg {
+    transform: scale(-1, 1);
+}
+
+.fullscreen-button-wrapper .player-skip-button > span > svg,
+.fullscreen-button-wrapper .player-rewind-button > span > svg {
+    width:35px;
+    left:-10px
+}
+
+.fullscreen-button-wrapper .player-play-button > span > svg {
+    fill:black;
+    width: 50%;
+    left:1px;
+}
+
+.fullscreen-button-wrapper .player-rewind-button,
+.fullscreen-button-wrapper .player-shuffle-button,
+.fullscreen-button-wrapper .player-repeat-button,
+.fullscreen-button-wrapper .player-skip-button {
+    width:30px;
+    height:100%;
+    position: relative;
+}
+
+.fullscreen-button-wrapper .player-play-button .player-pause-button {
+    left:-0.5px;
+    width:30px;
+}
+
+/* .player-buttons-section-col {
+    display: flex;
+} */
+
+.fullscreen-buttons-wrapper {
+    display: flex;
+    margin:0 auto;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.fullscreen-button-wrapper.float-left{
+    float:left;
+    height: 100%;
+  }
+  
+.fullscreen-button-wrapper.float-right {
+    float:right;
+    height: 100%;
+}
+
+.flex-middle {
+    display: flex;
+    justify-content: center;
+}
+
+.col-2-4 {
+    flex: 0 0 auto;
+    width: 20%;
+}
+
+.media-flex-middle{
+    display: flex;
+    justify-content: center;
+    height:100%
+}
+
+@media screen and (min-width:580px) {
+    .fullscreen-buttons-wrapper{
+        width: 95%;
+    }
+
+    
+}
+
+/* ---- CONDITIONAL FULLSCREEN GREEN BUTTONS ---- */
+
+.fullscreen-button-wrapper .player-shuffle-button-dot{
+    position: absolute;
+    width:6px;
+    top:40px;
+    right:0;
+    left:22px;
+}
+
+.fullscreen-button-wrapper .player-repeat-button-dot{
+    position: absolute;
+    width:6px;
+    top:40px;
+    right:0;
+    left:23px;
+}
+
+.player-shuffle-button-dot svg {
+    width: 100%;
+    fill:#1ed760;
+}
+
+.player-repeat-button-dot svg {
+    width: 100%;
+    fill:#1ed760;
+}
+
+.fullscreen-button-wrapper .green-repeat> span > svg {
+    stroke:#1ed760;
+    fill:none;
+}
+
+.fullscreen-button-wrapper .green-repeat:hover> span > svg {
+    stroke:#3cf47c;
+    fill:none;
+}
+
+.fullscreen-button-wrapper .green-shuffle> span > svg {
+    fill:#1ed760;
+}
+
+.fullscreen-button-wrapper .green-shuffle:hover> span > svg {
+    fill:#3cf47c;
+}
+
+
+
+
+.fullscreen-bottom-right {
+    width: 100%;
+    height:100px;
+}
+
+.fullscreen-right-information-wrapper {
+        display: flex;
+        margin: 0 auto;
+        height: 100%;
+        align-items: center;
+        float: right;
+        margin-right: 10px;
+        width:30%;
+}
+
+.fullscreen-right-information-wrapper button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: inherit;
+    transition: all .2s ease-in-out;
+}
+
+.fullscreen-right-information-wrapper button:hover {
+    transform: scale(1.05);
+}
+
+.fullscreen-right-information-wrapper button:hover > span > svg{
+    stroke:white;
+}
+
+
+.fullscreen-right-information-wrapper button > span > svg {
+    width: 25px;
+    height: 25px;
+    stroke: #a7a7a7;
+}
+
+.player-queue-wrapper .player-queue-button {
+    width: 40px;
+    height: 40px;
+}
+
+.fullscreen-right-information-wrapper .player-queue-wrapper .player-queue-button {
+    width: 40px;
+    height: 40px;
+    margin-left: 30%;
+}
+
+.fullscreen-right-information-wrapper .player-lyrics-wrapper .player-lyrics-button {
+    width: 40px;
+    height: 40px;
+    margin-left: -100%;
+}
+
+.fullscreen-right-information-wrapper .player-queue-wrapper {
+    width:50%;
+    margin-right:1%;
+    display: flex;
+    justify-content: center;
+}
+
+.fullscreen-right-information-wrapper .player-lyrics-wrapper {
+    width:50%;
+    display: flex;
+    justify-content: center;
 }

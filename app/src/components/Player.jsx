@@ -27,6 +27,21 @@ function Player() {
     const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer} = useContext(PlayerContext);  
     const [playerBackgroundColour, setPlayerBackgroundColour] = useState("");
     const [playerFullscreen, setPlayerFullscreen] = useState(false);
+
+    
+    useEffect(() => {
+
+        const documentBody = document.body;
+
+        if(playerFullscreen){
+            documentBody.style.overflow = 'hidden';
+        }
+        // else{
+        //     documentBody.style.overflow = 'unset';
+        //     documentBody.style.paddingRight = '0px';
+        // }
+
+    }, [playerFullscreen]);
     
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
@@ -106,19 +121,7 @@ function Player() {
             removeMiniplayer();
             setMiniplayerTracker(false);
         }
-    }, [miniplayerTracker])
-
-    useEffect(() => {
-        
-        if(playerFullscreen){
-            document.body.style.overflow = 'hidden';
-        }
-        else{
-            document.body.style.overflow = 'unset';
-            document.body.style.paddingRight = '0px';
-        }
-
-    }, [playerFullscreen]);
+    }, [miniplayerTracker]);
 
   return (
 
@@ -203,7 +206,7 @@ function Player() {
                         </div>
                     </div>
                 </div>
-                <div className='miniplayer-full-button-wrapper'><button className='miniplayer-full-button' onClick={() => setPlayerFullscreen(true)}></button></div>
+                <div className='miniplayer-full-button-wrapper'><button className='miniplayer-full-button' onClick={() => {setPlayerFullscreen(true); document.body.style.overflow = 'hidden';}}></button></div>
             </div>
             <div className='col-2 player-col miniplayer-play-pause'>
                 <div className='miniplayer-control-wrapper'>
@@ -244,39 +247,70 @@ function Player() {
                 </div>
             </div> 
         </div>
-        <div>
+        <div className='fullscreen-player-information-section'>
+            <div className='fullscreen-player-information-wrapper'>
+                <div className='fullscreen-player-song-title'>
+                    <span><h1>Again (feat. SYRE)</h1></span>
+                </div>
+                <div className='fullscreen-player-artist-name'>
+                    <span>Jaden</span>
+                </div>
+            </div>
+        </div>
+        <div className='fullscreen-player-rest-section'>
             <div className='fullscreen-player-controls-wrapper'>
                 <div className='player-scrollbar-wrapper'>
-                    <div className='player-scrollbar'>
+                    <div className='fullscreen-scrollbar'>
                         <div><span className='player-time-left'>0:00</span></div>
-                        <div className='player-scrollbar-overlay'>
+                        <div className='fullscreen-scrollbar-overlay'>
                         <div className='player-scrollbar-dot'></div>
                     </div>
                     <div className='player-scrollbar-grey'></div>
                         <div><span className='player-time-right'>2:22</span></div>
                     </div>
                 </div>
-                <div className='player-buttons-wrapper'>
-                    <div className='player-button-wrapper'>
-                        <button className={'player-shuffle-button ' + greenShuffle} onClick={() => handleShuffle()}><span><TiArrowShuffle/></span></button>
-                        {shufflePlayer && <span className='player-shuffle-button-dot'><GoDotFill/></span>}
-                    </div>
-                    <div className='player-button-wrapper'>
-                        <button className='player-rewind-button'><span><IoIosSkipBackward/></span></button>
-                    </div>
-                    <div className='player-button-wrapper'>
-                        <button className='player-play-button' onClick={() => handlePlayPress()}><span>{playPress ? <IoMdPause className='player-pause-button'/> : <FaPlay/>}</span></button>
-                    </div>
-                    <div className='player-button-wrapper'>
-                        <button className='player-skip-button'><span><IoIosSkipBackward/></span></button>
-                    </div>
-                    <div className='player-button-wrapper'>
-                        <button className={'player-repeat-button ' + greenRepeat} onClick={() => handleRepeat()}><span>{repeatCount <= 1? <LuRepeat/> : <LuRepeat1/>}</span></button>
-                        {(repeatCount === 1 || repeatCount === 2) && <span className='player-repeat-button-dot'><GoDotFill/></span>}
+                <div className='fullscreen-buttons-wrapper row'>
+                    <div className='col-2-4 player-buttons-section-col'>
+                        <div className='fullscreen-button-wrapper float-left'>
+                            <button className={'player-shuffle-button ' + greenShuffle} onClick={() => handleShuffle()}><span><TiArrowShuffle/></span></button>
+                            {shufflePlayer && <span className='player-shuffle-button-dot'><GoDotFill/></span>}
                         </div>
+                    </div>
+                    <div className='col-2-4'>
+                        <div className='fullscreen-button-wrapper media-flex-middle'>
+                            <button className='player-rewind-button'><span><IoIosSkipBackward/></span></button>
+                        </div>
+                    </div>
+                    <div className='col-2-4 player-buttons-section-col flex-middle'>
+                        <div className='fullscreen-button-wrapper'>
+                            <button className='player-play-button' onClick={() => handlePlayPress()}><span>{playPress ? <IoMdPause className='player-pause-button'/> : <FaPlay/>}</span></button>
+                        </div>
+                    </div>
+                    <div className='col-2-4 player-buttons-section-col'>
+                        <div className='fullscreen-button-wrapper media-flex-middle'>
+                            <button className='player-skip-button'><span><IoIosSkipBackward/></span></button>
+                        </div>
+                    </div>
+                    <div className='col-2-4'>
+                        <div className='fullscreen-button-wrapper float-right'>
+                            <button className={'player-repeat-button ' + greenRepeat} onClick={() => handleRepeat()}><span>{repeatCount <= 1? <LuRepeat/> : <LuRepeat1/>}</span></button>
+                            {(repeatCount === 1 || repeatCount === 2) && <span className='player-repeat-button-dot'><GoDotFill/></span>}
+                        </div>
+                    </div>  
+                </div>
+            </div>
+            <div className='fullscreen-bottom-right'>
+                <div className='fullscreen-right-information-wrapper'>
+                    <div className='player-lyrics-wrapper'>
+                        <button className='player-lyrics-button'><span><TbMicrophone2/></span></button>
+                    </div>
+                    <div className='player-queue-wrapper'>
+                        <button className='player-queue-button'><span><HiOutlineQueueList/></span></button>
                     </div>
                 </div>
             </div>
+        </div>
+            
         </div>
     </div>
   )
