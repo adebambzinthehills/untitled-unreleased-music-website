@@ -24,6 +24,7 @@ function Album({player}) {
     const navigate = useNavigate();
     const [shuffle, setShuffle] = useState(true);
     const [paletteActive, setPaletteActive] = useState(false);
+    const [paletteBlock, setPaletteBlock] = useState(false);
     const [fullAlbumCover, setFullAlbumCover] = useState(false);
     const contentShuffleButton = shuffle ? 'green-content-shuffle-button' : 'content-shuffle-button';
     const contentShuffleDotVisible = shuffle? 'green-content-shuffle-dot' : 'green-content-shuffle-dot-invisible';
@@ -137,9 +138,12 @@ function Album({player}) {
                             </div>
                         </div>
                         <div className='content-palette-wrapper'>
-                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive}/>
+                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock}/>
                         </div>
                     </div>
+                    {paletteBlock && <div className='palette-small-screen-block'>
+
+                    </div>}
                     <div className='add-tracks-wrapper'>
                         <div>
                             <button className='content-add-tracks-button'><span><FaPlus/></span> Add Tracks</button>

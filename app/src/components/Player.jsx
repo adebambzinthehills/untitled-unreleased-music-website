@@ -11,6 +11,10 @@ import { LuRepeat, LuRepeat1 } from "react-icons/lu";
 import { HiOutlineQueueList } from "react-icons/hi2";
 import { TbMicrophone2 } from "react-icons/tb";
 import { GoDotFill } from "react-icons/go";
+import { BsThreeDots } from "react-icons/bs"
+import { IoChevronBack } from "react-icons/io5";
+
+
 
 import ColorThief from 'colorthief';
 
@@ -22,6 +26,7 @@ function Player() {
     const [playPress, setPlayPress] = useState(false);
     const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer} = useContext(PlayerContext);  
     const [playerBackgroundColour, setPlayerBackgroundColour] = useState("");
+    const [playerFullscreen, setPlayerFullscreen] = useState(false);
     
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
@@ -103,6 +108,18 @@ function Player() {
         }
     }, [miniplayerTracker])
 
+    useEffect(() => {
+        
+        if(playerFullscreen){
+            document.body.style.overflow = 'hidden';
+        }
+        else{
+            document.body.style.overflow = 'unset';
+            document.body.style.paddingRight = '0px';
+        }
+
+    }, [playerFullscreen]);
+
   return (
 
     <div>
@@ -170,9 +187,9 @@ function Player() {
         </div>
       </div>}
       {
-        <div className='miniplayer-container' style={playerColour}>
+      <div className='miniplayer-container' style={playerColour}>
         <div className='row miniplayer-row'>
-            <div className='col-10 player-col'>
+            <div className='col-10 player-col '>
                 <div className='miniplayer-left-information-wrapper'>
                     <div className='miniplayer-image-wrapper'>
                         <button className='miniplayer-image-button'><img className='miniplayer-image' src={playerImgSrc}></img></button>
@@ -186,8 +203,9 @@ function Player() {
                         </div>
                     </div>
                 </div>
+                <div className='miniplayer-full-button-wrapper'><button className='miniplayer-full-button' onClick={() => setPlayerFullscreen(true)}></button></div>
             </div>
-            <div className='col-2 player-col'>
+            <div className='col-2 player-col miniplayer-play-pause'>
                 <div className='miniplayer-control-wrapper'>
                     <div className='miniplayer-play-button-wrapper'>
                         <button className='miniplayer-play-button' onClick={() => handlePlayPress()}><span>{playPress ? <IoMdPause className='miniplayer-pause-button'/> : <FaPlay/>}</span></button>
@@ -196,6 +214,70 @@ function Player() {
             </div>
         </div>
       </div>}
+      {
+        
+      }
+      <div className='fullscreen-player'>
+        <div className='fullscreen-player-header row'> 
+            <div className='col-4 fullscreen-player-close'>
+                <button className="fullscreen-player-close-button" onClick={() => setPlayerFullscreen(false)}>
+                    <span><IoChevronBack/></span>
+                </button>
+            </div>
+            <div className='col-4 fullscreen-player-content-title-wrapper'>
+                <div className='fullscreen-player-content-title'>
+                    <span>#STILLSWAGGIN</span>
+                </div>
+            </div>
+            <div className='col-4 fullscreen-player-three-dots'>
+                <div className='fullscreen-player-three-dots-wrapper'>
+                    <button className='fullscreen-player-three-dots-button'>
+                        <span><BsThreeDots/></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div className='fullscreen-player-image-section'>
+            <div className='fullscreen-player-image-wrapper'>
+                <div className='fullscreen-player-image-square'>
+                    <img className='fullscreen-player-image' src={playerImgSrc}/>
+                </div>
+            </div> 
+        </div>
+        <div>
+            <div className='fullscreen-player-controls-wrapper'>
+                <div className='player-scrollbar-wrapper'>
+                    <div className='player-scrollbar'>
+                        <div><span className='player-time-left'>0:00</span></div>
+                        <div className='player-scrollbar-overlay'>
+                        <div className='player-scrollbar-dot'></div>
+                    </div>
+                    <div className='player-scrollbar-grey'></div>
+                        <div><span className='player-time-right'>2:22</span></div>
+                    </div>
+                </div>
+                <div className='player-buttons-wrapper'>
+                    <div className='player-button-wrapper'>
+                        <button className={'player-shuffle-button ' + greenShuffle} onClick={() => handleShuffle()}><span><TiArrowShuffle/></span></button>
+                        {shufflePlayer && <span className='player-shuffle-button-dot'><GoDotFill/></span>}
+                    </div>
+                    <div className='player-button-wrapper'>
+                        <button className='player-rewind-button'><span><IoIosSkipBackward/></span></button>
+                    </div>
+                    <div className='player-button-wrapper'>
+                        <button className='player-play-button' onClick={() => handlePlayPress()}><span>{playPress ? <IoMdPause className='player-pause-button'/> : <FaPlay/>}</span></button>
+                    </div>
+                    <div className='player-button-wrapper'>
+                        <button className='player-skip-button'><span><IoIosSkipBackward/></span></button>
+                    </div>
+                    <div className='player-button-wrapper'>
+                        <button className={'player-repeat-button ' + greenRepeat} onClick={() => handleRepeat()}><span>{repeatCount <= 1? <LuRepeat/> : <LuRepeat1/>}</span></button>
+                        {(repeatCount === 1 || repeatCount === 2) && <span className='player-repeat-button-dot'><GoDotFill/></span>}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
   )
 }
