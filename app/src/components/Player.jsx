@@ -36,10 +36,10 @@ function Player() {
         if(playerFullscreen){
             documentBody.style.overflow = 'hidden';
         }
-        // else{
-        //     documentBody.style.overflow = 'unset';
-        //     documentBody.style.paddingRight = '0px';
-        // }
+        else{
+            documentBody.style.overflow = 'unset';
+            documentBody.style.paddingRight = '0px';
+        }
 
     }, [playerFullscreen]);
     
@@ -217,10 +217,8 @@ function Player() {
             </div>
         </div>
       </div>}
-      {
-        
-      }
-      <div className='fullscreen-player'>
+      { playerFullscreen &&
+        <div className='fullscreen-player'>
         <div className='fullscreen-player-header row'> 
             <div className='col-4 fullscreen-player-close'>
                 <button className="fullscreen-player-close-button" onClick={() => setPlayerFullscreen(false)}>
@@ -312,6 +310,8 @@ function Player() {
         </div>
             
         </div>
+      }
+      
     </div>
   )
 }
