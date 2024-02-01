@@ -593,13 +593,24 @@
 
     .fullscreen-player-image {
         width: 100%;
-        max-width: 340px;
+        max-width: 330px;
     }
+
 }
 @media screen and (max-width: 580px) and (min-height:600px) {
     .fullscreen-player-image-section{
         margin-bottom:20px;
         height:45%;
+    }
+
+    .fullscreen-player-header {
+        margin-bottom: 0;
+    }
+}
+
+@media screen and (min-height:600px) {
+    .fullscreen-player-header {
+        margin-bottom: 0;
     }
 }
 
@@ -625,8 +636,12 @@
     }
 
 }
+@media screen and (max-width:400px){
 
-
+    .fullscreen-player-header {
+        margin-bottom: 20px;
+    }
+}
 
 /* ------ TITLE AND ARTIST SECTION INFORMATION ----- */
 
@@ -650,7 +665,7 @@
 
 @media screen and (min-width:580px) {
     .fullscreen-player-information-section {
-        margin-top: 40px;
+        margin-top: 0px;
     }
 }
 
