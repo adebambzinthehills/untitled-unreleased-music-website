@@ -24,7 +24,9 @@ function Player() {
     const [repeatCount, setRepeatCount] = useState(0);
     const [repeatOn, setRepeatOn] = useState(false);
     const [playPress, setPlayPress] = useState(false);
-    const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer} = useContext(PlayerContext);  
+    const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage,
+        miniplayerEnabled, enableMiniplayer, removeMiniplayer, 
+        enableFullscreenPlayer, disableFullscreenPlayer} = useContext(PlayerContext);  
     const [playerBackgroundColour, setPlayerBackgroundColour] = useState("");
     const [playerFullscreen, setPlayerFullscreen] = useState(false);
 
@@ -206,7 +208,7 @@ function Player() {
                         </div>
                     </div>
                 </div>
-                <div className='miniplayer-full-button-wrapper'><button className='miniplayer-full-button' onClick={() => {setPlayerFullscreen(true); document.body.style.overflow = 'hidden';}}></button></div>
+                <div className='miniplayer-full-button-wrapper'><button className='miniplayer-full-button' onClick={() => {setPlayerFullscreen(true); document.body.style.overflow = 'hidden'; enableFullscreenPlayer()}}></button></div>
             </div>
             <div className='col-2 player-col miniplayer-play-pause'>
                 <div className='miniplayer-control-wrapper'>
@@ -221,7 +223,7 @@ function Player() {
         <div className='fullscreen-player'>
         <div className='fullscreen-player-header row'> 
             <div className='col-4 fullscreen-player-close'>
-                <button className="fullscreen-player-close-button" onClick={() => setPlayerFullscreen(false)}>
+                <button className="fullscreen-player-close-button" onClick={() => {setPlayerFullscreen(false); disableFullscreenPlayer();}}>
                     <span><IoChevronBack/></span>
                 </button>
             </div>

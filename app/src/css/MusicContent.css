@@ -76,7 +76,7 @@
     width: 40px;
     height: 40px;
     border:none;
-    background-color: rgb(32 32 32 / 80%);
+    background-color: rgb(32 32 32 / 60%);
 }
 
 .back-button > span > svg {
@@ -145,6 +145,7 @@
     border: none;
     border-radius: 50px;
     z-index: 3;
+    flex-shrink: 0;
 }
 
 .content-play-button > span > svg {
@@ -172,6 +173,54 @@
 .content-play-button:hover {
     background-color: #3cf47c;
 }
+
+
+.content-header-sub-menu ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0 auto;
+    display: block;
+}
+
+.content-header-sub-menu {
+    margin:0 auto;
+    display: block;
+    width: 200px;
+    border: none;
+    background-color:#454545;
+    padding:5px;
+    border-radius: 5px;
+    font-weight: 500;
+    color:white;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right:0;
+    z-index: 10;
+}
+
+.content-header-sub-menu button {
+    margin:0 auto;
+    display: block;
+    width: 100%;
+    border: none;
+    background-color: inherit;
+    padding:5px;
+    border-radius: 5px;
+    font-weight: 500;
+    font-size:0.8rem;
+    color:white;
+}
+
+.content-header-sub-menu li:nth-child(3) > button{
+    color:red;
+    font-weight: 600;
+}
+
+.content-header-sub-menu button:hover {
+    background-color: #878787;
+}
+
 
 .content-other-functions {
     display: flex;
@@ -262,7 +311,7 @@
 }
 
 .fullscreen-album-cover-wrapper{
-    position: absolute;
+    position: fixed;
     top:0;
     bottom:0;
     width: 100%;

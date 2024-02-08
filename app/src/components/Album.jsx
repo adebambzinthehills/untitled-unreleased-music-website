@@ -15,6 +15,11 @@ import { LuClock3 } from "react-icons/lu";
 import { PlayerContext } from '../contexts/PlayerContext'
 import { FaPalette } from "react-icons/fa";
 import PaletteColourPicker from '../components/PaletteColourPicker'
+import AlbumManagement from './AlbumManagement'
+import { FaRegEdit} from 'react-icons/fa'
+import { CiFolderOn } from 'react-icons/ci'
+import { FaRegTrashCan } from 'react-icons/fa6'
+import SongManagement from './SongManagement'
 
 function Album({player}) {
 
@@ -93,6 +98,10 @@ function Album({player}) {
         navigate(-1);
     }
 
+    const [threeDotsClicked, setThreeDotsClicked] = useState(false);
+    const [editAlbumButtonClicked, setEditAlbumButtonClicked] = useState(false);
+    const [addTracksButtonClicked, setAddTracksButtonClicked] = useState(false);
+
     return (
         
         <div className='content-page'>
@@ -134,7 +143,16 @@ function Album({player}) {
                                 <span className={contentShuffleDotVisible}><GoDotFill/></span>
                             </div>
                             <div className='content-icon-wrapper'>
-                                <button className='content-dots-button'><span><BsThreeDots/></span></button>
+                                <button className='content-dots-button' onClick={() => {setThreeDotsClicked(true); setEditAlbumButtonClicked(true)}}><span><BsThreeDots/></span></button>
+                                {/* {threeDotsClicked && (
+                                <div className='content-header-sub-menu' onMouseLeave={() => setThreeDotsClicked(false)}>
+                                    <ul>
+                                    <li><button onClick={() => setEditAlbumButtonClicked(true)}><span><FaRegEdit></FaRegEdit></span> Edit Album</button></li>
+                                    <li><button disabled><span><CiFolderOn></CiFolderOn></span> Move to Folder</button></li>
+                                    <li><button><span><FaRegTrashCan></FaRegTrashCan></span> Delete Album</button></li>
+                                    </ul>
+                                </div>
+                                )} */}
                             </div>
                         </div>
                         <div className='content-palette-wrapper'>
@@ -201,6 +219,12 @@ function Album({player}) {
                     </div>
                 </div>
             </div>}
+            {editAlbumButtonClicked &&
+                <AlbumManagement clickOff={setEditAlbumButtonClicked} edit={true}/>
+            }
+            {addTracksButtonClicked && 
+                <SongManagement/>
+            }
         </div>
     )
 }

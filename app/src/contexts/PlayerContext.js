@@ -9,6 +9,7 @@ export function PlayerProvider({children}){
     const [playerOn, setPlayerOn] = useState(false);
     const [playerImgSrc, setPlayerImgSrc] = useState(erys);
     const [miniplayerEnabled, setMiniplayerEnabled] = useState(false);
+    const [fullscreenPlayerEnabled, setFullscreenPlayerEnabled] = useState (false);
 
     const play = () => {
         setPlayerOn(true);
@@ -17,6 +18,7 @@ export function PlayerProvider({children}){
     const stop = () => {
         setPlayerOn(false);
     }
+
     const toggle = () => {
         setPlayerOn(!playerOn);
     }
@@ -32,8 +34,18 @@ export function PlayerProvider({children}){
         setMiniplayerEnabled(false);
     }
 
+    const enableFullscreenPlayer = () => {
+        setFullscreenPlayerEnabled(true);
+    }
+
+    const disableFullscreenPlayer = () => {
+        setFullscreenPlayerEnabled(false);
+    }
+
     return(
-        <PlayerContext.Provider value={{playerOn, play, stop, toggle, playerImgSrc, changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer}}>
+        <PlayerContext.Provider value={{playerOn, play, stop, toggle, playerImgSrc, 
+        changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer,
+        fullscreenPlayerEnabled, enableFullscreenPlayer, disableFullscreenPlayer }}>
             {children}
         </PlayerContext.Provider>
     );

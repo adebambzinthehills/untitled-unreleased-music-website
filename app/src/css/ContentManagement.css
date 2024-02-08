@@ -1,0 +1,390 @@
+.album-manager-wrapper{
+    position: fixed;
+    top:0;
+    bottom:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(32 32 32 / 60%);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.album-manager {
+    width: 50%;
+    background-color: rgb(50 50 50);
+    margin: auto;
+    height: 350px;
+    border-radius: 16px;
+    position: relative;
+    z-index: 12;
+}
+
+.album-manager-click-off {
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+.album-manager-header {
+    height:100%;
+    width: 90%;
+}
+
+.album-manager-header-wrapper {
+    height:10%;
+
+    padding-left:4%;
+    padding-top: 2%;
+    display: flex;
+}
+
+.album-manager-header-button-wrapper {
+    width: 10%;
+    display: flex;
+    justify-content: right;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.album-manager-header-button {
+    background-color: transparent;
+    border:none;
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.album-manager-header-button > span > svg {
+    fill:#d3d3d3;
+    width: 100%;
+    height: 100%;
+}
+
+.album-manager-header-button:hover > span > svg {
+    fill:white;
+    width: 100%;
+    height: 100%;
+}
+
+.album-manager-header h4 {
+    font-weight: 600;
+}
+
+.album-manager-content {
+    padding-left:4%;
+    padding-right:4%;
+    padding-top: 10px;
+    height: 55%;
+    display: flex;
+}
+
+.hover-information {
+    display: none;
+    width:100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(100 100 100 / 30%);
+    border-radius: 6px;
+}
+
+.hover-unit-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.hover-icon {
+    width:40px;
+    height: 40px;
+}
+
+.hover-icon > span > svg {
+    width: 100%;
+    height: 100%;
+}
+
+.album-manager-image-wrapper:hover .hover-information {
+    display: flex;
+}
+
+.album-manager-image-wrapper:hover {
+    transform: scale(1.02);
+}
+
+.album-manager-image-wrapper {
+    background-color: blue;
+    width: 180px;
+    height: 180px;
+    border-radius: 6px;
+    transition: all .2s ease-in-out;
+    position: relative;
+}
+
+.album-manager-image, .album-manager-image-content {
+    width: 100%;
+    height: 100%;
+}
+
+.management-input {
+    display: none
+}
+
+.management-input-click-div {
+    position: absolute;
+    width: 100%;
+    height:100%;
+    margin:0 auto;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index: 1;
+}
+
+.management-input-button {
+    width: 100%;
+    height:100%;
+    border: none;
+    background-color: transparent;
+    border-radius: 6px;
+}
+
+.album-manager-entry-wrapper {
+    width: calc(100% - 180px);
+    height: 100%;
+}
+
+.album-manager-entry-content {
+    padding-left: 10px;
+}
+
+.album-manager-field-wrapper {
+    position: relative;
+    margin-bottom:15px;;
+}
+
+.label-wrapper {
+    position: absolute;
+    top:-7.5px;
+    left:10px;
+    height: 15px;
+    display: flex;
+    align-items: center;
+    z-index: 10;
+    display: flex;
+    background: linear-gradient(#323232, #4F4F4F);
+}
+
+.album-entry:hover{
+    border: 0.3px solid white;
+}
+
+.album-manager-field-wrapper:hover .label-wrapper {
+    display: flex;
+}
+
+.album-manager-field-wrapper.album-entry:focus .label-wrapper {
+    display: flex;
+}
+
+.album-entry:focus {
+    outline: 1px solid white;
+}
+
+.album-entry:focus .label-wrapper {
+    display: flex;
+}
+
+.album-manager-entry-content input {
+    background-color: #4f4f4f;
+    color:white;
+    border-radius:4px;
+    border-color:#878787;
+    border:1px;
+    font-weight:450;
+    height:45px;
+    text-overflow: ellipsis;
+    width: 100%;
+    font-size: 0.8em;
+    padding-left: 10px;
+}
+
+.album-manager-field-wrapper input:hover {
+    border-color: white;
+}
+
+
+.album-manager-entry-content ::placeholder{
+    font-size: 0.8rem;
+}
+
+
+.album-manager-entry-content label {
+    font-size: 0.7em;
+}
+
+
+.album-manager-controls {
+    height:15%;
+    padding-left: 4%;
+    display: flex;
+}
+
+.album-manager-controls button {
+    transition: all .2s ease-in-out;
+}
+
+.album-manager-controls button:hover {
+    transform: scale(1.05);
+}
+
+.album-manager-controls-icons {
+    display: flex;
+    justify-content: left;
+}
+
+.create-save-button {
+    border-radius:30px;
+    border:none;
+    width:100px;
+    text-align: center;
+    height:35px;
+}
+
+.album-manager-controls-save-create {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.controls-row {
+    width: 100%;
+}
+
+.controls-icons-left {
+    display: flex;
+    align-items: center;
+}
+
+.controls-icons-left button {
+    width: 35px;
+    height: 35px;
+    border: none;
+    background-color: transparent;
+}
+
+.controls-icons-left button > span > svg {
+    width: 100%;
+    height: 100%;
+    fill:white;
+}
+
+.album-manager-footer {
+    padding-left:4%;
+    padding-right:4%;
+    font-size: 0.625em;
+    height: 5%;
+    color:#c6c6c6;
+}
+
+@media screen and (max-width:900px){
+    .album-manager{
+        width: 60%;
+    }
+}
+
+@media screen and (max-width:700px){
+    .album-manager{
+        width: 70%;
+    }
+}
+
+@media screen and (max-width:500px){
+    .album-manager{
+        width: 80%;
+    }
+
+    
+}
+
+@media screen and (max-width:560px) {
+    .album-manager{
+        height: 80%;
+    }
+
+    .album-manager-content {
+        display: block;
+    }
+
+    .album-manager-entry-wrapper{
+        width: 100%;
+    }
+
+    .album-manager-header-wrapper{
+        height: 5%;
+    }
+
+    .album-manager-content {
+        height: 60%;
+    }
+
+    .album-manager-image-wrapper {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+
+    .album-manager-entry-wrapper {
+        height: 50%;
+        width: 100%;
+    }
+
+    .label-wrapper {
+        display: flex;
+    }
+
+    .album-manager-entry-content {
+        padding-left: 0%;
+    }
+
+    .album-manager-controls {
+        height: 20%;
+        align-items:last baseline;
+    }
+
+    .album-manager-footer {
+        height: 10%;
+        font-size: 0.6rem;
+    }
+
+    .album-manager-controls-save-create {
+        padding-right:1%;
+    }
+
+}
+
+@media screen and (max-width:560px) and (min-height:700px) {
+    .album-manager-controls {
+        height: 20%;
+        align-items:last baseline;
+    }
+
+    .album-manager-image-wrapper {
+        width: 200px;
+        height: 200px;
+        margin: 0 auto;
+        margin-bottom: 30px;
+    }
+}
+

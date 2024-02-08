@@ -12,6 +12,7 @@ import wcpgw from '../images/df1.webp'
 import sunburn from '../images/df2.webp'
 import tohellwithit from '../images/pp1.jpeg';
 import guts from '../images/guts.webp'
+import teenweek from '../images/teenweek.jpg'
 
 
 import { FaPlus } from "react-icons/fa";
@@ -20,13 +21,19 @@ import { MdCreateNewFolder } from "react-icons/md";
 
 import { useState } from 'react';
 import { PlayerContext } from '../contexts/PlayerContext'
+import AlbumManagement from './AlbumManagement'
 
 
 
 function LibraryCardGrid() {
   const [addButtonClicked, setAddButtonClicked] = useState(false);
+  const [newProjectButtonClicked, setNewProjectButtonClicked] = useState(false);
+  const [albumManagerMode, setAlbumManagerMode] = useState(false)
+  const [makeElementsStatic, setMakeElementsStatic] = useState(false);
+  const staticStyle = makeElementsStatic ? {position: 'static'} : {position: 'relative'};
+  const footerStaticStyle = makeElementsStatic ? {position: 'static'} : {position: 'fixed'};
 
-  const {playerOn, play, stop, toggle} = useContext(PlayerContext);
+  const {playerOn, play, stop, toggle, fullscreenPlayerEnabled} = useContext(PlayerContext);
 
   useEffect(() => {
     if(playerOn){
@@ -38,8 +45,26 @@ function LibraryCardGrid() {
     console.log(playerOn)
   }, [playerOn]);
 
+  useEffect(() => {
+    if(fullscreenPlayerEnabled){
+      setMakeElementsStatic(true);
+    }
+    else {
+      setMakeElementsStatic(false)
+    }
+  }, [fullscreenPlayerEnabled]);
+
+  useEffect(() => {
+    if(newProjectButtonClicked){
+      document.body.style.overflow = 'hidden';
+    }
+    else{
+      document.body.style.overflow = 'unset';
+    }
+  }, [newProjectButtonClicked])
+
   return (
-    <div className='libraryWrapper'>
+    <div className='libraryWrapper' style={staticStyle}>
       <div className='search-bar-wrapper container'>
         <div className='library-search-bar-content'>
           <div className='search-bar-item'>
@@ -53,27 +78,28 @@ function LibraryCardGrid() {
         <div className='library-search-bar-block'></div>
       </div>
       <div className='grid-card-container'>
-        <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2}></LibraryCard>
-        <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3}></LibraryCard>
-        <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album" songs={3}></LibraryCard>
-        <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album" songs={3}></LibraryCard>
-        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album" songs={10}></LibraryCard>
-        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album" songs={3}></LibraryCard>
-        <LibraryCard title="to hell with it" artist="PinkPantheress" image={tohellwithit} type="Album" songs={10}></LibraryCard>
-        <LibraryCard title="What Could Possibly Go Wrong" artist="Dominic Fike" image={wcpgw} type="Album" songs={14}></LibraryCard>
-        <LibraryCard title="Sunburn" artist="Dominic Fike" image={sunburn} type="Album" songs={5}></LibraryCard>
-        <LibraryCard title="GUTS" artist="Olivia Rodrigo" image={guts} type="Album" songs={5}></LibraryCard>
+        <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album" songs={3} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album" songs={3} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album" songs={10} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album" songs={3} edit={setNewProjectButtonClicked} ></LibraryCard>
+        <LibraryCard title="to hell with it" artist="PinkPantheress" image={tohellwithit} type="Album" songs={10} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="What Could Possibly Go Wrong" artist="Dominic Fike" image={wcpgw} type="Album" songs={14} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="Sunburn" artist="Dominic Fike" image={sunburn} type="Album" songs={5} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="GUTS" artist="Olivia Rodrigo" image={guts} type="Album" songs={5} edit={setNewProjectButtonClicked}></LibraryCard>
+        <LibraryCard title="Teen Week" artist="Jane Remover" image={teenweek} type="Album" songs={4} edit={setNewProjectButtonClicked}></LibraryCard>
         <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist"></LibraryCard>
       </div>
 
       {playerOn && <div className='player-block'></div>}
-      <div className='library-footer'>
+      <div className='library-footer' style={footerStaticStyle}>
         <div className='library-footer-content' >
           <div className='footer-block-wrapper' onMouseLeave={() => setAddButtonClicked(false)}>
             {addButtonClicked && (
             <div className='library-footer-sub-menu'>
               <ul>
-                <li><button><span><MdCreateNewFolder/></span> New Project</button></li>
+                <li><button onClick={() => {setNewProjectButtonClicked(true);}}><span><MdCreateNewFolder/></span> New Project</button></li>
               </ul>
             </div>
             )}
@@ -84,6 +110,9 @@ function LibraryCardGrid() {
         </div>
         {playerOn && <Player></Player>}
       </div>
+      {newProjectButtonClicked &&
+      <AlbumManagement clickOff={setNewProjectButtonClicked} edit={albumManagerMode}/>
+      }
     </div>
   )
 }

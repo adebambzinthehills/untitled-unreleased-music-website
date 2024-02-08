@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState, useContext} from 'react';
 import { BsThreeDots } from "react-icons/bs";
 import { FaPlay } from "react-icons/fa";
@@ -8,9 +8,11 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from '../contexts/PlayerContext';
 
-function LibraryCard({title, artist, image, type, songs}) {
+function LibraryCard({title, artist, image, type, songs, edit}) {
 
   const [buttonClick, setButtonClicked] = useState(false);
+  const [editButtonClicked, setEditButtonClicked] = useState(false);
+
   const navigate = useNavigate();
 
   const {playerOn, play, stop, toggle} = useContext(PlayerContext);
@@ -18,6 +20,7 @@ function LibraryCard({title, artist, image, type, songs}) {
   function cardClickHandler(){
     navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs}});
   }
+
 
   return (
     <div className='card-container grid-item'>
@@ -34,7 +37,7 @@ function LibraryCard({title, artist, image, type, songs}) {
           {buttonClick && (
           <div className='card-header-sub-menu' onMouseLeave={() => setButtonClicked(false)}>
             <ul>
-              <li><button><span><FaRegEdit></FaRegEdit></span> Edit Album</button></li>
+              <li><button onClick={() => edit(true)}><span><FaRegEdit></FaRegEdit></span> Edit Album</button></li>
               <li><button disabled><span><CiFolderOn></CiFolderOn></span> Move to Folder</button></li>
               <li><button><span><FaRegTrashCan></FaRegTrashCan></span> Delete Album</button></li>
             </ul>
