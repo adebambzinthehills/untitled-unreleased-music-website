@@ -3,14 +3,14 @@ import { BsThreeDots } from "react-icons/bs"
 import { FaRegEdit } from "react-icons/fa"
 import { PlayerContext } from '../contexts/PlayerContext';
 
-function TracklistSong({number, title, duration, artist}) {
+function TracklistSong({number, title, duration, artist, edit, setMode}) {
 
   const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
   return (
     <div>
       <li className>
-            <button className='tracklist-song-button' onClick={toggle}>
+        <button className='tracklist-song-button' onClick={toggle}>
                 <div className='row'>
                   <div className='col-0-5 song-number'>
                     <div className='number-wrapper'> 
@@ -18,6 +18,7 @@ function TracklistSong({number, title, duration, artist}) {
                     </div>
                   </div>
                   <div className='col song-information'>
+                  
                     <div className='information-wrapper'> 
                         <div className='song-title'>
                             <span>Circa 2013</span>
@@ -36,16 +37,15 @@ function TracklistSong({number, title, duration, artist}) {
                                 <BsThreeDots/>
                             </span>
                         </button>
-                        <button className='edit-song-button'>
+                        <button className='edit-song-button' onClick={() => {edit(true); setMode(true)}}>
                             <span>
                             <   FaRegEdit/>
                             </span>
                         </button>
                     </div>
                   </div>
-
                 </div>
-            </button>
+          </button>
         </li>
     </div>
   )

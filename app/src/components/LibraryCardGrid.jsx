@@ -63,6 +63,23 @@ function LibraryCardGrid() {
     }
   }, [newProjectButtonClicked])
 
+
+  const [gridHeightOver, setGridHeightOver] = useState(false);
+  useEffect(() => {
+    let gridHeight = document.body.getElementsByClassName('grid-card-container')[0].clientHeight;
+    console.log(gridHeight);
+    if(gridHeight > 580){
+      setGridHeightOver(true);
+    }
+  }, [])
+  useEffect(() => {
+    let gridHeight = document.body.getElementsByClassName('grid-card-container')[0].clientHeight;
+    console.log(gridHeight);
+    if(gridHeight > 580){
+      setGridHeightOver(true);
+    }
+  }, [gridHeightOver])
+
   return (
     <div className='libraryWrapper' style={staticStyle}>
       <div className='search-bar-wrapper container'>
@@ -78,20 +95,20 @@ function LibraryCardGrid() {
         <div className='library-search-bar-block'></div>
       </div>
       <div className='grid-card-container'>
-        <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album" songs={3} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album" songs={3} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album" songs={10} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album" songs={3} edit={setNewProjectButtonClicked} ></LibraryCard>
-        <LibraryCard title="to hell with it" artist="PinkPantheress" image={tohellwithit} type="Album" songs={10} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="What Could Possibly Go Wrong" artist="Dominic Fike" image={wcpgw} type="Album" songs={14} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="Sunburn" artist="Dominic Fike" image={sunburn} type="Album" songs={5} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="GUTS" artist="Olivia Rodrigo" image={guts} type="Album" songs={5} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="Teen Week" artist="Jane Remover" image={teenweek} type="Album" songs={4} edit={setNewProjectButtonClicked}></LibraryCard>
-        <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist"></LibraryCard>
+        <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="ERYS (Deluxe)" artist="Jaden" image={erys} type="Album" songs={3} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="SYRE" artist="Jaden" image={syre} type="Album" songs={3} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="Wallsocket" artist="underscores" image={wallsocket} type="Album" songs={10} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="fishmonger" artist="underscores" image={fishmonger} type="Album" songs={3} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} ></LibraryCard>
+        <LibraryCard title="to hell with it" artist="PinkPantheress" image={tohellwithit} type="Album" songs={10} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="What Could Possibly Go Wrong" artist="Dominic Fike" image={wcpgw} type="Album" songs={14} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="Sunburn" artist="Dominic Fike" image={sunburn} type="Album" songs={5} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="GUTS" artist="Olivia Rodrigo" image={guts} type="Album" songs={5} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="Teen Week" artist="Jane Remover" image={teenweek} type="Album" songs={4} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>
+        <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist" songs={30}></LibraryCard>
       </div>
-
+      {gridHeightOver && <div className='footer-block'></div>}  
       {playerOn && <div className='player-block'></div>}
       <div className='library-footer' style={footerStaticStyle}>
         <div className='library-footer-content' >
@@ -111,7 +128,7 @@ function LibraryCardGrid() {
         {playerOn && <Player></Player>}
       </div>
       {newProjectButtonClicked &&
-      <AlbumManagement clickOff={setNewProjectButtonClicked} edit={albumManagerMode}/>
+      <AlbumManagement clickOff={setNewProjectButtonClicked} edit={albumManagerMode} setMode={setAlbumManagerMode}/>
       }
     </div>
   )

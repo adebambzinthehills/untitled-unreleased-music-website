@@ -316,6 +316,7 @@
     bottom:0;
     width: 100%;
     background-color: rgb(32 32 32 / 60%);
+    height:100vh;
     z-index: 5;
 }
 
@@ -495,6 +496,10 @@
 .buttons-wrapper {
     height: 100%;
     float: right;
+}
+
+.song-functions {
+    z-index: 5;
 }
 
 .song-functions button {

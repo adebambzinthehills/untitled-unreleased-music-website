@@ -8,7 +8,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from '../contexts/PlayerContext';
 
-function LibraryCard({title, artist, image, type, songs, edit}) {
+function LibraryCard({title, artist, image, type, songs, edit, setMode}) {
 
   const [buttonClick, setButtonClicked] = useState(false);
   const [editButtonClicked, setEditButtonClicked] = useState(false);
@@ -37,7 +37,7 @@ function LibraryCard({title, artist, image, type, songs, edit}) {
           {buttonClick && (
           <div className='card-header-sub-menu' onMouseLeave={() => setButtonClicked(false)}>
             <ul>
-              <li><button onClick={() => edit(true)}><span><FaRegEdit></FaRegEdit></span> Edit Album</button></li>
+              <li><button onClick={() => {edit(true); setMode(true)}}><span><FaRegEdit></FaRegEdit></span> Edit Album</button></li>
               <li><button disabled><span><CiFolderOn></CiFolderOn></span> Move to Folder</button></li>
               <li><button><span><FaRegTrashCan></FaRegTrashCan></span> Delete Album</button></li>
             </ul>

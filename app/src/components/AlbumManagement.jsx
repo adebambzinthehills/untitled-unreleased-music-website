@@ -6,7 +6,7 @@ import { ImCross } from "react-icons/im";
 
 
 
-function AlbumManagement({clickOff, edit}) {
+function AlbumManagement({clickOff, edit, mode, setMode}) {
 
     function handleClick() {
         const input = document.getElementsByClassName('management-input')[0];
@@ -16,18 +16,18 @@ function AlbumManagement({clickOff, edit}) {
 
     return (
     <div className='album-manager-wrapper'>
-        <div className='album-manager-click-off' onClick={() => clickOff(false)}></div>
+        <div className='album-manager-click-off' onClick={() => {clickOff(false); setMode(false)}}></div>
         <div className='album-manager'>
             <div className='album-manager-header-wrapper'>
                 <div className='album-manager-header'>
                     <h4>{edit ? 'Edit' : 'Create'} Album</h4>
                 </div>
                 <div className='album-manager-header-button-wrapper'>
-                    <button className='album-manager-header-button' onClick={() => clickOff(false)}><span><ImCross/></span></button>
+                    <button className='album-manager-header-button' onClick={() => {clickOff(false); setMode(false)}}><span><ImCross/></span></button>
                 </div>
             </div>
             <div className='album-manager-content'>
-                <div className='album-manager-image-wrapper'>
+                <div className='album-manager-image-wrapper' >
                     <div className='album-manager-image-content'>
                         <div className='hover-information'>
                             {/* this will appear on hover of image-content div */}
@@ -53,16 +53,16 @@ function AlbumManagement({clickOff, edit}) {
                 <div className='album-manager-entry-wrapper'>
                     <div className='album-manager-entry-content'>
                         <div className='album-manager-field-wrapper'>
-                            <div className='label-wrapper'><label for="">Album Name</label></div>
-                            <input className='album-entry' placeholder="What's your album title?"></input>
+                            <div className='label-wrapper'><label htmlFor="">Album Name</label></div>
+                            <input className='album-entry' placeholder="What's your album title?"  data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed in the menu and album page."></input>
                         </div>
                         <div className='album-manager-field-wrapper'>
-                            <div className='label-wrapper'><label for="">Label</label></div>
-                            <input className='album-entry' placeholder='Who is the publisher/label?'></input>
+                            <div className='label-wrapper'><label htmlFor="">Label</label></div>
+                            <input className='album-entry' placeholder='Who is the publisher/label?'  data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed at the bottom of the album page, below the music."></input>
                         </div>
                         <div className='album-manager-field-wrapper'>
-                            <div className='label-wrapper'><label for="">Release Date</label></div>
-                            <input className='album-entry' type='date' placeholder="What's your album release date?"></input>
+                            <div className='label-wrapper'><label htmlFor="">Release Date</label></div>
+                            <input className='album-entry' type='date' placeholder="What's your album release date?" data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed next to the album title, and again at the bottom of album page, much like Spotfiy's interface."></input>
                         </div>
                     </div>
                 </div>
@@ -75,7 +75,7 @@ function AlbumManagement({clickOff, edit}) {
                         </div>}
                     </div>
                     <div className='album-manager-controls-save-create col-10 col-sm-6'>
-                        <button className='create-save-button' onClick={() => clickOff(false)}>{edit ? 'Save' : 'Create'}</button>
+                        <button className='create-save-button' onClick={() => {clickOff(false); setMode(false)}}>{edit? 'Save' : 'Create'}</button>
                     </div>       
                 </div>
             </div>

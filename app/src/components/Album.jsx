@@ -101,6 +101,17 @@ function Album({player}) {
     const [threeDotsClicked, setThreeDotsClicked] = useState(false);
     const [editAlbumButtonClicked, setEditAlbumButtonClicked] = useState(false);
     const [addTracksButtonClicked, setAddTracksButtonClicked] = useState(false);
+    const [editTracksButtonClicked, setEditTracksButtonClicked] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+
+    useEffect(() => {
+        if(editAlbumButtonClicked || addTracksButtonClicked || editTracksButtonClicked){
+          document.body.style.overflow = 'hidden';
+        }
+        else{
+          document.body.style.overflow = 'unset';
+        }
+      }, [editAlbumButtonClicked, addTracksButtonClicked, editTracksButtonClicked])
 
     return (
         
@@ -164,7 +175,7 @@ function Album({player}) {
                     </div>}
                     <div className='add-tracks-wrapper'>
                         <div>
-                            <button className='content-add-tracks-button'><span><FaPlus/></span> Add Tracks</button>
+                            <button className='content-add-tracks-button' onClick={() => setAddTracksButtonClicked(true)}><span><FaPlus/></span> Add Tracks</button>
                         </div>
                     </div>
                     <div className='tracklist-header'>
@@ -191,7 +202,7 @@ function Album({player}) {
                 </div>
             </div>
 
-            <Tracklist songs={state.songs} player={player}></Tracklist>
+            <Tracklist songs={state.songs} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
             {playerOn && <div className='player-block'></div>}
             {playerOn && <Player></Player>}
 
@@ -222,8 +233,9 @@ function Album({player}) {
             {editAlbumButtonClicked &&
                 <AlbumManagement clickOff={setEditAlbumButtonClicked} edit={true}/>
             }
-            {addTracksButtonClicked && 
-                <SongManagement/>
+            {
+            (addTracksButtonClicked || editTracksButtonClicked) && 
+                <SongManagement clickOff={setAddTracksButtonClicked} editClickOff={setEditTracksButtonClicked} mode={editMode} setMode={setEditMode}/>
             }
         </div>
     )

@@ -1,9 +1,94 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { ImCross } from 'react-icons/im'
+import { MdAddPhotoAlternate } from 'react-icons/md'
+import { FaTrashAlt } from 'react-icons/fa'
 
-function SongManagement() {
+function SongManagement({clickOff, editClickOff, mode, setMode}) {
+    const [song, setSong] = useState(null);
+
+    function handleClick() {
+        const input = document.getElementById('insertSong');
+        input.click();
+    }
+
+    function handleInputDisplay() {
+        const input = document.getElementById('insertSong');
+        input.style.display = 'block';
+
+        if(input.value == null || input.value == "" ){
+            input.style.display = 'none';
+        }
+    }
     return (
-        <div>
-            
+        <div className='song-manager-wrapper'>
+            <div className='album-manager-click-off' onClick={() => {clickOff(false); editClickOff(false)}}></div>
+            <div className='song-manager'>
+                <div className='song-manager-header-wrapper'>
+                    <div className='song-manager-header'>
+                        <h4>{mode ? 'Edit' : 'Add'} Track</h4>
+                    </div>
+                    <div className='song-manager-header-button-wrapper'>
+                        <button className='song-manager-header-button' onClick={() => {clickOff(false); editClickOff(false); setMode(false)}}><span><ImCross/></span></button>
+                    </div>
+                </div>
+                <div className='song-manager-content'>
+                    {/* <div className='album-manager-image-wrapper'>
+                        <div className='album-manager-image-content'>
+                            <div className='hover-information'>
+                                <div>
+                                    <div className='hover-unit-wrapper'>
+                                        <div className='hover-icon'><span><MdAddPhotoAlternate/></span></div>
+                                    </div>
+                                    <div className='hover-unit-wrapper'>
+                                        <div className='hover-text'><span>Choose photo</span></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className='album-manager-image'>
+                                <img/>
+                            </div>
+                            <input className="management-input" type="file" accept='image/jpg, image/png, image/jpeg, image/webp'/>
+                            <div className='management-input-click-div'>
+                                <button className='management-input-button' onClick={() => {clickOff(false); handleClick(); setMode(false)}}></button>
+                            </div>
+                        </div>
+                    </div> */}
+                    <div className='song-manager-entry-wrapper'>
+                        <div className='song-manager-entry-content'>
+                            <div className='song-manager-field-wrapper'>
+                                <div className='label-wrapper'><label for="">Song Title</label></div>
+                                <input className='song-entry' placeholder="What's your song title?"></input>
+                            </div>
+                            <div className='song-manager-field-wrapper' id={'insertSongWrapper'}>
+                                <input className='song-entry' id={'insertSong'} placeholder='Who is the publisher/label?' type="file" accept='.mp3'
+                                value={song} onChange={(e) => {setSong(e.target.value); handleInputDisplay()}}>
+                                </input>
+                                <div className='management-input-click-div'>
+                                    <button className='management-input-button' id={'insertSongButton'} onClick={() => {handleClick();}}> Import Song from Library</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className='song-manager-controls'>
+                    <div className='controls-row row'>
+                        <div className='album-manager-controls-icons col-2 col-sm-6'>
+                            {mode && <div className='controls-icons-left'>
+                                <button><span><FaTrashAlt/></span></button>
+                            </div>}
+                        </div>
+                        <div className='album-manager-controls-save-create col-10 col-sm-6'>
+                            <button className='create-save-button' onClick={() => {clickOff(false); editClickOff(false); setMode(false)}}>{mode ? 'Save' : 'Add Track'}</button>
+                        </div>       
+                    </div>
+                </div>
+                <div className='song-manager-footer'>
+                    <div>
+                        <span> Please note: Audio files uploaded to this site should be of .mp3 format.
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
