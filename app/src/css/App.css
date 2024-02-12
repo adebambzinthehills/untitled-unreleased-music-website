@@ -34,7 +34,21 @@ button > span > svg {
   position: relative;
 }
 
+.tooltip-inner {
+  min-width: 250px;
+}
 
+.tooltip {
+  visibility: none;
+}
+
+button:hover, input:hover  > .tooltip , div:hover{
+  visibility: visible;
+}
+
+button:focus, input:focus > .tooltip, div:focus  {
+  visibility: none;
+}
 /* .App-logo {
   height: 40vmin;
   pointer-events: none;

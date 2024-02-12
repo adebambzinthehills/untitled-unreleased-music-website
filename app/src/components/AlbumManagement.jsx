@@ -28,7 +28,8 @@ function AlbumManagement({clickOff, edit, mode, setMode}) {
             </div>
             <div className='album-manager-content'>
                 <div className='album-manager-image-wrapper' >
-                    <div className='album-manager-image-content'>
+                    <div className='album-manager-image-content' 
+                            data-bs-toggle="tooltip" data-bs-placement="bottom" title="Please only upload square images for album art.">
                         <div className='hover-information'>
                             {/* this will appear on hover of image-content div */}
                             <div>
@@ -58,11 +59,11 @@ function AlbumManagement({clickOff, edit, mode, setMode}) {
                         </div>
                         <div className='album-manager-field-wrapper'>
                             <div className='label-wrapper'><label htmlFor="">Label</label></div>
-                            <input className='album-entry' placeholder='Who is the publisher/label?'  data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed at the bottom of the album page, below the music."></input>
+                            <input className='album-entry' placeholder='Who is the publisher/label?'  data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed at the bottom of the album page, below the tracklist."></input>
                         </div>
                         <div className='album-manager-field-wrapper'>
                             <div className='label-wrapper'><label htmlFor="">Release Date</label></div>
-                            <input className='album-entry' type='date' placeholder="What's your album release date?" data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed next to the album title, and again at the bottom of album page, much like Spotfiy's interface."></input>
+                            <input className='album-entry' type='date' placeholder="What's your album release date?" data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed next to the album title, and again at the bottom of album page, much like Spotify's interface."></input>
                         </div>
                     </div>
                 </div>

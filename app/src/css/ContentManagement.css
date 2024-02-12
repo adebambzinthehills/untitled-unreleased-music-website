@@ -260,6 +260,11 @@
     width:100px;
     text-align: center;
     height:35px;
+    transition: all .2s ease-in-out;
+}
+
+.create-save-button:hover {
+    transform: scale(1.02);
 }
 
 .album-manager-controls-save-create {
@@ -591,6 +596,11 @@
 #insertSongButton {
     background-color: #1ed76b;
     font-weight: 500;;
+    transition: all .2s ease-in-out;
+}
+
+#insertSongButton:hover {
+    transform: scale(1.02);
 }
 
 @media screen and (max-width:900px){
