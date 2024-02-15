@@ -22,6 +22,11 @@ export function PlayerProvider({children}){
     const toggle = () => {
         setPlayerOn(!playerOn);
     }
+
+    const playerOff = () => {
+        setPlayerOn(false);
+    }
+
     const changePlayerImage = (src) => {
         setPlayerImgSrc(src);
     }
@@ -45,7 +50,8 @@ export function PlayerProvider({children}){
     return(
         <PlayerContext.Provider value={{playerOn, play, stop, toggle, playerImgSrc, 
         changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer,
-        fullscreenPlayerEnabled, enableFullscreenPlayer, disableFullscreenPlayer }}>
+        fullscreenPlayerEnabled, enableFullscreenPlayer, disableFullscreenPlayer,
+        playerOff }}>
             {children}
         </PlayerContext.Provider>
     );

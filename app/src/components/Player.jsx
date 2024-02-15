@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useState }from 'react'
+import React, { useContext, useEffect, useState, useRef, useCallback }from 'react'
 import '../css/Player.css'
+import '../css/ProgressBar.css'
 import { PlayerContext } from '../contexts/PlayerContext';
 
 import { TiArrowShuffle } from "react-icons/ti"
@@ -14,23 +15,33 @@ import { GoDotFill } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs"
 import { IoChevronBack } from "react-icons/io5";
 
-
-
 import ColorThief from 'colorthief';
+
+import { tracks } from '../audio/TemporaryTracks';
 
 function Player() {
     const [shufflePlayer, setShufflePlayer] = useState(false);
-    console.log(shufflePlayer);
     const [repeatCount, setRepeatCount] = useState(0);
     const [repeatOn, setRepeatOn] = useState(false);
     const [playPress, setPlayPress] = useState(false);
+
+    const [isPlaying, setIsPlaying] = useState(false);
+    const music = useRef();
+    const [currentTrack, setCurrentTrack] = useState(tracks[1]);
+    const [duration, setDuration] = useState(0);
+
     const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage,
         miniplayerEnabled, enableMiniplayer, removeMiniplayer, 
         enableFullscreenPlayer, disableFullscreenPlayer} = useContext(PlayerContext);  
+
     const [playerBackgroundColour, setPlayerBackgroundColour] = useState("");
     const [playerFullscreen, setPlayerFullscreen] = useState(false);
 
-    
+    const progressBarRef = useRef();
+    const [timeProgress, setTimeProgress] = useState(0);
+
+    const animationRef = useRef();
+
     useEffect(() => {
 
         const documentBody = document.body;
@@ -104,12 +115,42 @@ function Player() {
 
     function handlePlayPress() {
         setPlayPress(!playPress);
+        setIsPlaying(!isPlaying);
     }
+
+    // ----------- IMPORTANT CODE FOR PLAYING BELOW -------------
+     
+    const repeatAnimationFrame = useCallback(() => {
+
+        if(playerOn){
+            const currentTime = music.current.currentTime;
+
+            setTimeProgress(currentTime);
+            
+            progressBarRef.current.value = currentTime;
+            progressBarRef.current.style.setProperty(
+                '--range-progress',
+                `${(progressBarRef.current.value / duration) * 100}%`
+            );
+
+            animationRef.current = requestAnimationFrame(repeatAnimationFrame);
+        }
+        
+    }, [music, duration, progressBarRef, setTimeProgress]);
+
+    useEffect(() => {
+        if(isPlaying){
+            music.current.play();
+        }
+        else {
+            music.current.pause();
+        }
+        animationRef.current = requestAnimationFrame(repeatAnimationFrame);
+    }, [isPlaying, music, repeatAnimationFrame])
 
 
     const greenShuffle = shufflePlayer ? 'green-shuffle' : '';
     const greenRepeat = repeatOn? 'green-repeat' : '';
-
 
     const screenSize = window.innerWidth;
     const [miniplayerTracker, setMiniplayerTracker] = useState(false);
@@ -125,9 +166,40 @@ function Player() {
         }
     }, [miniplayerTracker]);
 
+    /* ---------- PROGRESS BAR ----------- */
+    
+
+    function handleProgress(){
+        // allows you to move the progress bar and set the music time and value
+        music.current.currentTime = progressBarRef.current.value;
+    }
+
+    function onLoadedMetadata (){
+        const seconds = music.current.duration;
+        setDuration(seconds);
+        progressBarRef.current.max = seconds;
+      };
+
+    function formatTime(time){
+        if (time && !isNaN(time)) {
+          const minutes = Math.floor(time / 60);
+          const formatMinutes =
+            minutes < 10 ? `0${minutes}` : `${minutes}`;
+          const seconds = Math.floor(time % 60);
+          const formatSeconds =
+            seconds < 10 ? `0${seconds}` : `${seconds}`;
+          return `${formatMinutes}:${formatSeconds}`;
+        }
+        return '00:00';
+    };
+
+    
+
+
   return (
 
     <div>
+    <audio src={currentTrack.src} ref={music} onLoadedMetadata={() => onLoadedMetadata()}/>
       {
       <div className='player-container'>
         <div className='row player-row'>
@@ -138,10 +210,10 @@ function Player() {
                     </div>
                     <div className='player-song-information-wrapper'>
                         <div>
-                            <span className='player-song-name'><a>Santa Barbara</a></span>
+                            <span className='player-song-name'><a>{currentTrack.title}</a></span>
                         </div>
                         <div className='span-information-wrap'>
-                            <span className='player-artist-name'>Jaden</span>
+                            <span className='player-artist-name'>{currentTrack.author}</span>
                         </div>
                     </div>
                 </div>
@@ -168,14 +240,16 @@ function Player() {
                         </div>
                     </div>
                     <div className='player-scrollbar-wrapper'>
+                        <div className='player-time-wrapper'><span className='player-time-left'>{formatTime(timeProgress)}</span></div>
                         <div className='player-scrollbar'>
-                            <div><span className='player-time-left'>0:00</span></div>
-                            <div className='player-scrollbar-overlay'>
-                                <div className='player-scrollbar-dot'></div>
-                            </div>
-                            <div className='player-scrollbar-grey'></div>
-                            <div><span className='player-time-right'>2:22</span></div>
+                            {/* <div className='player-scrollbar-grey'>
+                                <div className='player-scrollbar-overlay'>
+                                    <div className='player-scrollbar-dot'></div>
+                                </div>
+                            </div> */}
+                            <input className="player-scrollbar-input" type="range" onChange={() => handleProgress()} ref={progressBarRef}></input>
                         </div>
+                        <div className='player-time-wrapper'><span className='player-time-right'>{formatTime(duration)}</span></div>
                     </div>
                 </div>
             </div>

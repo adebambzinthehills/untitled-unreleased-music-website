@@ -10,14 +10,14 @@ import { AuthProvider } from "./contexts/AuthContext";
 import Account from "./components/Account";
 import Settings from "./components/Settings";
 import Album from "./components/Album";
+import Player from "./components/Player";
 import { PlayerProvider } from "./contexts/PlayerContext";
+import { PlayerContext } from "./contexts/PlayerContext";
 
 
 function App() {
-
+  const {playerOn} = useContext(PlayerContext);
   return(
-    <AuthProvider>
-      <PlayerProvider>
       <Router>                            
         <Routes>                                                                       
           <Route exact path="/" element={<Welcome/>}/>
@@ -28,9 +28,8 @@ function App() {
           <Route path="/Settings" element={<Settings/>}></Route>
           <Route path="/Album" element={<Album/>}></Route>
         </Routes>
+        {playerOn && <Player/>}
       </Router>
-      </PlayerProvider>
-    </AuthProvider>
   )
 }
 

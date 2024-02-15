@@ -97,6 +97,7 @@
     width: 100%;
     height: 100%;
     justify-content: center;
+    margin-bottom: 5px;
 }
 
 .player-button-wrapper {
@@ -181,11 +182,15 @@
     width:35px
 }
 
-.player
-
+.player-time-wrapper {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
 
 .player-scrollbar-wrapper {
     display: flex;
+    height: 15px;
 }
 
 .player-scrollbar {
@@ -193,28 +198,29 @@
     display:flex;
     margin: 0 auto;
     width: 80%;
-    margin-top:10px;
     height:100%;
+    align-items: center;
 }
 
 .player-scrollbar-overlay {
     position:absolute;
-    height:5px;
-    width: 50px;
-    max-width: 80%;
+    height:100%;
+    width: 80%;
     background-color: white;
     z-index: 1;
     border-radius: 10px;
-    left:33px;
+    left:-100px;
     top:0;
 }
+
+
 
 .player-scrollbar-overlay:hover {
     background-color: #1ed760;
 }
 
 .player-scrollbar-overlay:hover > .player-scrollbar-dot{
-    display: inline;
+    display: flex;
 }
 
 
@@ -245,7 +251,6 @@
 
 .player-time-left, .player-time-right{
     position: relative;
-    top:-10px;
 }
 
 .player-time-left {
@@ -254,6 +259,49 @@
 .player-time-right {
     margin-left:5px;
 }
+
+/* INPUT RANGE CHANGING */
+
+/* input[type="range"].player-scrollbar-input {
+    --range: calc(var(--max) - var(--min));
+    --ratio: calc((var(--value) - var(--min)) / var(--range));
+    --sx: calc(0.5 * 2em + var(--ratio) * (100% - 2em));
+    -webkit-appearance: none;
+    background-color: #4a4a4a;
+    width: 100%;
+    height: 5px;
+    border-radius: 10px;
+  }
+
+input[type="range"].player-scrollbar-input:focus {
+    outline: none;
+} */
+
+/* input[type=range].player-scrollbar-input::-webkit-slider-runnable-track {
+    -webkit-appearance:none;
+    background: #FFFFFF;
+    height: 5px;
+    border-radius: 5px;
+} */
+
+/* input[type=range].player-scrollbar-input::-webkit-slider-thumb{
+    position: relative;
+    top:-5px;
+}
+input[type=range].player-scrollbar-input::-webkit-slider-thumb:hover {
+    display: flex;
+    background: #FFFFFF;
+}
+
+
+input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover {
+    background: #1ed760;
+}
+
+input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > input[type=range].player-scrollbar-input::-webkit-slider-thumb{
+    background: #1ed760;
+} */
+  
 
 
 

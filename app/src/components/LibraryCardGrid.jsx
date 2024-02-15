@@ -125,7 +125,7 @@ function LibraryCardGrid() {
             </div>
           </div>
         </div>
-        {playerOn && <Player></Player>}
+        {/* {playerOn && <Player></Player>} */}
       </div>
       {newProjectButtonClicked &&
       <AlbumManagement clickOff={setNewProjectButtonClicked} edit={albumManagerMode} setMode={setAlbumManagerMode}/>

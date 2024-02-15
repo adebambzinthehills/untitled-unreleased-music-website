@@ -3,11 +3,17 @@ import ReactDOM from 'react-dom/client';
 import './css/index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { AuthProvider } from './contexts/AuthContext';
+import { PlayerProvider } from './contexts/PlayerContext';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <AuthProvider>
+      <PlayerProvider>
+      <App />
+      </PlayerProvider>
+    </AuthProvider>
   </React.StrictMode>
 );
 

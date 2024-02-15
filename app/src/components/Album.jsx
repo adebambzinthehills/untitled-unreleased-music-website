@@ -204,7 +204,6 @@ function Album({player}) {
 
             <Tracklist songs={state.songs} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
             {playerOn && <div className='player-block'></div>}
-            {playerOn && <Player></Player>}
 
             {fullAlbumCover && <div className='fullscreen-album-cover-wrapper'>
                 <div className='fullscreen-album-content'>

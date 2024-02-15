@@ -1,17 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Header from './Header';
 import { useNavigate } from 'react-router-dom';
 import { logOut} from '../contexts/AuthContext';
 import { MdAccountCircle } from "react-icons/md";
 import '../css/Account.css';
 import background from '../images/b.png';
+import { PlayerContext } from '../contexts/PlayerContext';
 
 function Account() {
-
+    const { playerOff } = useContext(PlayerContext);
     //const { logOut } = useAuth();
     const navigate = useNavigate();
 
     async function handleLogOut(){
+        playerOff();
         try{
             await logOut();
             navigate("/");
