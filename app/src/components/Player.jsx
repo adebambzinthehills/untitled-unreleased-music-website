@@ -185,6 +185,12 @@ function Player() {
         progressBarRef.current.max = seconds;
       };
 
+    useEffect(() => {
+        const seconds = music.current.duration;
+        setDuration(seconds);
+        progressBarRef.current.max = seconds;
+    }, [playerFullscreen])
+
     function formatTime(time){
         if (time && !isNaN(time)) {
           const minutes = Math.floor(time / 60);
@@ -293,7 +299,8 @@ function Player() {
 
     <div>
     <audio src={currentTrack.src} ref={music} onLoadedMetadata={() => onLoadedMetadata()} onEnded={() => handleSkip()}/>
-      <div className='player-container'>
+      { !playerFullscreen &&
+        <div className='player-container'>
         <div className='row player-row'>
             <div className='col-3 player-col'>
                 <div className='left-information-wrapper'>
@@ -356,7 +363,7 @@ function Player() {
                 </div>
             </div>
         </div>
-      </div>
+      </div>}
       <div className='miniplayer-container' style={playerColour}>
         <div className='row miniplayer-row'>
             <div className='col-10 player-col '>
@@ -384,9 +391,10 @@ function Player() {
             </div>
         </div>
       </div>
+      { playerFullscreen && 
         <div className='fullscreen-player' style={playerFullscreen? 
             {display: 'block'} : {display: 'none'}}>
-        <div className='fullscreen-player-header row'> 
+          <div className='fullscreen-player-header row'> 
             <div className='col-2 fullscreen-player-close'>
                 <button className="fullscreen-player-close-button" onClick={() => {setPlayerFullscreen(false); disableFullscreenPlayer();}}>
                     <span><IoChevronBack/></span>
@@ -476,8 +484,8 @@ function Player() {
                     </div>
                 </div>
             </div>
-        </div>   
-        </div>
+          </div>   
+        </div>}
       
     </div>
   )
