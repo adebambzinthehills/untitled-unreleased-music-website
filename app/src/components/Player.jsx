@@ -29,6 +29,7 @@ function Player() {
     const music = useRef();
     const [trackIndex, setTrackIndex] = useState(0);
     const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
+    const [currentTrackImage, setCurrentTrackImage] = useState(tracks[trackIndex].thumbnail);
     const [duration, setDuration] = useState(0);
 
     const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage,
@@ -43,7 +44,7 @@ function Player() {
 
     const animationRef = useRef();
 
-    
+    const playerAppearanceStyle = playerFullscreen? {display: 'block'} : {display: 'none'};
 
     useEffect(() => {
 
@@ -60,9 +61,11 @@ function Player() {
     }, [playerFullscreen]);
     
     useEffect(() => {
+        let image = (currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail
+
         const awaitPromise = new Promise((resolve) => {
             const contentImage = new Image();
-            contentImage.src = playerImgSrc;
+            contentImage.src = image;
             contentImage.crossOrigin = 'anonymous';
             contentImage.onload = () => {
                 const colorThief = new ColorThief();
@@ -80,12 +83,11 @@ function Player() {
         })
 
 
-    }, [])
+    }, [currentTrack.thumbnail])
 
-    const playerColourValue = 'rgb(' + playerBackgroundColour + ')';
     let newPlayerColourValues = [];
     for(let i = 0; i < playerBackgroundColour.length; i++){
-        newPlayerColourValues.push(playerBackgroundColour[i] - 50);
+        newPlayerColourValues.push(playerBackgroundColour[i] - 40);
     }
     newPlayerColourValues = 'rgb(' + newPlayerColourValues + ')';
 
@@ -97,7 +99,6 @@ function Player() {
         setShufflePlayer(!shufflePlayer);
         
     } 
-
     function handleRepeat(){
         let newCount = (repeatCount + 1) % 3;
 
@@ -392,8 +393,7 @@ function Player() {
         </div>
       </div>
       { playerFullscreen && 
-        <div className='fullscreen-player' style={playerFullscreen? 
-            {display: 'block'} : {display: 'none'}}>
+        <div className='fullscreen-player' style={{... playerColour, ... playerAppearanceStyle}}>
           <div className='fullscreen-player-header row'> 
             <div className='col-2 fullscreen-player-close'>
                 <button className="fullscreen-player-close-button" onClick={() => {setPlayerFullscreen(false); disableFullscreenPlayer();}}>
@@ -432,9 +432,8 @@ function Player() {
         </div>
         <div className='fullscreen-player-rest-section'>
             <div className='fullscreen-player-controls-wrapper'>
-                <div className='player-scrollbar-wrapper'>
-                    <div className='player-time-wrapper'><span className='player-time-left'>{formatTime(timeProgress)}</span></div>
-                    <div className='player-scrollbar'>
+                <div className='player-scrollbar-wrapper fullscreen'>
+                    <div className='player-scrollbar fullscreen'>
                         {/* <div className='player-scrollbar-grey'>
                             <div className='player-scrollbar-overlay'>
                                 <div className='player-scrollbar-dot'></div>
@@ -442,7 +441,10 @@ function Player() {
                         </div> */}
                         <input className="player-scrollbar-input" type="range" onChange={() => handleProgress()} ref={progressBarRef}></input>
                     </div>
-                    <div className='player-time-wrapper'><span className='player-time-right'>{formatTime(duration)}</span></div>
+                    <div className='fullscreen-time-wrapper'>
+                        <div className='player-time-wrapper fullscreen left'><span className='player-time-left'>{formatTime(timeProgress)}</span></div>
+                        <div className='player-time-wrapper fullscreen right'><span className='player-time-right right '>{formatTime(duration)}</span></div>
+                    </div>
                 </div>
                 <div className='fullscreen-buttons-wrapper row'>
                     <div className='col-2-4 player-buttons-section-col'>

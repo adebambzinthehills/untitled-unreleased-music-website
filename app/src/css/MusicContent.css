@@ -317,7 +317,7 @@
     width: 100%;
     background-color: rgb(32 32 32 / 60%);
     height:100vh;
-    z-index: 5;
+    z-index: 500;
 }
 
 .fullscreen-album-content {
