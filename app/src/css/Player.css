@@ -590,8 +590,6 @@ input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > 
     float: right;
 }
 
-
-
 .fullscreen-player-image-section {
     width: 100%;
     /* background-color: aliceblue; */
@@ -707,8 +705,9 @@ input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > 
 }
 
 .fullscreen-player-artist-name {
-    color:#a7a7a7;
+    color:#dfdfdf;
     margin-top:-5px;
+    font-weight:500;
 }
 
 @media screen and (min-width:580px) {
