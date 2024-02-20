@@ -11,6 +11,7 @@ import teenweek from '../images/teenweek.jpg'
 
 export const tracks = [
     {
+        id: 0,
         title: 'i can touch my toes!',
         src: jane,
         author: 'adebambz!',
@@ -18,6 +19,7 @@ export const tracks = [
         album: 'do you want to go higher?'
     },
     {
+        id: 1,
         title: 'see you later! (demo)',
         src: seeyoulater,
         author: 'adebambz!',
@@ -25,6 +27,7 @@ export const tracks = [
         album: 'do you want to go higher?'
     },
     {
+        id: 2,
         title: 'equestrian trail freestyle #2',
         src: equestrian,
         author: 'adebambz!',
@@ -33,6 +36,7 @@ export const tracks = [
     }
     ,
     {
+        id: 3,
         title: 'jane removed this',
         src: jane2,
         author: 'adebambz!',
@@ -40,6 +44,7 @@ export const tracks = [
         album: 'do you want to go higher?'
     },
     {
+        id: 4,
         title: 'stratford girl',
         src: stratfordgirl,
         author: 'nayahlone',

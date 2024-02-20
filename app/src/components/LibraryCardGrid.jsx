@@ -68,14 +68,14 @@ function LibraryCardGrid() {
   useEffect(() => {
     let gridHeight = document.body.getElementsByClassName('grid-card-container')[0].clientHeight;
     console.log(gridHeight);
-    if(gridHeight > 580){
+    if(gridHeight > 400){
       setGridHeightOver(true);
     }
   }, [])
   useEffect(() => {
     let gridHeight = document.body.getElementsByClassName('grid-card-container')[0].clientHeight;
     console.log(gridHeight);
-    if(gridHeight > 580){
+    if(gridHeight > 400){
       setGridHeightOver(true);
     }
   }, [gridHeightOver])

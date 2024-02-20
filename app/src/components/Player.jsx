@@ -1,4 +1,7 @@
 import React, { useContext, useEffect, useState, useRef, useCallback }from 'react'
+import _ from 'lodash'
+
+
 import '../css/Player.css'
 import '../css/ProgressBar.css'
 import { PlayerContext } from '../contexts/PlayerContext';
@@ -20,6 +23,8 @@ import ColorThief from 'colorthief';
 import { tracks } from '../audio/TemporaryTracks';
 
 function Player() {
+    console.log("Rendering!")
+
     const [shufflePlayer, setShufflePlayer] = useState(false);
     const [repeatCount, setRepeatCount] = useState(0);
     const [repeatOn, setRepeatOn] = useState(false);
@@ -28,8 +33,17 @@ function Player() {
     const [isPlaying, setIsPlaying] = useState(false);
     const music = useRef();
     const [trackIndex, setTrackIndex] = useState(0);
-    const [currentTrack, setCurrentTrack] = useState(tracks[trackIndex]);
-    const [currentTrackImage, setCurrentTrackImage] = useState(tracks[trackIndex].thumbnail);
+    
+    //make completely fresh copy of tracks
+    const tracksStorage = JSON.parse(JSON.stringify(tracks));
+    const shuffleTracksStorage = JSON.parse(JSON.stringify(tracks));
+
+    const [shuffleTracks, setShuffleTracks] = useState(shuffleTracksStorage);
+
+    var playlistOrder = shufflePlayer ? shuffleTracks : tracksStorage;
+    const [tracklist, setTracklist] = useState(playlistOrder);
+
+    const [currentTrack, setCurrentTrack] = useState(tracklist[trackIndex]);
     const [duration, setDuration] = useState(0);
 
     const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage,
@@ -82,23 +96,118 @@ function Player() {
             alert("Couldn't display player background colour!");
         })
 
-
     }, [currentTrack.thumbnail])
+
 
     let newPlayerColourValues = [];
     for(let i = 0; i < playerBackgroundColour.length; i++){
         newPlayerColourValues.push(playerBackgroundColour[i] - 40);
     }
     newPlayerColourValues = 'rgb(' + newPlayerColourValues + ')';
-
+ 
     const playerColour ={
         backgroundColor: newPlayerColourValues
     }
 
+    //fisher-yates-durnstenfield shuffle feb 17
+
+    function shuffle(editList, currentPlayingIndex) {
+        var list = JSON.parse(JSON.stringify(editList));
+        var newList = new Array(list.length);
+
+
+        newList[0] = tracksStorage[currentPlayingIndex];
+        console.log('newList[0] reference: ', newList[0]);
+
+        var tempList = [];
+        var tempListCounter = 0;
+        for(let i = 0; i < list.length ; i++){
+            if(!(_.isEqual(newList[0], list[i]))){
+                tempList[tempListCounter] = list[i];
+                console.log(i, ' number: ', list[i]);
+
+                console.log(tempListCounter)
+                tempListCounter = tempListCounter + 1;
+            }
+        }
+        console.log('tempListCounter', tempListCounter)
+        console.log('tempList reference: ', tempList);
+
+
+        //i actually don't know why some are undefined so i will prune
+        tempList = tempList.filter((element) => {
+            return element !== undefined
+        });
+
+        for (let i = 0; i < tempList.length; i++) {
+            var j = i + Math.floor(Math.random() * (list.length - i));
+    
+            var temp = tempList[j];
+            tempList[j] = tempList[i];
+            tempList[i] = temp;
+
+            // console.log('list[i] reference: ' , list[i]);
+        }
+
+        for(let i = 0; i < tempList.length; i++){
+            newList[i+1]= tempList[i]
+        }
+
+        newList = newList.filter((element) => {
+            return element !== undefined
+        });
+
+        console.log('newList at end: ', newList)
+
+        console.log('List: ', list);
+        return newList;
+    }
+
     const handleShuffle = () => {
         setShufflePlayer(!shufflePlayer);
-        
+
+        var defaultIndex;
+        if(shufflePlayer){
+
+            for(var i = 0; i < tracksStorage.length; i++){
+
+                console.log('current ',currentTrack.id)
+                console.log(':3', tracksStorage[i].id)
+                if(tracksStorage[i].id == currentTrack.id){
+                    defaultIndex = i;
+                }
+            }
+            
+            playlistOrder = tracksStorage;
+            setTracklist(playlistOrder);
+            console.log('Current Index', defaultIndex)
+            setTrackIndex(defaultIndex)
+            setCurrentTrack(tracksStorage[defaultIndex]); 
+            // music.current.currentTrack = tracksStorage[defaultIndex];
+              
+        }
+
+        else {
+            
+            let newOrder = shuffle(tracksStorage, trackIndex);
+            setShuffleTracks(newOrder); 
+            playlistOrder = newOrder;
+            setTracklist(newOrder);
+            setTrackIndex(0);
+
+            console.log('Shuffling!')
+        }
+
+        console.log('tracks: ', tracks);
+        console.log('tracksStorage: ',tracksStorage);
+        console.log('shuffleTracks: ', shuffleTracks);
     } 
+
+    useEffect(() => {
+        console.log(playlistOrder);
+        playlistOrder = shufflePlayer ? shuffleTracks : tracksStorage;
+    }, [playlistOrder])
+
     function handleRepeat(){
         let newCount = (repeatCount + 1) % 3;
 
@@ -217,30 +326,30 @@ function Player() {
         
         if(!(repeatCount == 2)){
             if(repeatCount == 0){
-                if(currentIndex >= (tracks.length - 1) ){
+                if(currentIndex >= (tracklist.length - 1) ){
                     currentIndex = 0
                     setPlayPress(false);
                     setIsPlaying(false);    
                     setTrackIndex((currentIndex));
-                    setCurrentTrack(tracks[currentIndex])
+                    setCurrentTrack(tracklist[currentIndex])
                     console.log("I'm here too somewhere!")
                 }
                 else{
                     skipPlay();
                     setTrackIndex((currentIndex + 1));
-                    setCurrentTrack(tracks[currentIndex + 1])
+                    setCurrentTrack(tracklist[currentIndex + 1])
                 }
                 
             }
             else{
-                if(trackIndex >= tracks.length - 1 ){
+                if(trackIndex >= tracklist.length - 1 ){
                     setTrackIndex(0);
                     currentIndex = 0
-                    setCurrentTrack(tracks[currentIndex]);
+                    setCurrentTrack(tracklist[currentIndex]);
                 }
                 else{
                     setTrackIndex(currentIndex + 1);
-                    setCurrentTrack(tracks[currentIndex + 1])
+                    setCurrentTrack(tracklist[currentIndex + 1])
                     skipPlay();
                 }
             }
@@ -258,13 +367,13 @@ function Player() {
             if(!(music.current.currentTime <= 3) && currentIndex != 0){
                 if(music.current.currentTime <= 0.5){
                     if(trackIndex == 0){
-                        currentIndex = tracks.length - 1;
+                        currentIndex = tracklist.length - 1;
                         setTrackIndex(currentIndex);
-                        setCurrentTrack(tracks[currentIndex]);
+                        setCurrentTrack(tracklist[currentIndex]);
                     }
                     else{
                         setTrackIndex(currentIndex- 1);
-                        setCurrentTrack(tracks[currentIndex - 1])
+                        setCurrentTrack(tracklist[currentIndex - 1])
                     }
                 }
                 else{
@@ -276,13 +385,13 @@ function Player() {
                 if(trackIndex == 0){
                     currentIndex = 0
                     setTrackIndex(currentIndex);
-                    setCurrentTrack(tracks[currentIndex]);
+                    setCurrentTrack(tracklist[currentIndex]);
                     progressBarRef.current.currentTime = 0;
                     music.current.currentTime = 0;
                 }
                 else{
                     setTrackIndex(currentIndex- 1);
-                    setCurrentTrack(tracks[currentIndex - 1])
+                    setCurrentTrack(tracklist[currentIndex - 1])
                 }
                 music.current.play();
             }
