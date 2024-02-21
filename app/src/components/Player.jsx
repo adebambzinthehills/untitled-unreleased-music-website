@@ -150,7 +150,7 @@ function Player() {
         }
 
         for(let i = 0; i < tempList.length; i++){
-            newList[i+1]= tempList[i]
+            newList[i+1]= tempList[i];
         }
 
         newList = newList.filter((element) => {

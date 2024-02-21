@@ -4,10 +4,21 @@ import jane from './jane.wav'
 import jane2 from './jane2.mp3'
 import equestrian from './equestrian.mp3'
 import stratfordgirl from './stratfordgirl.mp3'
+import towel from './throw.mp3'
+import cruising from './cruising.mp3'
+import friends from './friends.mp3'
+import anything from './anything.mp3'
+
+
 import nayahlone from '../images/nayahlone.jpg'
 import ctv30 from '../images/ctv301.jpeg'
 import wallsocket from '../images/wallsocket.jpeg'
 import teenweek from '../images/teenweek.jpg'
+import ghouse from '../images/ghouse.jpeg'
+import pfriends from '../images/friends.jpeg'
+import sugar from '../images/sugar.jpeg'
+import at from '../images/at.jpeg'
+
 
 export const tracks = [
     {
@@ -50,5 +61,37 @@ export const tracks = [
         author: 'nayahlone',
         thumbnail: nayahlone,
         album: 'stratford girl'
+    },
+    {
+        id: 5,
+        title: 'Throw In The Towel',
+        src: towel,
+        author: 'Glasshousetenant',
+        thumbnail: ghouse,
+        album: 'Throw In The Towel'
+    },
+    {
+        id: 6,
+        title: 'Cruising in Lumpy Space (feat. Casey James Basichis)',
+        src: cruising,
+        author: 'Adenture Time',
+        thumbnail: at,
+        album: 'Adventure Time, Vol. 1'
+    },
+    {
+        id: 7,
+        title: 'Anything Can Happen',
+        src: anything,
+        author: 'Rebecca Sugar',
+        thumbnail: sugar,
+        album: 'Spiral Bound'
+    },
+    {
+        id: 8,
+        title: 'f.r.i.e.n.d.s',
+        src: friends,
+        author: 'J Sanc',
+        thumbnail: pfriends,
+        album: 'Throw In The Towel'
     }
 ]
