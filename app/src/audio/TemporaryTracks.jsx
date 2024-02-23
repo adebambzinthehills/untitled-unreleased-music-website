@@ -8,6 +8,8 @@ import towel from './throw.mp3'
 import cruising from './cruising.mp3'
 import friends from './friends.mp3'
 import anything from './anything.mp3'
+import someone from './SOMEONE FREESTYLE.mp3'
+import warhead from './WarHead.mp3'
 
 
 import nayahlone from '../images/nayahlone.jpg'
@@ -18,6 +20,8 @@ import ghouse from '../images/ghouse.jpeg'
 import pfriends from '../images/friends.jpeg'
 import sugar from '../images/sugar.jpeg'
 import at from '../images/at.jpeg'
+import war from '../images/darko.jpeg'
+import someonepic from '../images/darko2.jpeg'
 
 
 export const tracks = [
@@ -74,9 +78,9 @@ export const tracks = [
         id: 6,
         title: 'Cruising in Lumpy Space (feat. Casey James Basichis)',
         src: cruising,
-        author: 'Adenture Time',
+        author: 'Adventure Time',
         thumbnail: at,
-        album: 'Adventure Time, Vol. 1'
+        album: 'Adventure Time, Vol. 1 (Original Soundtrack)'
     },
     {
         id: 7,
@@ -92,6 +96,22 @@ export const tracks = [
         src: friends,
         author: 'J Sanc',
         thumbnail: pfriends,
-        album: 'Throw In The Towel'
+        album: 'f.r.i.e.n.d.s'
+    },
+    {
+        id: 9,
+        title: 'WarHead',
+        src: warhead,
+        author: 'Lonny Darko',
+        thumbnail: war,
+        album: 'WarHead'
+    },
+    {
+        id: 10,
+        title: 'SOMEONE FREESTYLE',
+        src: someone,
+        author: 'Lonny Darko',
+        thumbnail: someonepic,
+        album: 'DARKO'
     }
 ]

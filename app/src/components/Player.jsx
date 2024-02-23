@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useRef, useCallback }from 'react'
+import React, { useContext, useEffect, useState, useRef, useCallback, useLayoutEffect }from 'react'
 import _ from 'lodash'
 
 
@@ -23,6 +23,8 @@ import ColorThief from 'colorthief';
 import { tracks } from '../audio/TemporaryTracks';
 
 function Player() {
+    const [pageLoaded, setPageLoaded] = useState(false);
+
     console.log("Rendering!")
 
     const [shufflePlayer, setShufflePlayer] = useState(false);
@@ -405,6 +407,213 @@ function Player() {
     }
 
 
+    /*  ------ MARQUEE SCROLLING FOR TEXT ON PLAYER ------*/
+    // Update the state or perform any other actions when the
+          // browser is resized
+
+    //create refs
+    const fullscreenSongTitle = useRef();
+    const fullscreenArtistName = useRef();
+    const fullscreenAlbumTitle = useRef();
+    const fullscreenSongTitleWrapper = useRef();
+    const fullscreenArtistNameWrapper = useRef();
+    const fullscreenAlbumTitleWrapper = useRef();
+
+    const miniplayerSongTitle = useRef();
+    const miniplayerArtistName = useRef();
+    const miniplayerSongTitleWrapper = useRef();
+    const miniplayerArtistNameWrapper = useRef();
+
+    const songTitle = useRef();
+    const artistName = useRef();
+    const songTitleWrapper = useRef();
+    const artistNameWrapper = useRef();
+    
+
+    console.log("PLayer fullscreen value outside of handleResize: ", playerFullscreen)
+
+    function handleResize() {
+
+        function applyClassesAndScroll(wrapperWidths, widths, wrappers, items, fullscreen){
+
+            for(let i = 0; i < wrapperWidths.length; i++){
+                console.log(wrappers[i].current.className)
+                console.log('current width id: ', items[i], '; current width: ', widths[i])
+
+                console.log(widths[i] - wrapperWidths[i])
+                if(widths[i] > wrapperWidths[i]){
+                    
+                    console.log("Span width is greater than wrapper width at postion ", i , "!");
+                    console.log(wrappers[i].current.className)
+    
+                    if(i == 2 && fullscreen){
+                        if(!wrappers[i].current.className.includes(" justify-left")){
+                            wrappers[i].current.className = wrappers[i].current.className + " justify-left";
+                        }
+                    }
+    
+                    if(!wrappers[i].current.className.includes(" scrollable")){
+                        wrappers[i].current.className = wrappers[i].current.className + " scrollable";
+                    }
+    
+                    items[i].current.style.setProperty(
+                        '--transform-width',
+                        `${-(widths[i] - wrapperWidths[i])}px`
+                    );
+                    wrappers[i].current.style.setProperty(
+                        '--transform-width',
+                        `${-(widths[i] - wrapperWidths[i])}px`
+                    );
+    
+                    console.log(widths[i] - wrapperWidths[i]);
+                }
+                else {
+                    if(wrappers[i].current.className.includes(" scrollable")){
+                        let tempClassName = wrappers[i].current.className.replace(" scrollable", "");
+                        wrappers[i].current.className = tempClassName;
+                    }
+    
+                    if(wrappers[i].current.className.includes(" justify-left")){
+                        let tempClassName = wrappers[i].current.className.replace(" justify-left", "");
+                        wrappers[i].current.className = tempClassName;
+                    }
+    
+                    items[i].current.style.setProperty(
+                        '--transform-width', 0
+                    );
+                    wrappers[i].current.style.setProperty(
+                        '--transform-width', 0
+                    );
+                }
+            }
+        }
+
+        // console.log("Player fullscreen: ", playerFullscreen);
+
+        if(playerFullscreen){
+            
+            // console.log("Running when fullscreen!");
+
+            var fullscreenSongTitleWrapperWidth = fullscreenSongTitleWrapper.current.clientWidth;
+            var fullscreenSongTitleWidth = fullscreenSongTitle.current.clientWidth;
+            var fullscreenArtistNameWrapperWidth = fullscreenArtistNameWrapper.current.clientWidth;
+            var fullscreenArtistNameWidth =  fullscreenArtistName.current.clientWidth;
+            var fullscreenAlbumTitleWrapperWidth = fullscreenAlbumTitleWrapper.current.clientWidth;
+            var fullscreenAlbumTitleWidth = fullscreenAlbumTitle.current.clientWidth;
+    
+            var fullscreenWrapperWidths = [fullscreenSongTitleWrapperWidth, fullscreenArtistNameWrapperWidth, fullscreenAlbumTitleWrapperWidth];
+            var fullscreenWidths = [fullscreenSongTitleWidth, fullscreenArtistNameWidth, fullscreenAlbumTitleWidth];
+            var wrappers = [fullscreenSongTitleWrapper, fullscreenArtistNameWrapper, fullscreenAlbumTitleWrapper];
+            var items = [fullscreenSongTitle, fullscreenArtistName, fullscreenAlbumTitle];
+
+            applyClassesAndScroll(fullscreenWrapperWidths, fullscreenWidths, wrappers, items, true);
+    
+            /*for(let i = 0; i < fullscreenWrapperWidths.length; i++){
+                if(fullscreenWidths[i] > fullscreenWrapperWidths[i]){
+                    console.log("Fullscreen: Span width is greater than wrapper width at postion ", i , "!");
+                    console.log(wrappers[i].current.className)
+
+                    if(i == 2){
+                        if(!wrappers[i].current.className.includes(" justify-left")){
+                            wrappers[i].current.className = wrappers[i].current.className + " justify-left";
+                        }
+                    }
+
+                    if(!wrappers[i].current.className.includes(" scrollable")){
+                        wrappers[i].current.className = wrappers[i].current.className + " scrollable";
+                    }
+
+                    items[i].current.style.setProperty(
+                        '--transform-width',
+                        `${-(fullscreenWidths[i] - fullscreenWrapperWidths[i])}px`
+                    );
+                    wrappers[i].current.style.setProperty(
+                        '--transform-width',
+                        `${-(fullscreenWidths[i] - fullscreenWrapperWidths[i])}px`
+                    );
+
+                    console.log(fullscreenWidths[i] - fullscreenWrapperWidths[i]);
+                }
+                else {
+                    console.log(wrappers[i].current.className)
+                    if(wrappers[i].current.className.includes(" scrollable")){
+                        let tempClassName = wrappers[i].current.className.replace(" scrollable", "");
+                        wrappers[i].current.className = tempClassName;
+                    }
+
+                    if(wrappers[i].current.className.includes(" justify-left")){
+                        let tempClassName = wrappers[i].current.className.replace(" justify-left", "");
+                        wrappers[i].current.className = tempClassName;
+                    }
+
+                    items[i].current.style.setProperty(
+                        '--transform-width', 0
+                    );
+                    wrappers[i].current.style.setProperty(
+                        '--transform-width', 0
+                    );
+                }
+            }*/
+            
+        }
+        if (!playerFullscreen){
+
+            //had to use offsetWidth for some reason to make this work!
+
+            console.log("Running when player is not fullscreen!");
+            var songTitleWidth = songTitle.current.offsetWidth;
+            var songTitleWrapperWidth = songTitleWrapper.current.clientWidth;
+            var artistNameWidth = artistName.current.offsetWidth;
+            var artistNameWrapperWidth = artistNameWrapper.current.clientWidth;
+
+            var wrapperWidths = [artistNameWrapperWidth, songTitleWrapperWidth];
+            var widths = [artistNameWidth, songTitleWidth];
+            var wrappers = [artistNameWrapper, songTitleWrapper];
+            var items = [artistName, songTitle]
+
+            applyClassesAndScroll(wrapperWidths, widths, wrappers, items, false);
+        
+        }
+
+        var miniplayerSongTitleWidth = miniplayerSongTitle.current.offsetWidth;
+        var miniplayerSongTitleWrapperWidth = miniplayerSongTitleWrapper.current.clientWidth;
+        var miniplayerArtistNameWidth = miniplayerArtistName.current.offsetWidth;
+        var miniplayerArtistNameWrapperWidth = miniplayerArtistNameWrapper.current.clientWidth;
+
+        var miniplayerWrapperWidths = [miniplayerArtistNameWrapperWidth, miniplayerSongTitleWrapperWidth];
+        var miniplayerWidths = [miniplayerArtistNameWidth, miniplayerSongTitleWidth];
+        var miniplayerWrappers = [miniplayerArtistNameWrapper, miniplayerSongTitleWrapper];
+        var miniplayerItems = [miniplayerArtistName, miniplayerSongTitle];
+
+        applyClassesAndScroll(miniplayerWrapperWidths, miniplayerWidths, miniplayerWrappers, miniplayerItems, false);
+
+        // console.log('Artist Title: ', artistTitleSpanWidth);
+        // console.log("Resizing window!");
+    }
+    
+    useEffect(() => {
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
+    useEffect(() => {
+        
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+    }, [playerFullscreen]);
+
+    useEffect(() => {
+        handleResize();
+    }, [trackIndex, playerFullscreen])
+
+
   return (
 
     <div>
@@ -418,11 +627,11 @@ function Player() {
                         <button className='player-image-button'><img className='player-image' src={(currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail }></img></button>
                     </div>
                     <div className='player-song-information-wrapper'>
-                        <div>
-                            <span className='player-song-name'><a>{currentTrack.title}</a></span>
+                        <div className="span-information-wrap" ref={songTitleWrapper} >
+                            <span className='player-song-name' ref={songTitle} ><a>{currentTrack.title}</a></span>
                         </div>
-                        <div className='span-information-wrap'>
-                            <span className='player-artist-name'>{currentTrack.author}</span>
+                        <div className='span-information-wrap-two' ref={artistNameWrapper} >
+                            <span className='player-artist-name' ref={artistName}>{currentTrack.author}</span>
                         </div>
                     </div>
                 </div>
@@ -482,11 +691,11 @@ function Player() {
                         <button className='miniplayer-image-button'><img className='miniplayer-image' src={(currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail }></img></button>
                     </div>
                     <div className='miniplayer-song-information-wrapper'>
-                        <div>
-                            <span className='player-song-name'><a>{currentTrack.title}</a></span>
+                        <div className='span-information-wrap-three' ref={miniplayerSongTitleWrapper}>
+                            <span className='player-song-name' ref={miniplayerSongTitle}><a ref={miniplayerSongTitle}>{currentTrack.title}</a></span>
                         </div>
-                        <div className='span-information-wrap'>
-                            <span className='player-artist-name'>{currentTrack.author}</span>
+                        <div className='span-information-wrap-four' ref={miniplayerArtistNameWrapper}>
+                            <span className='player-artist-name mini' ref={miniplayerArtistName}><a ref={miniplayerArtistName}>{currentTrack.author}</a></span>
                         </div>
                     </div>
                 </div>
@@ -510,8 +719,8 @@ function Player() {
                 </button>
             </div>
             <div className='col-8 fullscreen-player-content-title-wrapper'>
-                <div className='fullscreen-player-content-title'>
-                    <span>{currentTrack.album}</span>
+                <div className='fullscreen-player-content-title' ref={fullscreenAlbumTitleWrapper} >
+                    <span ref={fullscreenAlbumTitle}>{currentTrack.album}</span>
                 </div>
             </div>
             <div className='col-2 fullscreen-player-three-dots'>
@@ -531,11 +740,11 @@ function Player() {
         </div>
         <div className='fullscreen-player-information-section'>
             <div className='fullscreen-player-information-wrapper'>
-                <div className='fullscreen-player-song-title'>
-                    <span><h1>{currentTrack.title}</h1></span>
+                <div className='fullscreen-player-song-title' ref={fullscreenSongTitleWrapper}>
+                    <span><h1 ref={fullscreenSongTitle}>{currentTrack.title}</h1></span>
                 </div>
-                <div className='fullscreen-player-artist-name'>
-                    <span>{currentTrack.author}</span>
+                <div className='fullscreen-player-artist-name' ref={fullscreenArtistNameWrapper}>
+                    <span ref={fullscreenArtistNameWrapper}><span ref={fullscreenArtistName}>{currentTrack.author}</span></span>
                 </div>
             </div>
         </div>
