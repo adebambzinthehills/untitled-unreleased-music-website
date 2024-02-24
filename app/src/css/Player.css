@@ -474,6 +474,7 @@ input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > 
 .miniplayer-song-information-wrapper {
     overflow: hidden;
     text-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .miniplayer-control-wrapper {
@@ -603,6 +604,7 @@ input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > 
     justify-content: center;
     overflow: hidden;
     text-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .fullscreen-player-content-title span {
@@ -735,6 +737,7 @@ input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > 
 .fullscreen-player-song-title {
     overflow: hidden;
     text-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .fullscreen-player-song-title h1 {
@@ -1120,6 +1123,7 @@ input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > 
 .fullscreen-player-artist-name {
     overflow: hidden;
     text-wrap: nowrap;
+    white-space: nowrap;
 }
 
 .fullscreen-player-artist-name.scrollable:hover > span {
@@ -1137,6 +1141,7 @@ input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > 
 .span-information-wrap-four{
     overflow: hidden;
     text-wrap: nowrap;
+    white-space: nowrap;
     display: flex;
 }
 
