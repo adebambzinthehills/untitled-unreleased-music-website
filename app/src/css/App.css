@@ -30,7 +30,7 @@ html, #root {
 }
 
 button > span > svg {
-  top: -1.5px;
+  top: -5%;
   position: relative;
 }
 

@@ -10,6 +10,7 @@ import friends from './friends.mp3'
 import anything from './anything.mp3'
 import someone from './SOMEONE FREESTYLE.mp3'
 import warhead from './WarHead.mp3'
+import everything from './everything.mp3'
 
 
 import nayahlone from '../images/nayahlone.jpg'
@@ -22,6 +23,7 @@ import sugar from '../images/sugar.jpeg'
 import at from '../images/at.jpeg'
 import war from '../images/darko.jpeg'
 import someonepic from '../images/darko2.jpeg'
+import steven from '../images/stevenuniverse.webp'
 
 
 export const tracks = [
@@ -113,5 +115,13 @@ export const tracks = [
         author: 'Lonny Darko',
         thumbnail: someonepic,
         album: 'DARKO'
+    },
+    {
+        id: 11,
+        title: 'Everything Is So Bright',
+        src: everything,
+        author: 'Jeff Ball',
+        thumbnail: steven,
+        album: 'Steven Universe Future (Original Soundtrack)'
     }
 ]

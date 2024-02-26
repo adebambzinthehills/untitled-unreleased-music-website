@@ -23,7 +23,7 @@ import { useState } from 'react';
 import { PlayerContext } from '../contexts/PlayerContext'
 import AlbumManagement from './AlbumManagement'
 
-
+import "../css/App.css"
 
 function LibraryCardGrid() {
   const [addButtonClicked, setAddButtonClicked] = useState(false);

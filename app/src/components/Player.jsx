@@ -102,13 +102,22 @@ function Player() {
 
 
     let newPlayerColourValues = [];
+    let newPlayerScrollbarColourValues = [96,96,96];
     for(let i = 0; i < playerBackgroundColour.length; i++){
         newPlayerColourValues.push(playerBackgroundColour[i] - 40);
+        if(playerBackgroundColour[i] > 120){
+            newPlayerScrollbarColourValues[i] = playerBackgroundColour[i] - 60;
+        }
     }
     newPlayerColourValues = 'rgb(' + newPlayerColourValues + ')';
+    newPlayerScrollbarColourValues = 'rgb(' + newPlayerScrollbarColourValues + ')';
  
     const playerColour ={
         backgroundColor: newPlayerColourValues
+    }
+
+    const playerScrollbarColour = {
+        backgroundColor: newPlayerScrollbarColourValues
     }
 
     //fisher-yates-durnstenfield shuffle feb 17
@@ -757,7 +766,7 @@ function Player() {
                                 <div className='player-scrollbar-dot'></div>
                             </div>
                         </div> */}
-                        <input className="player-scrollbar-input" type="range" onChange={() => handleProgress()} ref={progressBarRef}></input>
+                        <input className="player-scrollbar-input" type="range" onChange={() => handleProgress()} ref={progressBarRef} style={playerScrollbarColour}></input>
                     </div>
                     <div className='fullscreen-time-wrapper'>
                         <div className='player-time-wrapper fullscreen left'><span className='player-time-left'>{formatTime(timeProgress)}</span></div>
