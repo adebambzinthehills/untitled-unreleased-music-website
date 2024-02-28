@@ -8,7 +8,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from '../contexts/PlayerContext';
 
-function LibraryCard({title, artist, image, type, songs, edit, setMode}) {
+function LibraryCard({title, artist, image, type, songs, edit, setMode, date, label}) {
 
   const [buttonClick, setButtonClicked] = useState(false);
   const [editButtonClicked, setEditButtonClicked] = useState(false);
@@ -18,7 +18,7 @@ function LibraryCard({title, artist, image, type, songs, edit, setMode}) {
   const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
   function cardClickHandler(){
-    navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs}});
+    navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs, date: date, setMode: setMode, label: label}});
   }
 
 

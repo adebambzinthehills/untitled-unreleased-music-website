@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import { ImCross } from 'react-icons/im'
 import { MdAddPhotoAlternate } from 'react-icons/md'
 import { FaTrashAlt } from 'react-icons/fa'
 
-function SongManagement({clickOff, editClickOff, mode, setMode}) {
+function SongManagement({clickOff, editClickOff, mode, setMode, tracks, setTracks}) {
     const [song, setSong] = useState(null);
+    const songTitle = useRef();
+    const explicitTag = useRef();
+    const file = useRef();
 
     function handleClick() {
         const input = document.getElementById('insertSong');
@@ -19,6 +22,58 @@ function SongManagement({clickOff, editClickOff, mode, setMode}) {
             input.style.display = 'none';
         }
     }
+
+    function formatTime(time){
+        if (time && !isNaN(time)) {
+          const minutes = Math.floor(time / 60);
+          const formatMinutes =
+            minutes < 10 ? `0${minutes}` : `${minutes}`;
+          const seconds = Math.floor(time % 60);
+          const formatSeconds =
+            seconds < 10 ? `0${seconds}` : `${seconds}`;
+          return `${formatMinutes}:${formatSeconds}`;
+        }
+        return '00:00';
+    };
+
+    function handleSongManager(){
+
+        let title = "New Song #" + (tracks.length + 1);
+        let allowCreation = true;
+        let musicURL = "";
+        let duration = "";
+
+        if(songTitle.current.value != null && songTitle.current.value.trim(" ") != ""){
+            title = songTitle.current.value;
+        }
+
+        if(file.current.files[0] != null){
+            musicURL = URL.createObjectURL(file.current.files[0]);
+            var audio = document.createElement('audio');
+            audio.src = musicURL;
+
+            audio.onloadedmetadata = function(){
+                duration = audio.duration;
+                if(allowCreation){
+                    setTracks([...tracks,
+                    {title: title, file: musicURL, duration: formatTime(duration)}
+                    ]);
+                    //lagged cos setTracks is async!
+                    //console.log(tracks)
+                }
+            }
+        }
+        else {
+            allowCreation = false;
+        }
+
+        if(!allowCreation) {
+            alert("#NAH!")
+        }
+        
+
+    }
+
     return (
         <div className='song-manager-wrapper'>
             <div className='album-manager-click-off' onClick={() => {clickOff(false); editClickOff(false)}}></div>
@@ -57,10 +112,10 @@ function SongManagement({clickOff, editClickOff, mode, setMode}) {
                         <div className='song-manager-entry-content'>
                             <div className='song-manager-field-wrapper'>
                                 <div className='label-wrapper'><label for="">Song Title</label></div>
-                                <input className='song-entry' placeholder="What's your song title?"></input>
+                                <input className='song-entry' ref={songTitle} placeholder="What's your song title?"></input>
                             </div>
                             <div className='song-manager-field-wrapper' id={'insertSongWrapper'}>
-                                <input className='song-entry' id={'insertSong'} placeholder='Who is the publisher/label?' type="file" accept='.mp3'
+                                <input className='song-entry' ref={file} id={'insertSong'} placeholder='' type="file" accept='.mp3'
                                 value={song} onChange={(e) => {setSong(e.target.value); handleInputDisplay()}}>
                                 </input>
                                 <div className='management-input-click-div'>
@@ -78,7 +133,7 @@ function SongManagement({clickOff, editClickOff, mode, setMode}) {
                             </div>}
                         </div>
                         <div className='album-manager-controls-save-create col-10 col-sm-6'>
-                            <button className='create-save-button' onClick={() => {clickOff(false); editClickOff(false); setMode(false)}}>{mode ? 'Save' : 'Add Track'}</button>
+                            <button className='create-save-button' onClick={() => {handleSongManager(); clickOff(false); editClickOff(false); setMode(false)}}>{mode ? 'Save' : 'Add Track'}</button>
                         </div>       
                     </div>
                 </div>

@@ -3,7 +3,7 @@ import { BsThreeDots } from "react-icons/bs"
 import { FaRegEdit } from "react-icons/fa"
 import { PlayerContext } from '../contexts/PlayerContext';
 
-function TracklistSong({number, title, duration, artist, edit, setMode}) {
+function TracklistSong({number, title, duration, artist, edit, setMode, content}) {
 
   const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
@@ -21,17 +21,17 @@ function TracklistSong({number, title, duration, artist, edit, setMode}) {
                   
                     <div className='information-wrapper'> 
                         <div className='song-title'>
-                            <span>Circa 2013</span>
+                            <span>{content.title}</span>
                         </div>
                         <div className='song-artist'>
-                            <span>{artist} Jaden</span>
+                            <span>[artistname]</span>
                         </div>
                     </div>
                   </div>
                   <div className='col-5 col-sm-4 col-md-3 song-functions'>
 
                     <div className='buttons-wrapper'>
-                        <span className='song-time'>2:02</span>
+                        <span className='song-time'>{content.duration}</span>
                         <button className='song-options-button'>
                             <span>
                                 <BsThreeDots/>

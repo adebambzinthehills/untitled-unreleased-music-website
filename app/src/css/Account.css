@@ -34,13 +34,13 @@
     margin-right: auto;
     align-items: center;
 }
-
+/* 
 .section {
     background-color: #282828;
     border-radius:15px;
     padding-bottom:15px;
     margin-bottom: 20px;;
-}
+} */
 
 .section h2 {
     padding:10px;
@@ -74,6 +74,16 @@
 
 .section input {
     width: 100%;;
+}
+
+.section input.account {
+    border:1px solid grey;
+    padding: 3%;
+}
+
+.section input.account:focus {
+   outline:none; 
+   border: 1px solid white;
 }
 
 .details, .editDetailsHeader {
@@ -115,4 +125,92 @@
     font-weight: bold;
     background-color: inherit;
     padding:8px;
+}
+
+.accountButtonsSection {
+    margin-top: 10%;
+}
+
+.account button {
+    transition: all .2s ease-in-out;
+}
+
+.account button:hover {
+    transform: scale(1.05);
+
+}
+
+.profile-manager-image-wrapper:hover .profile-hover-information {
+    display: flex;
+}
+
+.profile-manager-image-wrapper:hover {
+    transform: scale(1.02);
+}
+
+.profile-manager-image-wrapper {
+    background-color: #1ed76b;
+    width: 160px;
+    height: 160px;
+    border-radius: 90px;
+    transition: all .2s ease-in-out;
+    position: relative;
+}
+
+.profile-manager-image, .profile-manager-image-content {
+    width: 100%;
+    height: 100%;
+}
+
+.profile-management-input {
+    display: none
+}
+
+.profile-management-input-click-div {
+    position: absolute;
+    width: 100%;
+    height:100%;
+    margin:0 auto;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+    z-index: 1;
+}
+
+.profile-management-input-button {
+    width: 100%;
+    height:100%;
+    border: none;
+    background-color: transparent;
+    border-radius: 6px;
+}
+
+.profile-hover-information {
+    display: none;
+    width:100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(100 100 100 / 30%);
+    border-radius: 90px;
+}
+
+.hover-unit-wrapper {
+    display: flex;
+    justify-content: center;
+}
+
+.hover-icon {
+    width:40px;
+    height: 40px;
+}
+
+.accountIcon {
+    position: absolute;
+}
+
+.iconWrapper {
+    margin-top:50px;
+    margin-bottom:30px
 }

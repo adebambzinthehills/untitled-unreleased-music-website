@@ -21,13 +21,18 @@ import { CiFolderOn } from 'react-icons/ci'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import SongManagement from './SongManagement'
 
-function Album({player}) {
+function Album({player, setMode}) {
 
     const {playerOn, play, stop, toggle} = useContext(PlayerContext);
+    
 
     const {state} = useLocation();
+
+    const editInformation = [state.title, state.label, state.image, state.date];
+    const [tracks, setTracks] = useState([]);
+
     const navigate = useNavigate();
-    const [shuffle, setShuffle] = useState(true);
+    const [shuffle, setShuffle] = useState(false);
     const [paletteActive, setPaletteActive] = useState(false);
     const [paletteBlock, setPaletteBlock] = useState(false);
     const [fullAlbumCover, setFullAlbumCover] = useState(false);
@@ -202,7 +207,7 @@ function Album({player}) {
                 </div>
             </div>
 
-            <Tracklist songs={state.songs} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
+            <Tracklist songs={state.songs} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
             {playerOn && <div className='player-block'></div>}
 
             {fullAlbumCover && <div className='fullscreen-album-cover-wrapper'>
@@ -230,11 +235,11 @@ function Album({player}) {
                 </div>
             </div>}
             {editAlbumButtonClicked &&
-                <AlbumManagement clickOff={setEditAlbumButtonClicked} edit={true}/>
+                <AlbumManagement clickOff={setEditAlbumButtonClicked} edit={true} information={editInformation}/>
             }
             {
             (addTracksButtonClicked || editTracksButtonClicked) && 
-                <SongManagement clickOff={setAddTracksButtonClicked} editClickOff={setEditTracksButtonClicked} mode={editMode} setMode={setEditMode}/>
+                <SongManagement clickOff={setAddTracksButtonClicked} editClickOff={setEditTracksButtonClicked} mode={editMode} setMode={setEditMode} tracks={tracks} setTracks={setTracks}/>
             }
         </div>
     )
