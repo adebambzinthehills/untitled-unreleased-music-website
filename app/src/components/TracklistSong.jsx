@@ -10,8 +10,9 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content}
   return (
     <div>
       <li className>
-        <button className='tracklist-song-button' onClick={toggle}>
-                <div className='row'>
+        
+                <div className='row tracklist-row'>
+                <button className='tracklist-song-button' onClick={toggle}></button>
                   <div className='col-0-5 song-number'>
                     <div className='number-wrapper'> 
                         <span>{number}</span>
@@ -31,21 +32,22 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content}
                   <div className='col-5 col-sm-4 col-md-3 song-functions'>
 
                     <div className='buttons-wrapper'>
-                        <span className='song-time'>{content.duration}</span>
-                        <button className='song-options-button'>
-                            <span>
-                                <BsThreeDots/>
-                            </span>
-                        </button>
-                        <button className='edit-song-button' onClick={() => {edit(true); setMode(true)}}>
+                        <div className='song-time'><span>{content.duration}</span></div>
+                        <div className='song-options-button-wrapper'>
+                          <button className='song-options-button'>
+                              <span>
+                                  <BsThreeDots/>
+                              </span>
+                          </button>
+                        </div>
+                        {/* <button className='edit-song-button' onClick={() => {edit(true); setMode(true)}}>
                             <span>
                             <   FaRegEdit/>
                             </span>
-                        </button>
+                        </button> */}
                     </div>
                   </div>
                 </div>
-          </button>
         </li>
     </div>
   )

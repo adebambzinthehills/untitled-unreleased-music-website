@@ -431,19 +431,26 @@
     margin:0 auto;
 }
 
+.tracklist-row {
+    border-radius: 10px;
+    color: #a7a7a7;
+    height:100%;
+    position:relative;
+}
+
+.tracklist-row:hover {
+    background-color: #454545;
+}
 
 .tracklist-song-button {
-    background-color: inherit;
+    background-color: transparent;
+    position: absolute;
     border:none;
     width:100%;
     height:100%;
     border-radius: 10px;
-    color: #a7a7a7;
 }
 
-.tracklist-song-button:hover {
-    background-color: #454545;
-}
 
 .song-artist span {
     font-size:0.9em;
@@ -471,6 +478,7 @@
 
 .song-information {
     display: flex;
+    align-items: center;
 }
 
 .number-wrapper span{
@@ -482,7 +490,36 @@
 }
 
 .song-time {
-    margin-right:10px;
+    float:left;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    font-size:0.9rem;
+    width:50%;
+
+    justify-content: right;
+}
+
+.song-time > span {
+    direction: rtl;
+}
+
+.tracklist-row:hover > .song-functions >
+.buttons-wrapper > .song-options-button-wrapper {
+    display: flex;
+}
+
+.song-options-button-wrapper {
+    width: 50%;
+    display: none;
+    justify-content: right;
+    z-index: 5;
+}
+
+@media screen and (max-width:768px){
+    .song-options-button-wrapper{
+        display: flex;
+    }
 }
 
 .information-wrapper {
@@ -496,10 +533,11 @@
 .buttons-wrapper {
     height: 100%;
     float: right;
+    width:100%;
+    display: flex;
 }
 
 .song-functions {
-    z-index: 5;
 }
 
 .song-functions button {
@@ -536,8 +574,19 @@
 }
 
 .clock-wrapper {
-    float: right;
-    padding-right: 126px;
+    width:50%;
+    display: flex;
+    justify-content: right;
+    padding-right:15px;
+}
+
+.track-header {
+    display: flex;
+}
+
+.empty-tracklist-header-space {
+    width: 50%;
+    height:1px;
 }
 
 .title-header-wrapper {
@@ -559,6 +608,7 @@
 
     .song-time, .song-number {
         display: none;
+        width:0%;
     }
 
     .tracklist-wrapper {
@@ -568,6 +618,11 @@
     .tracklist-header {
         display: none;
     }
+
+    .song-options-button-wrapper {
+        width: 100%;
+    }
+
 }
 
 
@@ -736,4 +791,36 @@
         width: 80%;
         height: 40%;
     }
+}
+
+/* LABEL AND INFORMATION AT THE BOTTOM */
+
+.container.information{
+    margin-bottom:50px;
+}
+
+.bottom-information-wrapper {
+    margin-top:50px;
+    width: 100%;
+    height:100px;
+    font-size: 0.9rem;
+    color: #979797;
+    font-weight: 500;
+}
+
+.bottom-information.label {
+    font-size: 0.7rem;
+}
+
+@media screen and (max-width:580px){
+    .bottom-information-wrapper {
+        width: 90%;
+        margin: 0 auto;
+        margin-bottom:50px;
+    }
+}
+
+
+.project-select__control {
+    color:black;
 }

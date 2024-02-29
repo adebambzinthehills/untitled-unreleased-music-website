@@ -20,11 +20,14 @@ import { FaRegEdit} from 'react-icons/fa'
 import { CiFolderOn } from 'react-icons/ci'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import SongManagement from './SongManagement'
+import { projectsStorage } from '../data/projects'
 
 function Album({player, setMode}) {
 
+    console.log(projectsStorage)
+
     const {playerOn, play, stop, toggle} = useContext(PlayerContext);
-    
+    const [projects, setProjects] = useState(projectsStorage);
 
     const {state} = useLocation();
 
@@ -32,7 +35,7 @@ function Album({player, setMode}) {
     const [tracks, setTracks] = useState([]);
     const [dateMonth, setDateMonth] = useState(state.date[1]);
 
-    var monthNames = [ "January", "February", "March", "April", "May", "June", 
+    const monthNames = [ "January", "February", "March", "April", "May", "June", 
     "July", "August", "September", "October", "November", "December" ];
 
     const navigate = useNavigate();
@@ -198,11 +201,14 @@ function Album({player, setMode}) {
                                 <div className='title-header-wrapper'></div>
                                 <span>Title</span>
                             </div>
-                            <div className='col-5 col-sm-4 col-md-3'>
+                            <div className='col-5 col-sm-4 col-md-3 track-header'>
                                 <div className='clock-wrapper'>
                                     <span>
                                         <LuClock3/>
                                     </span>
+                                </div>
+                                <div className='empty-tracklist-header-space'>
+
                                 </div>
                             </div>
                         </div>
@@ -212,7 +218,7 @@ function Album({player, setMode}) {
             </div>
 
             <Tracklist songs={state.songs} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
-            <div className='container'>
+            <div className='container information'>
                 <div className='bottom-information-wrapper'>
                     <div className='bottom-information date'>
                         <span>{state.date[0]} {monthNames[(state.date[1] - 1)]} {state.date[2]}</span>
@@ -252,7 +258,7 @@ function Album({player, setMode}) {
                 </div>
             </div>}
             {editAlbumButtonClicked &&
-                <AlbumManagement clickOff={setEditAlbumButtonClicked} edit={true} information={editInformation}/>
+                <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setEditAlbumButtonClicked} edit={true} information={editInformation}/>
             }
             {
             (addTracksButtonClicked || editTracksButtonClicked) && 

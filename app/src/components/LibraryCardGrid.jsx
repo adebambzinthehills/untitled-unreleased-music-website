@@ -25,7 +25,9 @@ import AlbumManagement from './AlbumManagement'
 
 import "../css/App.css"
 
-function LibraryCardGrid({userCards, setUserCards}) {
+function LibraryCardGrid({userCards, setUserCards, projects, setProjects}) {
+  console.log(projects)
+
   const [addButtonClicked, setAddButtonClicked] = useState(false);
   const [newProjectButtonClicked, setNewProjectButtonClicked] = useState(false);
   const [albumManagerMode, setAlbumManagerMode] = useState(false)
@@ -132,7 +134,7 @@ function LibraryCardGrid({userCards, setUserCards}) {
         {/* {playerOn && <Player></Player>} */}
       </div>
       {newProjectButtonClicked &&
-      <AlbumManagement clickOff={setNewProjectButtonClicked} edit={albumManagerMode} setMode={setAlbumManagerMode} cards={userCards} setCards={setUserCards}/>
+      <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setNewProjectButtonClicked} edit={albumManagerMode} setMode={setAlbumManagerMode} cards={userCards} setCards={setUserCards}/>
       }
     </div>
   )

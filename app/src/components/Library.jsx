@@ -5,6 +5,7 @@ import LibraryCardGrid from './LibraryCardGrid';
 import '../css/Library.css';
 import { PlayerContext } from '../contexts/PlayerContext'
 import AlbumManagement from './AlbumManagement';
+import {projectsStorage} from '../data/projects'
 
 function Library({player, playerToggle}) {
 
@@ -13,6 +14,7 @@ function Library({player, playerToggle}) {
   const [addButtonClicked, setAddButtonClicked] = useState(false);
   const [albumManagerMode, setAlbumManagerMode] = useState(false);
   const [firstCreationSuccessful, setFirstCreationSuccessful] = useState(false);
+  const [projects, setProjects] = useState(projectsStorage);
 
   function displayManager() {
     setAddButtonClicked(true)
@@ -44,7 +46,7 @@ function Library({player, playerToggle}) {
     <div className='page'>
       <Header></Header>
       <div className='library' style={staticStyle}>
-        {hasProjects ? (<LibraryCardGrid player={player} playerValue={playerToggle} userCards={userCards} setUserCards={setUserCards}/>) : (
+        {hasProjects ? (<LibraryCardGrid projects={projects} setProjects={setProjects} player={player} playerValue={playerToggle} userCards={userCards} setUserCards={setUserCards}/>) : (
 
           <div className='noProjectsContainer'>
             <div className="noProjectsContent">
@@ -57,7 +59,7 @@ function Library({player, playerToggle}) {
           </div>
         )}
         {addButtonClicked &&
-          <AlbumManagement clickOff={setAddButtonClicked} edit={albumManagerMode} setMode={setAlbumManagerMode} cards={userCards} setCards={setUserCards} setFirstCreationSuccessful={setFirstCreationSuccessful}/>
+          <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setAddButtonClicked} edit={albumManagerMode} setMode={setAlbumManagerMode} cards={userCards} setCards={setUserCards} setFirstCreationSuccessful={setFirstCreationSuccessful}/>
         }
       </div>
     </div>

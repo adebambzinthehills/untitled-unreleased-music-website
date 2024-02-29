@@ -10,7 +10,7 @@ import Select from 'react-select';
 
 
 function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlbumManagerMode, setNewProjectButtonClicked,
-    information, setFirstCreationSuccessful
+    information, setFirstCreationSuccessful, projects, setProjects
 }) {
 
     const entryPhoto = useRef();
@@ -95,6 +95,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
         let newImageSrc = "";
         let albumImage = grey;
         let newImageAdded = false;
+        let artist = "[artistname]"
 
         if(albumTitle.current.value != null || albumTitle.current.value.trim() != ""){
             title = albumTitle.current.value;
@@ -134,11 +135,27 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                 if(!edit){
                     if(allowCreation){
                         setCards([...cards, 
-                            <LibraryCard title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>])
-                        }
-                            if(setFirstCreationSuccessful != null){
-                                setFirstCreationSuccessful(true)
+                            <LibraryCard title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
+                        );
+                        
+                        setProjects([...projects,
+                            {
+                                projectTitle: title,
+                                projectType: projectTypeChoice,
+                                artist: artist,
+                                date: dateValue,
+                                label: label,
+                                songs: {}
                             }
+                        ]);
+
+                        if(setFirstCreationSuccessful != null){
+                            setFirstCreationSuccessful(true)
+                        }
+
+                    }
+                        
+                        
                     else{
                         alert("Failed to make a new project! (Please make sure you've filled out the release date) - New Image")
                     }
@@ -159,6 +176,17 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                     if(setFirstCreationSuccessful != null){
                         setFirstCreationSuccessful(true)
                     }
+                    setProjects([...projects,
+                    {
+                        projectTitle: title,
+                        projectType: projectTypeChoice,
+                        artist: artist,
+                        date: dateValue,
+                        label: label,
+                        image: albumImage,
+                        colour: '',
+                        songs: {}
+                    }]);
                 }
                 else{
                     alert("Failed to make a new project! (Please make sure you've filled out the release date)");
