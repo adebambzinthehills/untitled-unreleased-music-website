@@ -25,15 +25,13 @@ import AlbumManagement from './AlbumManagement'
 
 import "../css/App.css"
 
-function LibraryCardGrid() {
+function LibraryCardGrid({userCards, setUserCards}) {
   const [addButtonClicked, setAddButtonClicked] = useState(false);
   const [newProjectButtonClicked, setNewProjectButtonClicked] = useState(false);
   const [albumManagerMode, setAlbumManagerMode] = useState(false)
   const [makeElementsStatic, setMakeElementsStatic] = useState(false);
   const staticStyle = makeElementsStatic ? {position: 'static'} : {position: 'relative'};
   const footerStaticStyle = makeElementsStatic ? {position: 'static'} : {position: 'fixed'};
-
-  const [userCards, setUserCards] = useState([]);
 
   const {playerOn, play, stop, toggle, fullscreenPlayerEnabled} = useContext(PlayerContext);
 
@@ -112,7 +110,7 @@ function LibraryCardGrid() {
         <div className='library-search-bar-block'></div>
       </div>
       <div className='grid-card-container'>
-        {userCards.length > 0 ? userCards : exampleCards}
+        {userCards.length > 0 ? userCards : ''}
       </div>
       {gridHeightOver && <div className='footer-block'></div>}  
       {playerOn && <div className='player-block'></div>}

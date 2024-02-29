@@ -28,8 +28,12 @@ function Album({player, setMode}) {
 
     const {state} = useLocation();
 
-    const editInformation = [state.title, state.label, state.image, state.date];
+    const editInformation = [state.title, state.label, state.image, state.date, state.type];
     const [tracks, setTracks] = useState([]);
+    const [dateMonth, setDateMonth] = useState(state.date[1]);
+
+    var monthNames = [ "January", "February", "March", "April", "May", "June", 
+    "July", "August", "September", "October", "November", "December" ];
 
     const navigate = useNavigate();
     const [shuffle, setShuffle] = useState(false);
@@ -143,9 +147,9 @@ function Album({player, setMode}) {
                         </div>
                         <div className = "music-content-information">
                             <div className='music-header-content-wrapper'>
-                                <span className='music-header-content-type'>{state.type}</span>
+                                <span className='music-header-content-type'>{state.type.value}</span>
                                 <h1>{state.title}</h1>
-                                <span className='music-header-content-artist'>{state.artist} • 2024 </span>
+                                <span className='music-header-content-artist'>{state.artist} • {state.date[2]} </span>
                             </div>
                         </div>
                     </div>
@@ -208,6 +212,19 @@ function Album({player, setMode}) {
             </div>
 
             <Tracklist songs={state.songs} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
+            <div className='container'>
+                <div className='bottom-information-wrapper'>
+                    <div className='bottom-information date'>
+                        <span>{state.date[0]} {monthNames[(state.date[1] - 1)]} {state.date[2]}</span>
+                    </div>
+                    <div className='bottom-information label'>
+                        <span>&copy; {state.label}</span>
+                    </div>
+                    <div className='bottom-information label'>
+                        <span>&#9413; {state.label}</span>
+                    </div>
+                </div>    
+            </div>
             {playerOn && <div className='player-block'></div>}
 
             {fullAlbumCover && <div className='fullscreen-album-cover-wrapper'>

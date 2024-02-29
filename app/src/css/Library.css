@@ -211,6 +211,11 @@
     padding:8px;
     margin: 0 auto;
     border:none;
+    transition: all .2s ease-in-out;
+}
+
+.addProjectsBtn:hover {
+    transform: scale(1.03);
 }
 
 .grid-card-container {

@@ -54,7 +54,7 @@ function LibraryCard({title, artist, image, type, songs, edit, setMode, date, la
                 <h5>{title}</h5>
             </div>
         </a>
-        <p>{type} • {artist} </p>
+        <p>{type.value} • {artist} </p>
       </div>
       <div className='card-play-content'>
         {/* absolute position, floating right, border radius 500, z index 2 */}

@@ -5,11 +5,12 @@ import { FaTrashAlt } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import LibraryCard from './LibraryCard';
 import grey from '../images/grey.jpeg'
+import Select from 'react-select';
 
 
 
 function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlbumManagerMode, setNewProjectButtonClicked,
-    information
+    information, setFirstCreationSuccessful
 }) {
 
     const entryPhoto = useRef();
@@ -18,6 +19,45 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
     const releaseDate = useRef();
 
     const [tempImage, setTempImage] = useState({backgroundImage: ''});
+
+    const projectOptions = [
+        { value: 'Single', label: 'Single' },
+        { value: 'EP', label: 'EP' },
+        { value: 'Album', label: 'Album' }
+      ];
+    const [projectTypeChoice, setProjectTypeChoice] = useState(projectOptions[0]);
+
+    const customStyles = {
+        control: (provided) => ({
+          ...provided,
+          backgroundColor: 'gray',
+          border: '1px solid lightgray',
+          height: '35px',
+          minHeight: '35px'
+        }),
+        menu: (provided) => ({
+          ...provided,
+          color: 'white',
+          backgroundColor: 'grey'
+        }),
+        indicatorsContainer: (provided, state) => ({
+            ...provided,
+            height: '35px',
+          }),
+        valueContainer: (provided, state) => ({
+            ...provided,
+            height: '35px'
+          }),
+        singleValue: (provided, state) => ({
+            ...provided,
+            height: '35px'
+          }),
+        input: (provided, state) => ({
+            ...provided,
+            height: '35px'
+          }),
+        
+    };
 
     useEffect(() => {
         if(edit){
@@ -30,6 +70,8 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
             let updateDate = information[3][2] + "-" + updateMonth + "-" + updateDay;
 
             releaseDate.current.value =  updateDate;
+
+            setProjectTypeChoice(information[4])
         }
     }, []);
 
@@ -92,7 +134,11 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                 if(!edit){
                     if(allowCreation){
                         setCards([...cards, 
-                            <LibraryCard title={title} artist="[artistname]" image={albumImage} type="Album" songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]);                }
+                            <LibraryCard title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>])
+                        }
+                            if(setFirstCreationSuccessful != null){
+                                setFirstCreationSuccessful(true)
+                            }
                     else{
                         alert("Failed to make a new project! (Please make sure you've filled out the release date) - New Image")
                     }
@@ -105,9 +151,14 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
         else {
             if(!edit){
                 console.log("No file found!")
+                console.log(cards)
+                console.log(typeof(cards))
                 if(allowCreation){
                     setCards([...cards, 
-                    <LibraryCard title={title} artist="[artistname]" image={albumImage} type="Album" songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]);
+                    <LibraryCard title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>])
+                    if(setFirstCreationSuccessful != null){
+                        setFirstCreationSuccessful(true)
+                    }
                 }
                 else{
                     alert("Failed to make a new project! (Please make sure you've filled out the release date)");
@@ -138,7 +189,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
         <div className='album-manager'>
             <div className='album-manager-header-wrapper'>
                 <div className='album-manager-header'>
-                    <h4>{edit ? 'Edit' : 'Create'} Album</h4>
+                    <h4>{edit ? 'Edit' : 'Create'} Project</h4>
                 </div>
                 <div className='album-manager-header-button-wrapper'>
 
@@ -174,7 +225,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                 <div className='album-manager-entry-wrapper'>
                     <div className='album-manager-entry-content'>
                         <div className='album-manager-field-wrapper'>
-                            <div className='label-wrapper'><label htmlFor="">Album Name</label></div>
+                            <div className='label-wrapper'><label htmlFor="">Project Name</label></div>
                             <input className='album-entry' ref={albumTitle} placeholder="What's your album title?"  data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed in the menu and album page."></input>
                         </div>
                         <div className='album-manager-field-wrapper'>
@@ -184,6 +235,22 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                         <div className='album-manager-field-wrapper'>
                             <div className='label-wrapper'><label htmlFor="">Release Date</label></div>
                             <input className='album-entry' ref={releaseDate} type='date' placeholder="What's your album release date?" data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed next to the album title, and again at the bottom of album page, much like Spotify's interface."></input>
+                        </div>
+                        <div className='album-manager-field-wrapper'>
+                            {/* <div className='label-wrapper'><label htmlFor="">Project Type</label></div> */}
+                            {/* <select className='album-entry' name='type' ref={releaseDate} type='select' placeholder="Single, EP or Album?">
+                                <option value="single">Single</option>
+                                <option value="ep">EP</option>
+                                <option value="album">Album</option>
+                            </select> */}
+                            <Select options={projectOptions} 
+                            className='project-select' 
+                            classNamePrefix='project-select'
+                            defaultValue={projectOptions[0]}
+                            value={projectTypeChoice}
+                            styles={customStyles}
+                            isSearchable={false}
+                            onChange={(choice) => {setProjectTypeChoice(choice); console.log(choice.value)}}></Select>
                         </div>
                     </div>
                 </div>
