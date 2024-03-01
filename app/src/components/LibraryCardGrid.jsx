@@ -82,6 +82,36 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects}) {
     }
   }, [gridHeightOver])
 
+  useEffect(() => {
+    if(projects.length > 0){
+      //generate new card
+      var tempArray = [];
+      for(let i = 0; i < projects.length; i++ ){
+        var currentProject = projects[i];
+        console.log(currentProject)
+        var title = currentProject.projectTitle;
+        var artist = currentProject.artist;
+        var albumImage = currentProject.image;
+        var label = currentProject.label;
+        var dateValue = currentProject.date;
+        var colour = currentProject.colour;
+        var projectTypeChoice = currentProject.projectType
+        var songs = Object.keys(currentProject.songs).length;
+        var songList = currentProject.songs;
+
+        console.log('@Songs: ', songs);
+
+        tempArray = [...tempArray,
+          <LibraryCard title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
+          edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>
+        ];
+        // console.log('Temp', tempArray[0].props.title)
+      }
+      setUserCards(tempArray)
+
+    }
+  }, [])
+
   const exampleCards = [
   <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>,
   <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>,

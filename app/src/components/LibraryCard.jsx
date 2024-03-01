@@ -18,7 +18,8 @@ function LibraryCard({title, artist, image, type, songs, edit, setMode, date, la
   const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
   function cardClickHandler(){
-    navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs, date: date, setMode: setMode, label: label}});
+    console.log(image, title, songs, type, artist, setMode, date, label)
+    navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs, date: date, label: label}});
   }
 
 

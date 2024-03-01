@@ -6,15 +6,38 @@ import '../css/Library.css';
 import { PlayerContext } from '../contexts/PlayerContext'
 import AlbumManagement from './AlbumManagement';
 import {projectsStorage} from '../data/projects'
+import { useAuth } from '../contexts/AuthContext';
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { auth, db, storage } from '../firebase'
 
 function Library({player, playerToggle}) {
 
-  const [hasProjects, setHasProjects] = useState(false);
+  const { getCurrentUserIdString } = useAuth();
+
+  async function readProjectsFromFirebase(){
+    var currentUser = getCurrentUserIdString();
+    const docRef = doc(db, "users", currentUser);
+    const docSnap = await getDoc(docRef);
+    var data;
+
+    if(docSnap.exists()){
+        data = docSnap.data().projects;
+        console.log("Data! ", data)
+    }
+    else {
+        console.log("There were no documents to be found!")
+        data = []
+    }
+
+    return data
+  }
+
+  const [hasProjects, setHasProjects] = useState(true);
   const [userCards, setUserCards] = useState([]);
   const [addButtonClicked, setAddButtonClicked] = useState(false);
   const [albumManagerMode, setAlbumManagerMode] = useState(false);
   const [firstCreationSuccessful, setFirstCreationSuccessful] = useState(false);
-  const [projects, setProjects] = useState(projectsStorage);
+  const [projects, setProjects] = useState([]);
 
   function displayManager() {
     setAddButtonClicked(true)
@@ -34,13 +57,23 @@ function Library({player, playerToggle}) {
   }, [fullscreenPlayerEnabled]);
 
   useEffect(() => {
-    if(firstCreationSuccessful && userCards.length > 0){
+    if(firstCreationSuccessful || userCards.length > 0){
       setHasProjects(true)
     }
     else {
       setHasProjects(false)
     }
   }, [firstCreationSuccessful, userCards])
+
+  useEffect(() => {
+    readProjectsFromFirebase().then((result) => {
+      setProjects(result)
+      if(result.length > 0){
+        console.log("Result TRUE")
+        setHasProjects(true)
+      }
+    });
+  }, [])
 
   return (
     <div className='page'>

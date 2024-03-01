@@ -22,7 +22,7 @@ import { FaRegTrashCan } from 'react-icons/fa6'
 import SongManagement from './SongManagement'
 import { projectsStorage } from '../data/projects'
 
-function Album({player, setMode}) {
+function Album({player}) {
 
     console.log(projectsStorage)
 
@@ -125,6 +125,28 @@ function Album({player, setMode}) {
         }
       }, [editAlbumButtonClicked, addTracksButtonClicked, editTracksButtonClicked])
 
+
+    //   const screenSize = window.innerWidth;
+    const [mobileView, setMobileView] = useState(false);
+  
+    function handleResize(){
+        if(window.innerWidth <= 600){
+            setMobileView(true);
+        }
+        else{
+            setMobileView(false);
+        }
+    }
+
+    useEffect(() => {
+        handleResize();
+        window.addEventListener('resize', handleResize);
+        
+        return () => {
+          window.removeEventListener('resize', handleResize);
+        };
+    }, []);
+
     return (
         
         <div className='content-page'>
@@ -150,9 +172,11 @@ function Album({player, setMode}) {
                         </div>
                         <div className = "music-content-information">
                             <div className='music-header-content-wrapper'>
-                                <span className='music-header-content-type'>{state.type.value}</span>
+                                {!mobileView && <span className='music-header-content-type'>{state.type.value}</span>}
                                 <h1>{state.title}</h1>
-                                <span className='music-header-content-artist'>{state.artist} • {state.date[2]} </span>
+                                {!mobileView && <span className='music-header-content-artist'>{state.artist} • {state.date[2]} </span>}
+                                {mobileView && <span className='music-header-content-artist'>{state.artist}</span>}
+                                {mobileView && <span className='music-header-content-artist'>{state.type.value} • {state.date[2]} </span>}
                             </div>
                         </div>
                     </div>
