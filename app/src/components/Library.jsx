@@ -9,28 +9,11 @@ import {projectsStorage} from '../data/projects'
 import { useAuth } from '../contexts/AuthContext';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import { auth, db, storage } from '../firebase'
+import { ReadProjectsFromFirebase } from './AlbumManagement';
 
 function Library({player, playerToggle}) {
 
   const { getCurrentUserIdString } = useAuth();
-
-  async function readProjectsFromFirebase(){
-    var currentUser = getCurrentUserIdString();
-    const docRef = doc(db, "users", currentUser);
-    const docSnap = await getDoc(docRef);
-    var data;
-
-    if(docSnap.exists()){
-        data = docSnap.data().projects;
-        console.log("Data! ", data)
-    }
-    else {
-        console.log("There were no documents to be found!")
-        data = []
-    }
-
-    return data
-  }
 
   const [hasProjects, setHasProjects] = useState(true);
   const [userCards, setUserCards] = useState([]);
@@ -66,7 +49,7 @@ function Library({player, playerToggle}) {
   }, [firstCreationSuccessful, userCards])
 
   useEffect(() => {
-    readProjectsFromFirebase().then((result) => {
+    ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
       setProjects(result)
       if(result.length > 0){
         console.log("Result TRUE")

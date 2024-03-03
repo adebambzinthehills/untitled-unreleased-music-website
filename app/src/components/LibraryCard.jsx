@@ -8,7 +8,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from '../contexts/PlayerContext';
 
-function LibraryCard({title, artist, image, type, songs, edit, setMode, date, label}) {
+function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date, label}) {
 
   const [buttonClick, setButtonClicked] = useState(false);
   const [editButtonClicked, setEditButtonClicked] = useState(false);
@@ -18,8 +18,10 @@ function LibraryCard({title, artist, image, type, songs, edit, setMode, date, la
   const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
   function cardClickHandler(){
-    console.log(image, title, songs, type, artist, setMode, date, label)
-    navigate('/album', { state : {image: image, title: title, artist: artist, type: type, songs: songs, date: date, label: label}});
+    console.log(id, image, title, songs, type, artist, setMode, date, label);
+    var path = '/project/' + id;
+    console.log(path)
+    navigate(path, { state : {image: image, title: title, artist: artist, type: type, songs: songs, date: date, label: label}});
   }
 
 
@@ -55,7 +57,7 @@ function LibraryCard({title, artist, image, type, songs, edit, setMode, date, la
                 <h5>{title}</h5>
             </div>
         </a>
-        <p>{type.value} • {artist} </p>
+        <p>{date[2]} • {type.value} </p>
       </div>
       <div className='card-play-content'>
         {/* absolute position, floating right, border radius 500, z index 2 */}

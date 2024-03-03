@@ -26,7 +26,7 @@ function App() {
           <Route path="/Library" element={<Library/>}></Route>
           <Route path="/Account" element={<Account/>}></Route>
           <Route path="/Settings" element={<Settings/>}></Route>
-          <Route path="/Album" element={<Album/>}></Route>
+          <Route path="/project/:key" exact Component={Album}></Route>
         </Routes>
         {playerOn && <Player/>}
       </Router>

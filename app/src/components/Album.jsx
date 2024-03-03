@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useContext} from 'react'
 import Tracklist from '../components/Tracklist'
 import Player from './Player'
 import Header from './Header'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, useParams } from 'react-router-dom'
 import "../css/MusicContent.css"
 import { FaPlay, FaPlus } from 'react-icons/fa'
 import { TiArrowShuffle } from "react-icons/ti"
@@ -20,20 +20,84 @@ import { FaRegEdit} from 'react-icons/fa'
 import { CiFolderOn } from 'react-icons/ci'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import SongManagement from './SongManagement'
-import { projectsStorage } from '../data/projects'
+import { ReadProjectsFromFirebase } from './AlbumManagement'
+import { useAuth } from '../contexts/AuthContext';
+import grey from '../images/grey.jpeg'
 
 function Album({player}) {
 
-    console.log(projectsStorage)
-
     const {playerOn, play, stop, toggle} = useContext(PlayerContext);
-    const [projects, setProjects] = useState(projectsStorage);
 
     const {state} = useLocation();
+    const { key } = useParams();
+    console.log("Page key!: ", key )
 
-    const editInformation = [state.title, state.label, state.image, state.date, state.type];
+    const { getCurrentUserIdString } = useAuth();
+    const [project, setProject] = useState(
+        {
+            key: 'key',
+            projectTitle: '',
+            projectType: {label: 'Single', value: 'Single'},
+            artist: '',
+            date: new Date(),
+            label: '[label]',
+            image: '',
+            colour: '',
+            songs: {}
+        }
+    );
+    const [projects, setProjects] = useState([])
+
+
+    const [information, setInformation] = useState({
+        title: '', 
+        label: '[label]', 
+        image: '', 
+        artist: '',
+        date: new Date(), 
+        type: {label: 'Single', value: 'Single'}
+    });
+
+    useEffect(() => {
+        ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+            setProjects(result)
+            for(let i = 0; i < result.length ; i++){
+                let project = result[i];
+                if(project.key == key){
+                    setProject(project);
+                    setInformation({
+                        title: project.projectTitle, 
+                        label: project.label, 
+                        image: project.image, 
+                        artist: project.artist,
+                        date: project.date, 
+                        type: project.projectType
+                    })
+                }
+            }
+            console.log("Rendering and reading projects for the first time!")
+            });
+    }, [])
+
+    useEffect(() => {
+        
+        console.log('Loaded project in album! : ', project);
+        setInformation({
+            title: project.projectTitle, 
+            label: project.label, 
+            image: project.image, 
+            artist: project.artist,
+            date: project.date, 
+            type: project.projectType
+        })
+
+        ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+            setProjects(result)
+            console.log("Re-rendering and re-reading projects!")
+        });
+    }, [project])
+
     const [tracks, setTracks] = useState([]);
-    const [dateMonth, setDateMonth] = useState(state.date[1]);
 
     const monthNames = [ "January", "February", "March", "April", "May", "June", 
     "July", "August", "September", "October", "November", "December" ];
@@ -63,7 +127,7 @@ function Album({player}) {
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
             const contentImage = new Image();
-            contentImage.src = state.image;
+            contentImage.src = information.image;
             contentImage.crossOrigin = 'anonymous';
             contentImage.onload = () => {
                 const colorThief = new ColorThief();
@@ -79,9 +143,8 @@ function Album({player}) {
             console.log(err);
             alert("Couldn't display album background colour!");
         })
-
-
-    }, [])
+        
+    }, [information])
 
     // try{document.body.getElementsByClassName('header')[0].style.backgroundColor = 'rgb(' + backgroundColour + ')';}
     // catch(err){}
@@ -107,7 +170,7 @@ function Album({player}) {
 
 
     function goBack() {
-        navigate(-1);
+        navigate('/library');
     }
 
     const [threeDotsClicked, setThreeDotsClicked] = useState(false);
@@ -167,16 +230,16 @@ function Album({player}) {
                     <div className='music-header'>
                         <div className='music-header-album-cover'>
                             <button className='music-header-cover-button' onClick={() => setFullAlbumCover(true)}>
-                                <img className="content-cover" src={state.image}></img>
+                                <img className="content-cover" src={information.image}></img>
                             </button>
                         </div>
                         <div className = "music-content-information">
                             <div className='music-header-content-wrapper'>
-                                {!mobileView && <span className='music-header-content-type'>{state.type.value}</span>}
-                                <h1>{state.title}</h1>
-                                {!mobileView && <span className='music-header-content-artist'>{state.artist} • {state.date[2]} </span>}
-                                {mobileView && <span className='music-header-content-artist'>{state.artist}</span>}
-                                {mobileView && <span className='music-header-content-artist'>{state.type.value} • {state.date[2]} </span>}
+                                {!mobileView && <span className='music-header-content-type'>{information.type.value}</span>}
+                                <h1>{information.title}</h1>
+                                {!mobileView && <span className='music-header-content-artist'>{information.artist} • {information.date[2]} </span>}
+                                {mobileView && <span className='music-header-content-artist'>{information.artist}</span>}
+                                {mobileView && <span className='music-header-content-artist'>{information.type.value} • {information.date[2]} </span>}
                             </div>
                         </div>
                     </div>
@@ -203,7 +266,7 @@ function Album({player}) {
                             </div>
                         </div>
                         <div className='content-palette-wrapper'>
-                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock}/>
+                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock} image={information.image}/>
                         </div>
                     </div>
                     {paletteBlock && <div className='palette-small-screen-block'>
@@ -241,17 +304,17 @@ function Album({player}) {
                 </div>
             </div>
 
-            <Tracklist songs={state.songs} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
+            <Tracklist songs={project.songs.length} tracks={project.songs} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
             <div className='container information'>
                 <div className='bottom-information-wrapper'>
                     <div className='bottom-information date'>
-                        <span>{state.date[0]} {monthNames[(state.date[1] - 1)]} {state.date[2]}</span>
+                        <span>{information.date[0]} {monthNames[(information.date[1] - 1)]} {information.date[2]}</span>
                     </div>
                     <div className='bottom-information label'>
-                        <span>&copy; {state.label}</span>
+                        <span>&copy; {information.label}</span>
                     </div>
                     <div className='bottom-information label'>
-                        <span>&#9413; {state.label}</span>
+                        <span>&#9413; {information.label}</span>
                     </div>
                 </div>    
             </div>
@@ -266,7 +329,7 @@ function Album({player}) {
                                 <div>
                                     <div className='fullscreen-album-controls'>
                                         <div className='fullscreen-control-wrapper' id='fcw-change-button'>
-                                            <button className='fullscreen-change-button'>Change</button>
+                                            <button className='fullscreen-change-button' onClick={()=> {setFullAlbumCover(false); setEditAlbumButtonClicked(true)}}>Change</button>
                                         </div>
                                         <div className='fullscreen-control-wrapper'>
                                             <button className='fullscreen-close-button' onClick={()=> setFullAlbumCover(false)}>Close</button>                           
@@ -282,7 +345,7 @@ function Album({player}) {
                 </div>
             </div>}
             {editAlbumButtonClicked &&
-                <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setEditAlbumButtonClicked} edit={true} information={editInformation}/>
+                <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setEditAlbumButtonClicked} edit={true} information={information} setInformation={setInformation} currentProject={project} setCurrentProject={setProject} projectKey={key}/>
             }
             {
             (addTracksButtonClicked || editTracksButtonClicked) && 

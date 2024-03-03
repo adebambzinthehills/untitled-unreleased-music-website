@@ -12,8 +12,26 @@ import { auth, db, storage } from '../firebase'
 
 
 
+export async function ReadProjectsFromFirebase(currentUser){
+    const docRef = doc(db, "users", currentUser);
+    const docSnap = await getDoc(docRef);
+    var data;
+
+    if(docSnap.exists()){
+        data = docSnap.data().projects;
+        console.log("Data! ", data)
+    }
+    else {
+        console.log("There were no documents to be found!")
+        data = []
+    }
+
+    return data
+
+}
+
 function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlbumManagerMode, setNewProjectButtonClicked,
-    information, setFirstCreationSuccessful, projects, setProjects
+    information, setFirstCreationSuccessful, projects, setProjects, currentProject, setCurrentProject, projectKey
 }) {
 
     const entryPhoto = useRef();
@@ -65,17 +83,17 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
 
     useEffect(() => {
         if(edit){
-            setTempImage({backgroundImage: 'url(' +  information[2] + ')', backgroundSize: '100% 100%'});
-            albumTitle.current.value = information[0];
-            labelText.current.value = information[1];
+            setTempImage({backgroundImage: 'url(' +  information.image + ')', backgroundSize: '100% 100%'});
+            albumTitle.current.value = information.title;
+            labelText.current.value = information.label;
 
-            let updateDay = ("0" + information[3][0]).slice(-2);
-            let updateMonth = ("0" + information[3][1]).slice(-2);
-            let updateDate = information[3][2] + "-" + updateMonth + "-" + updateDay;
+            let updateDay = ("0" + information.date[0]).slice(-2);
+            let updateMonth = ("0" + information.date[1]).slice(-2);
+            let updateDate = information.date[2] + "-" + updateMonth + "-" + updateDay;
 
             releaseDate.current.value =  updateDate;
 
-            setProjectTypeChoice(information[4])
+            setProjectTypeChoice(information.type)
         }
     }, []);
 
@@ -85,63 +103,162 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
     }
 
     function handleNewProject() {
-        let title = "New Album #";
-        if(!edit){
-            title = title + (cards.length + 1)
-        };
-        let label = "Record Label Placeholder © 2024";
-        let allowCreation = true;
-        let releaseDateObject = ""; 
-        let dateValue = [];
-        let month = ""; // months from 1-12
-        let day = "";
-        let year = "";
-        let newImageSrc = "";
-        let albumImage = grey;
-        let newImageAdded = false;
-        let artist = "[artistname]"
 
-        if(albumTitle.current.value != null && albumTitle.current.value.trim() != ""){
-            title = albumTitle.current.value;
-        }
+            console.log("Current projects!: ", projects)
+            var currentProjects = projects;
 
-        if(labelText.current.value != null && labelText.current.value.trim() != ""){
-            label = labelText.current.value;
-        }
-        
-        if(releaseDate.current.value != null || releaseDate.current.value.trim() != ""){
-            releaseDateObject = new Date(releaseDate.current.value);
-            month = releaseDateObject.getMonth() + 1;
-            day = releaseDateObject.getDate();
-            year = releaseDateObject.getFullYear();
-            dateValue = [day, month, year, releaseDateObject]
-        }
-        else {
-            allowCreation = false;
-        }
+            let title = "New Album #";
+            if(edit == false){
+                title = title + (cards.length + 1)
+            };
+            let label = "Record Label Placeholder © 2024";
+            let allowCreation = true;
+            let releaseDateObject = ""; 
+            let dateValue = [];
+            let month = ""; // months from 1-12
+            let day = "";
+            let year = "";
+            let newImageSrc = "";
+            let albumImage = grey;
+            let newImageAdded = false;
+            let artist = "[artistname]"
+            var key;
+            
+            if(edit == false){
+                key = Math.floor(Math.random() * Date.now()).toString(36)
+            }
+            else {
+                key = projectKey;
+            }
 
-        if(entryPhoto.current.files[0] != null){
-            newImageAdded = true;
-            if(newImageAdded){
-                let reader = new FileReader();
-                reader.readAsDataURL(entryPhoto.current.files[0]);
+            if(albumTitle.current.value != null && albumTitle.current.value.trim() != ""){
+                title = albumTitle.current.value;
+            }
 
-                reader.onload = function() {
-                newImageSrc = reader.result;
-                console.log(reader.result)
-                
-                console.log(newImageSrc)
-                albumImage = reader.result;
+            if(labelText.current.value != null && labelText.current.value.trim() != ""){
+                label = labelText.current.value;
+            }
+            
+            if(releaseDate.current.value != null || releaseDate.current.value.trim() != ""){
+                releaseDateObject = new Date(releaseDate.current.value);
+                month = releaseDateObject.getMonth() + 1;
+                day = releaseDateObject.getDate();
+                year = releaseDateObject.getFullYear();
+                dateValue = [day, month, year, releaseDateObject]
+            }
+            else {
+                allowCreation = false;
+            }
 
-                if(!edit){
+            if(entryPhoto.current.files[0] != null){
+                newImageAdded = true;
+                if(newImageAdded){
+                    let reader = new FileReader();
+                    reader.readAsDataURL(entryPhoto.current.files[0]);
+
+                    reader.onload = function() {
+                    newImageSrc = reader.result;
+                    // console.log(reader.result)
+                    
+                    // console.log(newImageSrc)
+                    albumImage = reader.result;
+
+                    if(edit == false){
+                        if(allowCreation){
+
+                            setCards([...cards, 
+                                <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
+                            );
+
+                            var currentProjects = projects;
+                            currentProjects = [...currentProjects, 
+                                {
+                                key: key,
+                                projectTitle: title,
+                                projectType: projectTypeChoice,
+                                artist: artist,
+                                date: dateValue,
+                                label: label,
+                                image: albumImage,
+                                colour: '',
+                                songs: {}
+                            }]
+                            console.log('Current projects now: ', currentProjects)
+                            setProjects(currentProjects);
+                            writeProjectsToFirebase(currentProjects);
+
+                            if(setFirstCreationSuccessful != null){
+                                setFirstCreationSuccessful(true)
+                            }
+
+                        }
+                            
+                        else{
+                            alert("Failed to make a new project! (Please make sure you've filled out the release date) - New Image")
+                        }
+                    }
+                    else{
+                        //if editing
+                        if(allowCreation){
+                            var tempProjects = [];
+                            ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+                                let currentProjects = result
+                                for(let i = 0; i < currentProjects.length; i++){
+                                    let project = currentProjects[i];
+                                    if(project.key == key){
+                                        let updatedProject = {
+                                            key: key,
+                                            projectTitle: title,
+                                            projectType: projectTypeChoice,
+                                            artist: artist,
+                                            date: dateValue,
+                                            label: label,
+                                            image: albumImage,
+                                            colour: '',
+                                            songs: currentProject.songs
+                                        }
+                                        setCurrentProject(updatedProject);
+                                        tempProjects.push(updatedProject);
+                                        console.log("Updated project values: ", updatedProject);
+                                    }
+                                    else{
+                                        tempProjects.push(currentProjects[i])
+                                    }
+                                }
+                                
+                                console.log('Updated Projects! : ', tempProjects);
+                                setProjects(tempProjects);
+                                writeProjectsToFirebase(tempProjects)
+                            });
+
+                        }
+                        else{
+                            alert("Failed to save changes!");
+                        }
+                    }
+
+                    }
+                }
+
+            }
+            else {
+                if(edit == false){
+                    console.log("No file found!")
+                    console.log(cards)
+                    console.log(typeof(cards))
                     if(allowCreation){
-                        setCards([...cards, 
-                            <LibraryCard title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
-                        );
 
+                        setCards([...cards, 
+                        <LibraryCard key={key} id={key}  title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>])
+                        if(setFirstCreationSuccessful != null){
+                            setFirstCreationSuccessful(true)
+                        }
+                        
                         var currentProjects = projects;
+                        console.log(currentProjects)
                         currentProjects = [...currentProjects, 
                             {
+                            key: key,
                             projectTitle: title,
                             projectType: projectTypeChoice,
                             artist: artist,
@@ -155,56 +272,51 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                         setProjects(currentProjects);
                         writeProjectsToFirebase(currentProjects);
 
-                        if(setFirstCreationSuccessful != null){
-                            setFirstCreationSuccessful(true)
-                        }
-
                     }
-                        
                     else{
-                        alert("Failed to make a new project! (Please make sure you've filled out the release date) - New Image")
+                        alert("Failed to make a new project! (Please make sure you've filled out the release date)");
                     }
                 }
-
-                }
-            }
-
-        }
-        else {
-            if(!edit){
-                console.log("No file found!")
-                console.log(cards)
-                console.log(typeof(cards))
-                if(allowCreation){
-                    setCards([...cards, 
-                    <LibraryCard title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>])
-                    if(setFirstCreationSuccessful != null){
-                        setFirstCreationSuccessful(true)
+                else {
+                    console.log("Title! : " , title)
+                    if(allowCreation){
+                        var tempProjects = [];
+                            ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+                                let currentProjects = result
+                                for(let i = 0; i < currentProjects.length; i++){
+                                    let project = currentProjects[i];
+                                    if(project.key == key){
+                                        let updatedProject = {
+                                            key: key,
+                                            projectTitle: title,
+                                            projectType: projectTypeChoice,
+                                            artist: artist,
+                                            date: dateValue,
+                                            label: label,
+                                            image: currentProject.image,
+                                            colour: '',
+                                            songs: currentProject.songs
+                                        }
+                                        setCurrentProject(updatedProject);
+                                        tempProjects.push(updatedProject);
+                                        console.log("Updated project values: ", updatedProject);
+                                    }
+                                    else{
+                                        tempProjects.push(currentProjects[i])
+                                    }
+                                }
+                                
+                                console.log('Updated Projects! : ', tempProjects);
+                                setProjects(tempProjects);
+                                writeProjectsToFirebase(tempProjects)
+                            });
                     }
-                    var currentProjects = projects;
-                    console.log(currentProjects)
-                    currentProjects = [...currentProjects, 
-                        {
-                        projectTitle: title,
-                        projectType: projectTypeChoice,
-                        artist: artist,
-                        date: dateValue,
-                        label: label,
-                        image: albumImage,
-                        colour: '',
-                        songs: {}
-                    }]
-                    console.log('Current projects now: ', currentProjects)
-                    setProjects(currentProjects);
-                    writeProjectsToFirebase(currentProjects);
-
-                }
-                else{
-                    alert("Failed to make a new project! (Please make sure you've filled out the release date)");
+                    else{
+                        alert("Failed to save changes!");
+                    }
                 }
             }
-        }
-
+        
       }
 
     
@@ -227,27 +339,10 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
     async function writeProjectsToFirebase(projects){
         var currentUser = getCurrentUserIdString();
         await setDoc(doc(db, "users", currentUser), {projects});
-        setProjects(readProjectsFromFirebase())
+        setProjects(ReadProjectsFromFirebase(currentUser))
     }
 
-    async function readProjectsFromFirebase(){
-        var currentUser = getCurrentUserIdString();
-        const docRef = doc(db, "users", currentUser);
-        const docSnap = await getDoc(docRef);
-        var data;
-
-        if(docSnap.exists()){
-            data = docSnap.data().projects;
-            console.log("Data! ", data)
-        }
-        else {
-            console.log("There were no documents to be found!")
-            data = []
-        }
-
-        return data
-
-    }
+    
 
     return (
     <div className='album-manager-wrapper'>

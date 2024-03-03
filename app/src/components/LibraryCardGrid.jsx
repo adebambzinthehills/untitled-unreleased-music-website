@@ -98,11 +98,13 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects}) {
         var projectTypeChoice = currentProject.projectType
         var songs = Object.keys(currentProject.songs).length;
         var songList = currentProject.songs;
+        var key = currentProject.key;
 
         console.log('@Songs: ', songs);
+        console.log("KEy: ", key);
 
         tempArray = [...tempArray,
-          <LibraryCard title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
+          <LibraryCard key={key} id={key} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
           edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>
         ];
         // console.log('Temp', tempArray[0].props.title)

@@ -4,9 +4,8 @@ import '../css/MusicContent.css'
 import ColorThief from 'colorthief';
 import { FaPalette } from 'react-icons/fa';
 
-function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteBlock}) {
+function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteBlock, image, key}) {
 
-    const {state} = useLocation();
     const [palette, setPalette] = useState([]);
     const [paletteVisible, setPaletteVisible] = useState(false);
 
@@ -27,7 +26,7 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
             const contentImage = new Image();
-            contentImage.src = state.image;
+            contentImage.src = image;
             contentImage.crossOrigin = 'anonymous';
             contentImage.onload = () => {
                 const colorThief = new ColorThief();
@@ -43,7 +42,7 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
             console.log(err);
             alert("Couldn't get the palette image!");
         })
-    }, [])
+    }, [image])
 
     function handleColourPicker(key){
         const colour = palette[key];
