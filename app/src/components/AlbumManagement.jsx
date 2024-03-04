@@ -30,6 +30,11 @@ export async function ReadProjectsFromFirebase(currentUser){
 
 }
 
+export async function writeProjectsToFirebaseGlobal(projects, currentUser, {setProjects}){
+    await setDoc(doc(db, "users", currentUser), {projects});
+    setProjects(ReadProjectsFromFirebase(currentUser))
+}
+
 function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlbumManagerMode, setNewProjectButtonClicked,
     information, setFirstCreationSuccessful, projects, setProjects, currentProject, setCurrentProject, projectKey
 }) {

@@ -4,7 +4,7 @@ import '../css/MusicContent.css'
 import ColorThief from 'colorthief';
 import { FaPalette } from 'react-icons/fa';
 
-function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteBlock, image, key}) {
+function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteBlock, image, key, changeBackgroundState}) {
 
     const [palette, setPalette] = useState([]);
     const [paletteVisible, setPaletteVisible] = useState(false);
@@ -56,6 +56,7 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
         document.body.getElementsByClassName('header')[0].style.backgroundColor = newContentColourBackground.backgroundColor;
 
         setBackgroundColour(newContentColourBackground);
+        changeBackgroundState(colour);
         setPaletteActive(true);
 
     }

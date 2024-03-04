@@ -20,9 +20,11 @@ import { FaRegEdit} from 'react-icons/fa'
 import { CiFolderOn } from 'react-icons/ci'
 import { FaRegTrashCan } from 'react-icons/fa6'
 import SongManagement from './SongManagement'
-import { ReadProjectsFromFirebase } from './AlbumManagement'
+import { ReadProjectsFromFirebase, writeProjectsToFirebaseGlobal } from './AlbumManagement'
 import { useAuth } from '../contexts/AuthContext';
 import grey from '../images/grey.jpeg'
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { auth, db, storage } from '../firebase'
 
 function Album({player}) {
 
@@ -33,6 +35,10 @@ function Album({player}) {
     console.log("Page key!: ", key )
 
     const { getCurrentUserIdString } = useAuth();
+
+    const [backgroundColour, setBackgroundColour] = useState("");
+
+
     const [project, setProject] = useState(
         {
             key: 'key',
@@ -57,6 +63,11 @@ function Album({player}) {
         date: new Date(), 
         type: {label: 'Single', value: 'Single'}
     });
+
+
+    useEffect(() => {
+        console.log("Background updated!")
+    }, [backgroundColour])
 
     useEffect(() => {
         ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
@@ -93,6 +104,7 @@ function Album({player}) {
 
         ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
             setProjects(result)
+            setBackgroundColour(project.colour)
             console.log("Re-rendering and re-reading projects!")
         });
     }, [project])
@@ -109,7 +121,7 @@ function Album({player}) {
     const [fullAlbumCover, setFullAlbumCover] = useState(false);
     const contentShuffleButton = shuffle ? 'green-content-shuffle-button' : 'content-shuffle-button';
     const contentShuffleDotVisible = shuffle? 'green-content-shuffle-dot' : 'green-content-shuffle-dot-invisible';
-    const [backgroundColour, setBackgroundColour] = useState("");
+    
 
 
     const musicHeaderColor = {
@@ -123,6 +135,54 @@ function Album({player}) {
 
     const [musicHeaderColourState, setMusicHeaderColourState] = useState(musicHeaderColor);
 
+    function updateColourInDatabase(colour){
+        let currentUser = getCurrentUserIdString()
+
+        //set colour based on image NOT the choice e.g. default settings on first opening
+        if(backgroundColour == ""){
+            setBackgroundColour(colour);
+            setMusicHeaderColourState(musicHeaderColor);
+        }
+
+        ReadProjectsFromFirebase(currentUser).then((result) => {
+
+            let tempProjects = [];
+            let currentProjects = result
+            for(let i = 0; i < currentProjects.length; i++){
+                let project = currentProjects[i];
+                if(project.key == key){
+                    let updatedProject = project;
+                    if (backgroundColour == ""){
+                        updatedProject.colour = colour;
+                    }
+                    else {
+                        updatedProject.colour = backgroundColour;
+                    }
+
+                    // setProject(updatedProject);
+                    tempProjects.push(updatedProject);
+                    console.log("Updated project values (colour): ", updatedProject);
+                }
+                else{
+                    tempProjects.push(currentProjects[i])
+                }
+            }
+
+            console.log('Updated Projects (Colour Change)! : ', tempProjects);
+            setProjects(tempProjects);
+            let currentUser = getCurrentUserIdString()
+            writeProjectsToFirebase(tempProjects)
+
+        });
+            
+           
+    }
+
+    async function writeProjectsToFirebase(projects){
+        var currentUser = getCurrentUserIdString();
+        await setDoc(doc(db, "users", currentUser), {projects});
+        setProjects(ReadProjectsFromFirebase(currentUser))
+    }
 
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
@@ -136,15 +196,15 @@ function Album({player}) {
         })
 
         awaitPromise.then((res) => {
-            setBackgroundColour(res);
-            setMusicHeaderColourState(musicHeaderColor);
+            updateColourInDatabase(res);
 
         }).catch((err) => {
             console.log(err);
             alert("Couldn't display album background colour!");
         })
         
-    }, [information])
+    }, [information, backgroundColour])
+
 
     // try{document.body.getElementsByClassName('header')[0].style.backgroundColor = 'rgb(' + backgroundColour + ')';}
     // catch(err){}
@@ -266,7 +326,7 @@ function Album({player}) {
                             </div>
                         </div>
                         <div className='content-palette-wrapper'>
-                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock} image={information.image}/>
+                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock} image={information.image} changeBackgroundState={setBackgroundColour}/>
                         </div>
                     </div>
                     {paletteBlock && <div className='palette-small-screen-block'>
