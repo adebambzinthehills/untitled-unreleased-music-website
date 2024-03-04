@@ -2,8 +2,23 @@ import React, { useRef, useState } from 'react'
 import { ImCross } from 'react-icons/im'
 import { MdAddPhotoAlternate } from 'react-icons/md'
 import { FaTrashAlt } from 'react-icons/fa'
+import { ReadProjectsFromFirebase } from './AlbumManagement';
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { auth, db, storage } from '../firebase'
+import { useAuth } from '../contexts/AuthContext';
 
-function SongManagement({clickOff, editClickOff, mode, setMode, tracks, setTracks}) {
+
+function SongManagement({clickOff, editClickOff, mode, setMode, tracks, setTracks, setProjects, projectKey,  setProject}) {
+
+    const {getCurrentUserIdString } = useAuth()
+    const currentUser = getCurrentUserIdString();
+
+    async function writeProjectsToFirebase(projects){
+        var currentUser = getCurrentUserIdString();
+        await setDoc(doc(db, "users", currentUser), {projects});
+        setProjects(ReadProjectsFromFirebase(currentUser))
+    }
+
     const [song, setSong] = useState(null);
     const songTitle = useRef();
     const explicitTag = useRef();
@@ -60,6 +75,34 @@ function SongManagement({clickOff, editClickOff, mode, setMode, tracks, setTrack
                     ]);
                     //lagged cos setTracks is async!
                     //console.log(tracks)
+                      
+                    //..... it begins here! Read Projects then update songs. then in the album, there should be a use effect to load tracks from database when information loads!
+                    ReadProjectsFromFirebase(currentUser).then((result) => {
+                        let tempProjects = [];
+                        let currentProjects = result;
+                        for(let i = 0; i < currentProjects.length; i++){
+                            let project = currentProjects[i];
+                            console.log(project.key)
+                            console.log(projectKey)
+                            if(project.key == projectKey){
+                                let updatedProject = project;
+                                updatedProject.songs = [...tracks,
+                                    {title: title, file: musicURL, duration: formatTime(duration)}
+                                ];
+
+                                setProject(updatedProject);
+                                tempProjects.push(updatedProject);
+                                console.log("Updated project values (songs): ", updatedProject);
+                            }
+                            else{
+                                tempProjects.push(currentProjects[i])
+                            }
+                        }
+
+                        console.log('Updated Projects (Song Change)! : ', tempProjects);
+                        setProjects(tempProjects);
+                        writeProjectsToFirebase(tempProjects)
+                    });
                 }
             }
         }
@@ -111,7 +154,7 @@ function SongManagement({clickOff, editClickOff, mode, setMode, tracks, setTrack
                     <div className='song-manager-entry-wrapper'>
                         <div className='song-manager-entry-content'>
                             <div className='song-manager-field-wrapper'>
-                                <div className='label-wrapper'><label for="">Song Title</label></div>
+                                <div className='label-wrapper'><label htmlFor="">Song Title</label></div>
                                 <input className='song-entry' ref={songTitle} placeholder="What's your song title?"></input>
                             </div>
                             <div className='song-manager-field-wrapper' id={'insertSongWrapper'}>

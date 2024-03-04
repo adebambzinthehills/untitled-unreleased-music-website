@@ -25,6 +25,7 @@ import { useAuth } from '../contexts/AuthContext';
 import grey from '../images/grey.jpeg'
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import { auth, db, storage } from '../firebase'
+import { TbTable, TbTableRow } from 'react-icons/tb'
 
 function Album({player}) {
 
@@ -49,7 +50,7 @@ function Album({player}) {
             label: '[label]',
             image: '',
             colour: '',
-            songs: {}
+            songs: []
         }
     );
     const [projects, setProjects] = useState([])
@@ -105,11 +106,15 @@ function Album({player}) {
         ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
             setProjects(result)
             setBackgroundColour(project.colour)
+            setTracks(project.songs)
             console.log("Re-rendering and re-reading projects!")
         });
     }, [project])
 
+    
+
     const [tracks, setTracks] = useState([]);
+    console.log("Tracks! : ", tracks)
 
     const monthNames = [ "January", "February", "March", "April", "May", "June", 
     "July", "August", "September", "October", "November", "December" ];
@@ -364,7 +369,7 @@ function Album({player}) {
                 </div>
             </div>
 
-            <Tracklist songs={project.songs.length} tracks={project.songs} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
+            <Tracklist songs={tracks.length} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
             <div className='container information'>
                 <div className='bottom-information-wrapper'>
                     <div className='bottom-information date'>
@@ -409,7 +414,7 @@ function Album({player}) {
             }
             {
             (addTracksButtonClicked || editTracksButtonClicked) && 
-                <SongManagement clickOff={setAddTracksButtonClicked} editClickOff={setEditTracksButtonClicked} mode={editMode} setMode={setEditMode} tracks={tracks} setTracks={setTracks}/>
+                <SongManagement clickOff={setAddTracksButtonClicked} editClickOff={setEditTracksButtonClicked} mode={editMode} setMode={setEditMode} tracks={tracks} setTracks={setTracks} setProject={setProject} setProjects={setProjects} projectKey={key}/>
             }
         </div>
     )

@@ -186,7 +186,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                 label: label,
                                 image: albumImage,
                                 colour: '',
-                                songs: {}
+                                songs: []
                             }]
                             console.log('Current projects now: ', currentProjects)
                             setProjects(currentProjects);
@@ -271,7 +271,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                             label: label,
                             image: albumImage,
                             colour: '',
-                            songs: {}
+                            songs: []
                         }]
                         console.log('Current projects now: ', currentProjects)
                         setProjects(currentProjects);
