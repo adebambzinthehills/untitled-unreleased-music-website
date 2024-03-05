@@ -2,18 +2,28 @@ import { createContext, useState } from 'react'
 import purple from '../images/purple.jpeg'
 import daytrippers from '../images/ctv3.jpeg'
 import erys from '../images/erys.webp'
+import wallsocket from '../images/wallsocket.jpeg'
+import jane from '../audio/jane.wav'
 
 export const PlayerContext = createContext();
 
 export function PlayerProvider({children}){
     const [playerOn, setPlayerOn] = useState(false);
     const [playerImgSrc, setPlayerImgSrc] = useState(erys);
+    const [playerUpdated, setPlayerUpdated] = useState(false);
+    const [playerTracklist, setPlayerTracklist] = useState([{
+        id: 0,
+        title: 'i can touch my toes!',
+        src: jane,
+        author: 'adebambz!',
+        thumbnail: wallsocket,
+        album: 'do you want to go higher?'
+    }])
     const [miniplayerEnabled, setMiniplayerEnabled] = useState(false);
     const [fullscreenPlayerEnabled, setFullscreenPlayerEnabled] = useState (false);
 
     const play = () => {
         setPlayerOn(true);
-        alert('');
     }
     const stop = () => {
         setPlayerOn(false);
@@ -47,11 +57,16 @@ export function PlayerProvider({children}){
         setFullscreenPlayerEnabled(false);
     }
 
+    const setPlayerTracks = (tracks) => {
+        setPlayerTracklist(tracks)
+    }
+
     return(
         <PlayerContext.Provider value={{playerOn, play, stop, toggle, playerImgSrc, 
         changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer,
         fullscreenPlayerEnabled, enableFullscreenPlayer, disableFullscreenPlayer,
-        playerOff }}>
+        playerOff, playerTracklist, setPlayerTracklist, setPlayerTracks,
+        playerUpdated, setPlayerUpdated}}>
             {children}
         </PlayerContext.Provider>
     );

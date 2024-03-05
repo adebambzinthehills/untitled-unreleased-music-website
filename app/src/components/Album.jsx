@@ -28,12 +28,23 @@ import { auth, db, storage } from '../firebase'
 import { TbTable, TbTableRow } from 'react-icons/tb'
 
 function Album({player}) {
+    const [loading, setLoading] = useState(true)
+    const {playerOn, play, stop, toggle, setPlayerTracks, setPlayerTracklist, setPlayerUpdated, playerUpdated} = useContext(PlayerContext);
 
-    const {playerOn, play, stop, toggle} = useContext(PlayerContext);
+    const [tracks, setTracksState] = useState([]);
+    useEffect(() => {
+        if(loading == false && tracks.length != 0){
+            console.log("Updating player tracks!");
+            console.log(tracks);
+            setPlayerUpdated(!playerUpdated)
+            setPlayerTracklist(tracks)
+        }
+    }, [tracks])
+
 
     const {state} = useLocation();
     const { key } = useParams();
-    console.log("Page key!: ", key )
+    // console.log("Page key!: ", key )
 
     const { getCurrentUserIdString } = useAuth();
 
@@ -55,6 +66,12 @@ function Album({player}) {
     );
     const [projects, setProjects] = useState([])
 
+    
+
+    const setTracks = (val) => {
+        setTracksState(val)
+    }
+
 
     const [information, setInformation] = useState({
         title: '', 
@@ -69,6 +86,34 @@ function Album({player}) {
     useEffect(() => {
         console.log("Background updated!")
     }, [backgroundColour])
+
+
+    //THE REASON THAT USING PROJECTS SOMETIMES GET CLEARED OUT IS BECAUSE PROJECT ISNT UPDATING SO STAYS AT ZERO!
+    // THIS CODE DOES NOT RUN!!!!!!
+    useEffect(() => {
+        
+
+        ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+
+
+            console.log('Loaded project in album! : ', project);
+            setInformation({
+                title: project.projectTitle, 
+                label: project.label, 
+                image: project.image, 
+                artist: project.artist,
+                date: project.date, 
+                type: project.projectType
+            })
+
+            setProjects(result)
+            setBackgroundColour(project.colour)
+            setTracks(project.songs)
+            console.log("Re-rendering and re-reading projects!")
+            console.log("Information! : ", information)
+            setLoading(false);
+        });
+    }, [project])
 
     useEffect(() => {
         ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
@@ -91,30 +136,7 @@ function Album({player}) {
             });
     }, [])
 
-    useEffect(() => {
-        
-        console.log('Loaded project in album! : ', project);
-        setInformation({
-            title: project.projectTitle, 
-            label: project.label, 
-            image: project.image, 
-            artist: project.artist,
-            date: project.date, 
-            type: project.projectType
-        })
-
-        ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
-            setProjects(result)
-            setBackgroundColour(project.colour)
-            setTracks(project.songs)
-            console.log("Re-rendering and re-reading projects!")
-        });
-    }, [project])
-
     
-
-    const [tracks, setTracks] = useState([]);
-    console.log("Tracks! : ", tracks)
 
     const monthNames = [ "January", "February", "March", "April", "May", "June", 
     "July", "August", "September", "October", "November", "December" ];
@@ -163,7 +185,6 @@ function Album({player}) {
                     else {
                         updatedProject.colour = backgroundColour;
                     }
-
                     // setProject(updatedProject);
                     tempProjects.push(updatedProject);
                     console.log("Updated project values (colour): ", updatedProject);
@@ -389,7 +410,7 @@ function Album({player}) {
                 <div className='fullscreen-album-content'>
                     <div className='fullscreen-album-image-wrapper'>
                         <div className='cover-wrapper'>   
-                            <img className='fullscreen-album-cover' src={state.image}/>
+                            <img className='fullscreen-album-cover' src={information.image}/>
                             <div className='fullscreen-album-controls-wrapper'>
                                 <div>
                                     <div className='fullscreen-album-controls'>
@@ -410,7 +431,7 @@ function Album({player}) {
                 </div>
             </div>}
             {editAlbumButtonClicked &&
-                <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setEditAlbumButtonClicked} edit={true} information={information} setInformation={setInformation} currentProject={project} setCurrentProject={setProject} projectKey={key}/>
+                <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setEditAlbumButtonClicked} edit={true} information={information} setInformation={setInformation} currentProject={project} setCurrentProject={setProject} projectKey={key} setTracks={setTracks}/>
             }
             {
             (addTracksButtonClicked || editTracksButtonClicked) && 

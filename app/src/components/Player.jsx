@@ -23,6 +23,15 @@ import ColorThief from 'colorthief';
 import { tracks } from '../audio/TemporaryTracks';
 
 function Player() {
+
+    const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage,
+        miniplayerEnabled, enableMiniplayer, removeMiniplayer, 
+        enableFullscreenPlayer, disableFullscreenPlayer, playerUpdated} = useContext(PlayerContext);  
+
+    const {playerTracklist, setPlayerTracks} = useContext(PlayerContext);
+
+    console.log(playerTracklist)
+
     const [pageLoaded, setPageLoaded] = useState(false);
 
     console.log("Rendering!")
@@ -35,10 +44,11 @@ function Player() {
     const [isPlaying, setIsPlaying] = useState(false);
     const music = useRef();
     const [trackIndex, setTrackIndex] = useState(0);
+    const [updatedTracklist, setUpdatedTracklist] = useState(playerTracklist);
     
     //make completely fresh copy of tracks
-    const tracksStorage = JSON.parse(JSON.stringify(tracks));
-    const shuffleTracksStorage = JSON.parse(JSON.stringify(tracks));
+    const [tracksStorage, setTracksStorage] = useState(JSON.parse(JSON.stringify(playerTracklist)));
+    const [shuffleTracksStorage, setShuffleTracksStorage] = useState(JSON.parse(JSON.stringify(playerTracklist)));
 
     const [shuffleTracks, setShuffleTracks] = useState(shuffleTracksStorage);
 
@@ -48,9 +58,7 @@ function Player() {
     const [currentTrack, setCurrentTrack] = useState(tracklist[trackIndex]);
     const [duration, setDuration] = useState(0);
 
-    const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage,
-        miniplayerEnabled, enableMiniplayer, removeMiniplayer, 
-        enableFullscreenPlayer, disableFullscreenPlayer} = useContext(PlayerContext);  
+    const [loading, setLoading] = useState(true);
 
     const [playerBackgroundColour, setPlayerBackgroundColour] = useState("");
     const [playerFullscreen, setPlayerFullscreen] = useState(false);
@@ -75,6 +83,31 @@ function Player() {
         }
 
     }, [playerFullscreen]);
+
+    useEffect(() => {
+        setLoading(false)
+    }, [])
+
+    useEffect(() => {
+            console.log("RE-RENDERING PLAYER!!!!!!!")
+            console.log(playerTracklist);
+            setTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
+            setShuffleTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
+
+       
+    }, [playerTracklist])
+
+    useEffect(() => {
+        console.log(shuffleTracksStorage)
+        setShuffleTracks(shuffleTracksStorage);
+    }, [shuffleTracksStorage])
+
+    useEffect(() => {
+        playlistOrder = shufflePlayer ? shuffleTracks : tracksStorage;
+        setTracklist(playlistOrder);
+        console.log(playlistOrder[trackIndex])
+        setCurrentTrack(playlistOrder[trackIndex]);
+    }, [shuffleTracks])
     
     useEffect(() => {
         let image = (currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail
@@ -98,7 +131,7 @@ function Player() {
             alert("Couldn't display player background colour!");
         })
 
-    }, [currentTrack.thumbnail])
+    }, [currentTrack])
 
 
     let newPlayerColourValues = [];

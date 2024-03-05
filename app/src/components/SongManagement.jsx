@@ -87,7 +87,7 @@ function SongManagement({clickOff, editClickOff, mode, setMode, tracks, setTrack
                             if(project.key == projectKey){
                                 let updatedProject = project;
                                 updatedProject.songs = [...tracks,
-                                    {title: title, file: musicURL, duration: formatTime(duration)}
+                                    {title: title, src: musicURL, duration: formatTime(duration), thumbnail: project.image, album: project.projectTitle, author: project.artist}
                                 ];
 
                                 setProject(updatedProject);

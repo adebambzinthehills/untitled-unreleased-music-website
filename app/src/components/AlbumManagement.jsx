@@ -19,7 +19,7 @@ export async function ReadProjectsFromFirebase(currentUser){
 
     if(docSnap.exists()){
         data = docSnap.data().projects;
-        console.log("Data! ", data)
+        // console.log("Data! ", data)
     }
     else {
         console.log("There were no documents to be found!")
@@ -36,7 +36,7 @@ export async function writeProjectsToFirebaseGlobal(projects, currentUser, {setP
 }
 
 function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlbumManagerMode, setNewProjectButtonClicked,
-    information, setFirstCreationSuccessful, projects, setProjects, currentProject, setCurrentProject, projectKey
+    information, setFirstCreationSuccessful, projects, setProjects, currentProject, setCurrentProject, projectKey, setTracks
 }) {
 
     const entryPhoto = useRef();
@@ -211,6 +211,13 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                 for(let i = 0; i < currentProjects.length; i++){
                                     let project = currentProjects[i];
                                     if(project.key == key){
+                                        let newSongs = []
+                                        for (let j = 0; j < project.songs.length ; j++){
+                                            project.songs[j].album = title;
+                                            project.songs[j].thumbnail = albumImage
+                                            newSongs.push(project.songs[j])
+                                        }
+
                                         let updatedProject = {
                                             key: key,
                                             projectTitle: title,
@@ -220,8 +227,9 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                             label: label,
                                             image: albumImage,
                                             colour: '',
-                                            songs: currentProject.songs
-                                        }
+                                            songs: project.songs
+                                        };
+                                        setTracks(newSongs);
                                         setCurrentProject(updatedProject);
                                         tempProjects.push(updatedProject);
                                         console.log("Updated project values: ", updatedProject);
@@ -291,6 +299,12 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                 for(let i = 0; i < currentProjects.length; i++){
                                     let project = currentProjects[i];
                                     if(project.key == key){
+                                        let newSongs = []
+                                        for (let j = 0; j < project.songs.length ; j++){
+                                            project.songs[j].album = title;
+                                            project.songs[j].thumbnail = currentProject.image
+                                            newSongs.push(project.songs[j])
+                                        }
                                         let updatedProject = {
                                             key: key,
                                             projectTitle: title,
@@ -300,8 +314,9 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                             label: label,
                                             image: currentProject.image,
                                             colour: '',
-                                            songs: currentProject.songs
+                                            songs: project.songs
                                         }
+                                        setTracks(project.songs)
                                         setCurrentProject(updatedProject);
                                         tempProjects.push(updatedProject);
                                         console.log("Updated project values: ", updatedProject);
