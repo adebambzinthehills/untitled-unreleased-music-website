@@ -9,6 +9,7 @@ import Select from 'react-select';
 import { useAuth } from '../contexts/AuthContext';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import { auth, db, storage } from '../firebase'
+import { getStorage, uploadBytes, ref, getDownloadURL } from 'firebase/storage';
 
 
 
@@ -168,91 +169,113 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                     // console.log(newImageSrc)
                     albumImage = reader.result;
 
-                    if(edit == false){
-                        if(allowCreation){
+                    let path = `${getCurrentUserIdString()}/${projectKey}/album-cover`
 
-                            setCards([...cards, 
-                                <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
-                            );
+                    const storage = getStorage();
+                    const storageRef = ref(storage, path);
 
-                            var currentProjects = projects;
-                            currentProjects = [...currentProjects, 
-                                {
-                                key: key,
-                                projectTitle: title,
-                                projectType: projectTypeChoice,
-                                artist: artist,
-                                date: dateValue,
-                                label: label,
-                                image: albumImage,
-                                colour: '',
-                                songs: []
-                            }]
-                            console.log('Current projects now: ', currentProjects)
-                            setProjects(currentProjects);
-                            writeProjectsToFirebase(currentProjects);
-
-                            if(setFirstCreationSuccessful != null){
-                                setFirstCreationSuccessful(true)
-                            }
-
-                        }
-                            
-                        else{
-                            alert("Failed to make a new project! (Please make sure you've filled out the release date) - New Image")
-                        }
+                    const metadata = {
+                        contentType: "image"
                     }
-                    else{
-                        //if editing
-                        if(allowCreation){
-                            var tempProjects = [];
-                            ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
-                                let currentProjects = result
-                                for(let i = 0; i < currentProjects.length; i++){
-                                    let project = currentProjects[i];
-                                    if(project.key == key){
-                                        let newSongs = []
-                                        for (let j = 0; j < project.songs.length ; j++){
-                                            project.songs[j].album = title;
-                                            project.songs[j].thumbnail = albumImage
-                                            newSongs.push(project.songs[j])
-                                        }
 
-                                        let updatedProject = {
+                    console.log(storageRef.fullPath);
+
+                    if(allowCreation){
+                        uploadBytes(storageRef, entryPhoto.current.files[0], metadata).then((snapshot) => {
+                            console.log("Hey! I just uploaded an image file to my storage!")
+
+                            getDownloadURL(storageRef).then((url) => {
+
+                                if(edit == false){
+                                    if(allowCreation){
+
+                                        setCards([...cards, 
+                                            <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={url} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
+                                        );
+
+                                        var currentProjects = projects;
+                                        currentProjects = [...currentProjects, 
+                                            {
                                             key: key,
                                             projectTitle: title,
                                             projectType: projectTypeChoice,
                                             artist: artist,
                                             date: dateValue,
                                             label: label,
-                                            image: albumImage,
+                                            image: url,
                                             colour: '',
-                                            songs: project.songs
-                                        };
-                                        setTracks(newSongs);
-                                        setCurrentProject(updatedProject);
-                                        tempProjects.push(updatedProject);
-                                        console.log("Updated project values: ", updatedProject);
+                                            songs: []
+                                        }]
+                                        console.log('Current projects now: ', currentProjects)
+                                        setProjects(currentProjects);
+                                        writeProjectsToFirebase(currentProjects);
+
+                                        if(setFirstCreationSuccessful != null){
+                                            setFirstCreationSuccessful(true)
+                                        }
+
+                                        clickOff(false)
+
                                     }
+                                        
                                     else{
-                                        tempProjects.push(currentProjects[i])
+                                        alert("Failed to make a new project! (Please make sure you've filled out the release date) - New Image")
                                     }
                                 }
-                                
-                                console.log('Updated Projects! : ', tempProjects);
-                                setProjects(tempProjects);
-                                writeProjectsToFirebase(tempProjects)
+                                else{
+                                    //if editing
+                                    if(allowCreation){
+                                        var tempProjects = [];
+                                        ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+                                            let currentProjects = result
+                                            for(let i = 0; i < currentProjects.length; i++){
+                                                let project = currentProjects[i];
+                                                if(project.key == key){
+                                                    let newSongs = []
+                                                    for (let j = 0; j < project.songs.length ; j++){
+                                                        project.songs[j].album = title;
+                                                        project.songs[j].thumbnail = url
+                                                        newSongs.push(project.songs[j])
+                                                    }
+
+                                                    let updatedProject = {
+                                                        key: key,
+                                                        projectTitle: title,
+                                                        projectType: projectTypeChoice,
+                                                        artist: artist,
+                                                        date: dateValue,
+                                                        label: label,
+                                                        image: url,
+                                                        colour: '',
+                                                        songs: project.songs
+                                                    };
+                                                    setTracks(newSongs);
+                                                    setCurrentProject(updatedProject);
+                                                    tempProjects.push(updatedProject);
+                                                    console.log("Updated project values: ", updatedProject);
+                                                }
+                                                else{
+                                                    tempProjects.push(currentProjects[i])
+                                                }
+                                            }
+                                            
+                                            console.log('Updated Projects! : ', tempProjects);
+                                            setProjects(tempProjects);
+                                            writeProjectsToFirebase(tempProjects)
+
+                                            clickOff(false)
+                                        });
+
+                                    }
+                                    else{
+                                        alert("Failed to save changes!");
+                                    }
+                                }
                             });
-
-                        }
-                        else{
-                            alert("Failed to save changes!");
-                        }
+                        });
                     }
-
                     }
                 }
-
             }
             else {
                 if(edit == false){
@@ -284,6 +307,8 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                         console.log('Current projects now: ', currentProjects)
                         setProjects(currentProjects);
                         writeProjectsToFirebase(currentProjects);
+
+                        clickOff(false)
 
                     }
                     else{
@@ -329,6 +354,8 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                 console.log('Updated Projects! : ', tempProjects);
                                 setProjects(tempProjects);
                                 writeProjectsToFirebase(tempProjects)
+
+                                clickOff(false)
                             });
                     }
                     else{
@@ -444,7 +471,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                         </div>}
                     </div>
                     <div className='album-manager-controls-save-create col-10 col-sm-6'>
-                        <button className='create-save-button' onClick={() => {handleNewProject(); clickOff(false)}}>{edit? 'Save' : 'Create'}</button>
+                        <button className='create-save-button' onClick={() => {handleNewProject(); }}>{edit? 'Save' : 'Create'}</button>
                     </div>       
                 </div>
             </div>

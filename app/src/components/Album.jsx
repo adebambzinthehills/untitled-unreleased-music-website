@@ -32,6 +32,8 @@ function Album({player}) {
     const {playerOn, play, stop, toggle, setPlayerTracks, setPlayerTracklist, setPlayerUpdated, playerUpdated} = useContext(PlayerContext);
 
     const [tracks, setTracksState] = useState([]);
+    const [selectedSongKey, setSelectedSongKey] = useState("")
+
     useEffect(() => {
         if(loading == false && tracks.length != 0){
             console.log("Updating player tracks!");
@@ -148,8 +150,6 @@ function Album({player}) {
     const [fullAlbumCover, setFullAlbumCover] = useState(false);
     const contentShuffleButton = shuffle ? 'green-content-shuffle-button' : 'content-shuffle-button';
     const contentShuffleDotVisible = shuffle? 'green-content-shuffle-dot' : 'green-content-shuffle-dot-invisible';
-    
-
 
     const musicHeaderColor = {
         backgroundColor: 'rgb(' + backgroundColour + ')',
@@ -390,7 +390,7 @@ function Album({player}) {
                 </div>
             </div>
 
-            <Tracklist songs={tracks.length} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode}></Tracklist>
+            <Tracklist songs={tracks.length} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode} setSelectedSongKey={setSelectedSongKey}></Tracklist>
             <div className='container information'>
                 <div className='bottom-information-wrapper'>
                     <div className='bottom-information date'>
@@ -435,7 +435,7 @@ function Album({player}) {
             }
             {
             (addTracksButtonClicked || editTracksButtonClicked) && 
-                <SongManagement clickOff={setAddTracksButtonClicked} editClickOff={setEditTracksButtonClicked} mode={editMode} setMode={setEditMode} tracks={tracks} setTracks={setTracks} setProject={setProject} setProjects={setProjects} projectKey={key}/>
+                <SongManagement clickOff={setAddTracksButtonClicked} editClickOff={setEditTracksButtonClicked} editMode={editMode} setMode={setEditMode} tracks={tracks} setTracks={setTracks} currentProject={project} setProject={setProject} setProjects={setProjects} projectKey={key} selectedSongKey={selectedSongKey}/>
             }
         </div>
     )

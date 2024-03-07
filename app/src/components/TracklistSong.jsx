@@ -3,7 +3,7 @@ import { BsThreeDots } from "react-icons/bs"
 import { FaRegEdit } from "react-icons/fa"
 import { PlayerContext } from '../contexts/PlayerContext';
 
-function TracklistSong({number, title, duration, artist, edit, setMode, content}) {
+function TracklistSong({number, title, duration, artist, edit, setMode, content, setSelectedSongKey, id}) {
 
   const {playerOn, play, stop, toggle} = useContext(PlayerContext);
 
@@ -34,7 +34,7 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content}
                     <div className='buttons-wrapper'>
                         <div className='song-time'><span>{content.duration}</span></div>
                         <div className='song-options-button-wrapper'>
-                          <button className='song-options-button'>
+                          <button className='song-options-button' onClick={() => {setSelectedSongKey(id); setMode(true); edit(true)}}>
                               <span>
                                   <BsThreeDots/>
                               </span>

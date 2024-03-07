@@ -90,7 +90,7 @@ function Player() {
 
     useEffect(() => {
             console.log("RE-RENDERING PLAYER!!!!!!!")
-            console.log(playerTracklist);
+            console.log("Current player tracklist! : ", playerTracklist);
             setTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
             setShuffleTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
 
