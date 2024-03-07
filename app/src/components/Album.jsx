@@ -81,7 +81,9 @@ function Album({player}) {
         image: '', 
         artist: '',
         date: new Date(), 
-        type: {label: 'Single', value: 'Single'}
+        type: {label: 'Single', value: 'Single'},
+        songs: '',
+        duration: ''
     });
 
 
@@ -96,7 +98,13 @@ function Album({player}) {
         
 
         ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+            
+            let projectDuration = 0;
+            for(let i = 0; i < project.songs.length; i++){
+                projectDuration += project.songs[i].unformattedDuration
+            }
 
+            console.log("Unformatted duration!: ", projectDuration)
 
             console.log('Loaded project in album! : ', project);
             setInformation({
@@ -105,11 +113,13 @@ function Album({player}) {
                 image: project.image, 
                 artist: project.artist,
                 date: project.date, 
-                type: project.projectType
+                type: project.projectType,
+                songs: project.songs.length,
+                duration: projectDuration
             })
 
             setProjects(result)
-            setBackgroundColour(project.colour)
+            // setBackgroundColour(project.colour)
             setTracks(project.songs)
             console.log("Re-rendering and re-reading projects!")
             console.log("Information! : ", information)
@@ -132,6 +142,7 @@ function Album({player}) {
                         date: project.date, 
                         type: project.projectType
                     })
+                    setBackgroundColour(project.colour)
                 }
             }
             console.log("Rendering and reading projects for the first time!")
@@ -164,9 +175,10 @@ function Album({player}) {
 
     function updateColourInDatabase(colour){
         let currentUser = getCurrentUserIdString()
-
+        
         //set colour based on image NOT the choice e.g. default settings on first opening
         if(backgroundColour == ""){
+            console.log("BG COLOUR IS EMPTY FOR SOME REASON!!!!!")
             setBackgroundColour(colour);
             setMusicHeaderColourState(musicHeaderColor);
         }
@@ -296,6 +308,25 @@ function Album({player}) {
         };
     }, []);
 
+    function formatAlbumTime(time){
+        if (time && !isNaN(time)) {
+            const minutes = Math.floor(time / 60);
+            if(minutes > 60){
+                const hours = Math.floor(time / 3600)
+                const formatMinutes =`${minutes} min`;
+                const seconds = Math.floor((time - (hours * 3600)) / 60);
+                const formatSeconds =`${seconds} sec`;
+                return `${formatMinutes} ${formatSeconds}`;
+            }
+            else {
+                const formatMinutes =`${minutes} min`;
+                const seconds = Math.floor(time % 60);
+                const formatSeconds =`${seconds} sec`;
+                return `${formatMinutes} ${formatSeconds}`;
+            }
+        }
+    };
+
     return (
         
         <div className='content-page'>
@@ -323,7 +354,7 @@ function Album({player}) {
                             <div className='music-header-content-wrapper'>
                                 {!mobileView && <span className='music-header-content-type'>{information.type.value}</span>}
                                 <h1>{information.title}</h1>
-                                {!mobileView && <span className='music-header-content-artist'>{information.artist} • {information.date[2]} </span>}
+                                {!mobileView && <span className='music-header-content-artist'>{information.artist} • {information.date[2]} • {information.songs} {information.songs == 1 ? 'song': 'songs'}{information.songs == 0? '': ','} {information.songs > 0 ?formatAlbumTime(information.duration) : ''} </span>}
                                 {mobileView && <span className='music-header-content-artist'>{information.artist}</span>}
                                 {mobileView && <span className='music-header-content-artist'>{information.type.value} • {information.date[2]} </span>}
                             </div>
@@ -396,6 +427,9 @@ function Album({player}) {
                     <div className='bottom-information date'>
                         <span>{information.date[0]} {monthNames[(information.date[1] - 1)]} {information.date[2]}</span>
                     </div>
+                    {mobileView && <div className='bottom-information time'>
+                        <span>{information.songs} {information.songs == 1 ? 'song': 'songs'} {information.songs == 0? '': '•'} {information.songs > 0 ?formatAlbumTime(information.duration) : ''}</span>
+                    </div>}
                     <div className='bottom-information label'>
                         <span>&copy; {information.label}</span>
                     </div>

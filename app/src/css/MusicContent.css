@@ -813,6 +813,11 @@
     font-size: 0.7rem;
 }
 
+.bottom-information.time {
+    font-size: 0.8rem;
+    margin-bottom: 10px
+}
+
 @media screen and (max-width:580px){
     .bottom-information-wrapper {
         width: 90%;

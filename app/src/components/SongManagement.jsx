@@ -83,6 +83,7 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
             musicURL = URL.createObjectURL(file.current.files[0]);
             var audio = document.createElement('audio');
             audio.src = musicURL;
+            console.log("HEY!")
 
             audio.onloadedmetadata = function(){
                 duration = audio.duration;
@@ -106,11 +107,12 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                 console.log(musicURL);
 
                 console.log(storageRef.fullPath);
+                console.log("HEY!")
 
                 if(allowCreation){
                     uploadBytes(storageRef, file.current.files[0], metadata).then((snapshot) => {
                         console.log("Hey! I just uploaded a file to my storage!")
-
+                        console.log("HEY!")
                         getDownloadURL(storageRef).then((url) => {
                                 ReadProjectsFromFirebase(currentUser).then((result) => {
                                     let tempProjects = [];
@@ -119,11 +121,48 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                         let project = currentProjects[i];
                                         console.log(project.key)
                                         console.log(projectKey)
+
+                                        
                                         if(project.key == projectKey){
+                                            console.log("Keys same!")
+                                            let tempTracks = []
+
+                                            if(editMode){
+                                                for(let i = 0; i < tracks.length; i++){
+                                                    if(tracks[i].key == selectedSongKey){
+                                                        tempTracks.push(
+                                                            {
+                                                                key: songKey, 
+                                                                title: title, 
+                                                                src: url, 
+                                                                duration: formatTime(duration), 
+                                                                unformattedDuration: duration, 
+                                                                thumbnail: project.image, 
+                                                                album: project.projectTitle, 
+                                                                author: project.artist
+                                                            });
+                                                    }
+                                                    else{
+                                                        tempTracks.push(tracks[i]);
+                                                    }
+                                                }
+                                            }
+                                            else{
+                                                tempTracks = [...tracks, 
+                                                    {
+                                                        key: songKey, 
+                                                        title: title, 
+                                                        src: url, 
+                                                        duration: formatTime(duration),
+                                                        unformattedDuration: duration, 
+                                                        thumbnail: project.image, 
+                                                        album: project.projectTitle, 
+                                                        author: project.artist
+                                                    }
+                                                ]
+                                            }
                                             let updatedProject = project;
-                                            updatedProject.songs = [...tracks,
-                                                {key: songKey, title: title, src: url, duration: formatTime(duration), thumbnail: project.image, album: project.projectTitle, author: project.artist}
-                                            ];
+                                            updatedProject.songs = tempTracks;
             
                                             setProject(updatedProject);
                                             tempProjects.push(updatedProject);
@@ -158,18 +197,21 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
 
                     let currentTrackSrc = "";
                     let currentTrackDuration = "";
+                    let currentUnformattedTrackDuration = "";
                     console.log(`State key: `, selectedSongKey);
                     let tempTracks = []
                     for(let i = 0; i < tracks.length; i++){
                         if(tracks[i].key == selectedSongKey){
                             currentTrackSrc = tracks[i].src;
-                            currentTrackDuration = tracks[i].duration
+                            currentTrackDuration = tracks[i].duration;
+                            currentUnformattedTrackDuration = tracks[i].unformattedDuration;
                             tempTracks.push(
                                 {
                                     key: selectedSongKey, 
                                     title: title, 
                                     src: currentTrackSrc, 
                                     duration: currentTrackDuration, 
+                                    unformattedDuration: currentUnformattedTrackDuration, 
                                     thumbnail: project.image, 
                                     album: project.projectTitle, 
                                     author: project.artist
