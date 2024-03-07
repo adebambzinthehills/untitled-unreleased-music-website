@@ -162,118 +162,192 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                     let reader = new FileReader();
                     reader.readAsDataURL(entryPhoto.current.files[0]);
 
+
                     reader.onload = function() {
-                    newImageSrc = reader.result;
-                    // console.log(reader.result)
-                    
-                    // console.log(newImageSrc)
-                    albumImage = reader.result;
+                        newImageSrc = reader.result;
+                        // console.log(reader.result)
+                        
+                        // console.log(newImageSrc)
+                        albumImage = reader.result;
 
-                    let path = `${getCurrentUserIdString()}/${projectKey}/album-cover`
+                        let inputImage = new Image();
+                        inputImage.src = albumImage;
 
-                    const storage = getStorage();
-                    const storageRef = ref(storage, path);
 
-                    const metadata = {
-                        contentType: "image"
-                    }
+                        // CROP FUNCTIONALITY -> PQINA.NL
 
-                    console.log(storageRef.fullPath);
+                        inputImage.onload = () => {
+                            let croppedFile = "";
 
-                    if(allowCreation){
-                        uploadBytes(storageRef, entryPhoto.current.files[0], metadata).then((snapshot) => {
-                            console.log("Hey! I just uploaded an image file to my storage!")
+                            const outputImageAspectRatio = 1;
 
-                            getDownloadURL(storageRef).then((url) => {
+                            const inputWidth = inputImage.naturalWidth;
+                            const inputHeight = inputImage.naturalHeight;
 
-                                if(edit == false){
-                                    if(allowCreation){
+                            // get the aspect ratio of the input image
+                            const inputImageAspectRatio = inputWidth / inputHeight;
 
-                                        setCards([...cards, 
-                                            <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={url} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
-                                        );
+                            // if it's bigger than our target aspect ratio
+                            let outputWidth = inputWidth;
+                            let outputHeight = inputHeight;
 
-                                        var currentProjects = projects;
-                                        currentProjects = [...currentProjects, 
-                                            {
-                                            key: key,
-                                            projectTitle: title,
-                                            projectType: projectTypeChoice,
-                                            artist: artist,
-                                            date: dateValue,
-                                            label: label,
-                                            image: url,
-                                            colour: '',
-                                            songs: []
-                                        }]
-                                        console.log('Current projects now: ', currentProjects)
-                                        setProjects(currentProjects);
-                                        writeProjectsToFirebase(currentProjects);
+                            let crop = true;
 
-                                        if(setFirstCreationSuccessful != null){
-                                            setFirstCreationSuccessful(true)
+
+                            if (inputImageAspectRatio > outputImageAspectRatio) {
+                                outputWidth = inputHeight * outputImageAspectRatio;
+                                
+                            } else if (inputImageAspectRatio < outputImageAspectRatio) {
+                                outputHeight = inputWidth / outputImageAspectRatio;
+                            }
+                            else {
+                                crop = false
+                            }
+
+                            if(crop){
+                                // calculate the position to draw the image at
+                                const outputX = (outputWidth - inputWidth) * 0.5;
+                                const outputY = (outputHeight - inputHeight) * 0.5;
+
+                                // create a canvas that will present the output image
+                                const outputImage = document.createElement('canvas');
+
+                                // set it to the same size as the image
+                                outputImage.width = outputWidth;
+                                outputImage.height = outputHeight;
+
+                                // draw our image at position 0, 0 on the canvas
+                                const ctx = outputImage.getContext('2d');
+                                ctx.drawImage(inputImage, outputX, outputY);
+
+                                outputImage.toBlob((blob) => {
+                                    croppedFile = blob;
+                                    console.log(croppedFile)
+
+                                    let path = `${getCurrentUserIdString()}/${projectKey}/album-cover`;
+
+                                        const storage = getStorage();
+                                        const storageRef = ref(storage, path);
+
+                                        var metadata = {
+                                            contentType: "image"
                                         }
 
-                                        clickOff(false)
+                                        console.log(storageRef.fullPath);
 
-                                    }
-                                        
-                                    else{
-                                        alert("Failed to make a new project! (Please make sure you've filled out the release date) - New Image")
-                                    }
-                                }
-                                else{
-                                    //if editing
-                                    if(allowCreation){
-                                        var tempProjects = [];
-                                        ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
-                                            let currentProjects = result
-                                            for(let i = 0; i < currentProjects.length; i++){
-                                                let project = currentProjects[i];
-                                                if(project.key == key){
-                                                    let newSongs = []
-                                                    for (let j = 0; j < project.songs.length ; j++){
-                                                        project.songs[j].album = title;
-                                                        project.songs[j].thumbnail = url
-                                                        newSongs.push(project.songs[j])
-                                                    }
-
-                                                    let updatedProject = {
-                                                        key: key,
-                                                        projectTitle: title,
-                                                        projectType: projectTypeChoice,
-                                                        artist: artist,
-                                                        date: dateValue,
-                                                        label: label,
-                                                        image: url,
-                                                        colour: '',
-                                                        songs: project.songs
-                                                    };
-                                                    setTracks(newSongs);
-                                                    setCurrentProject(updatedProject);
-                                                    tempProjects.push(updatedProject);
-                                                    console.log("Updated project values: ", updatedProject);
-                                                }
-                                                else{
-                                                    tempProjects.push(currentProjects[i])
+                                        if(allowCreation){
+                                            let file;
+                                            if(crop){
+                                                file = croppedFile;
+                                                metadata = {
+                                                    contentType: 'image/jpeg'
                                                 }
                                             }
-                                            
-                                            console.log('Updated Projects! : ', tempProjects);
-                                            setProjects(tempProjects);
-                                            writeProjectsToFirebase(tempProjects)
+                                            else {
+                                                file = entryPhoto.current.files[0]
+                                            }
+                                            console.log(file)
 
-                                            clickOff(false)
-                                        });
+                                            uploadBytes(storageRef, file, metadata).then((snapshot) => {
+                                                console.log("Hey! I just uploaded an image file to my storage!")
 
-                                    }
-                                    else{
-                                        alert("Failed to save changes!");
-                                    }
-                                }
-                            });
-                        });
-                    }
+                                                getDownloadURL(storageRef).then((url) => {
+
+                                                    if(edit == false){
+                                                        if(allowCreation){
+
+                                                            setCards([...cards, 
+                                                                <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={url} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
+                                                            );
+
+                                                            var currentProjects = projects;
+                                                            currentProjects = [...currentProjects, 
+                                                                {
+                                                                key: key,
+                                                                projectTitle: title,
+                                                                projectType: projectTypeChoice,
+                                                                artist: artist,
+                                                                date: dateValue,
+                                                                label: label,
+                                                                image: url,
+                                                                colour: '',
+                                                                songs: []
+                                                            }]
+                                                            console.log('Current projects now: ', currentProjects)
+                                                            setProjects(currentProjects);
+                                                            writeProjectsToFirebase(currentProjects);
+
+                                                            if(setFirstCreationSuccessful != null){
+                                                                setFirstCreationSuccessful(true)
+                                                            }
+
+                                                            clickOff(false)
+
+                                                        }
+                                                            
+                                                        else{
+                                                            alert("Failed to make a new project! (Please make sure you've filled out the release date) - New Image")
+                                                        }
+                                                    }
+                                                    else{
+                                                        //if editing
+                                                        if(allowCreation){
+                                                            var tempProjects = [];
+                                                            ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+                                                                let currentProjects = result
+                                                                for(let i = 0; i < currentProjects.length; i++){
+                                                                    let project = currentProjects[i];
+                                                                    if(project.key == key){
+                                                                        let newSongs = []
+                                                                        for (let j = 0; j < project.songs.length ; j++){
+                                                                            project.songs[j].album = title;
+                                                                            project.songs[j].thumbnail = url
+                                                                            newSongs.push(project.songs[j])
+                                                                        }
+
+                                                                        let updatedProject = {
+                                                                            key: key,
+                                                                            projectTitle: title,
+                                                                            projectType: projectTypeChoice,
+                                                                            artist: artist,
+                                                                            date: dateValue,
+                                                                            label: label,
+                                                                            image: url,
+                                                                            colour: '',
+                                                                            songs: project.songs
+                                                                        };
+                                                                        setTracks(newSongs);
+                                                                        setCurrentProject(updatedProject);
+                                                                        tempProjects.push(updatedProject);
+                                                                        console.log("Updated project values: ", updatedProject);
+                                                                    }
+                                                                    else{
+                                                                        tempProjects.push(currentProjects[i])
+                                                                    }
+                                                                }
+                                                                
+                                                                console.log('Updated Projects! : ', tempProjects);
+                                                                setProjects(tempProjects);
+                                                                writeProjectsToFirebase(tempProjects)
+
+                                                                clickOff(false)
+                                                            });
+
+                                                        }
+                                                        else{
+                                                            alert("Failed to save changes!");
+                                                        }
+                                                    }
+                                                });
+                                            });
+                                        }
+
+                                }, 'image/jpeg');
+                            }
+                        
+
+                            
+                        }
                     }
                 }
             }
@@ -292,6 +366,8 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                         
                         var currentProjects = projects;
                         console.log(currentProjects)
+
+                        //colour is assigned a string but the bg colour function in album will take care of it
                         currentProjects = [...currentProjects, 
                             {
                             key: key,
