@@ -18,8 +18,8 @@ import { GoDotFill } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs"
 import { IoChevronBack } from "react-icons/io5";
 
-import { IoMdVolumeHigh, IoMdVolumeOff, IoMdVolumeLow} from 'react-icons/io';
-import { IoVolumeMedium} from "react-icons/io5";
+
+import { IoVolumeMedium, IoVolumeHigh, IoVolumeMute, IoVolumeLow} from "react-icons/io5";
 
 
 import ColorThief from 'colorthief';
@@ -773,13 +773,13 @@ function Player() {
                         <button onClick={() => setMuteVolume((prev) => !prev)}>
                             <span>
                             {muteVolume || volume == 0 ? (
-                                <IoMdVolumeOff />
+                                <IoVolumeMute />
                             ) : volume < 20 ? (
-                                <IoMdVolumeLow />
+                                <IoVolumeLow />
                             ) : volume < 50 ? (
                             <IoVolumeMedium/>
                             ): 
-                            (<IoMdVolumeHigh />)}
+                            (<IoVolumeHigh />)}
                             </span>
                         </button>
                     </div>
