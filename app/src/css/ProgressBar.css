@@ -4,14 +4,16 @@ Custom Input range - lbaslogic
 
 /* Input range - chrome and safari */
 
-input[type="range"] {
+
+
+  input[type="range"] {
     --range-progress: 0;
     
     -webkit-appearance: none;
     position: relative;
     background:#606060;
     width: 100%;
-    height: 5px;
+    height: 4px;
     border-radius: 2px;
     cursor: pointer;
   }
@@ -21,7 +23,7 @@ input[type="range"] {
     position: relative;
     background:#606060;
     width: 100%;
-    height: 5px;
+    height: 4px;
     border-radius: 2px;
     cursor: pointer;
   }
@@ -29,9 +31,20 @@ input[type="range"] {
   /* played progress length - Chrome & safari*/
   input[type="range"]::before {
     content: '';
-    height: 5px;
+    height: 4px;
     background: #FFFFFF;
     width: var(--range-progress);
+    border-radius: 5px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  input[type="range"].player-volume-slider::before {
+    content: '';
+    height: 4px;
+    background: #FFFFFF;
+    width: var(--volume-progress);
     border-radius: 5px;
     position: absolute;
     top: 0;
@@ -43,7 +56,7 @@ input[type="range"] {
     background: #FFFFFF;
     border-bottom-left-radius: 2px;
     border-top-left-radius: 2px;
-    height: 5px;
+    height: 4px;
   }
 
   .player-scrollbar:hover input[type="range"]::-moz-range-progress{
@@ -53,6 +66,14 @@ input[type="range"] {
   .player-scrollbar:hover input[type="range"]::before {
     background: #1ed760;
   }
+  
+  .player-volume-wrapper:hover input[type="range"]::-moz-range-progress{
+    background: #1ed760;
+  }
+
+  .player-volume-wrapper:hover input[type="range"]::before {
+    background: #1ed760;
+  }
 
   /* THIS WORKED FOR LIKE ONE REFRESH THEN STOPPED FFSSSSSS */
   .player-scrollbar:hover > input[type="range"]::-webkit-slider-thumb{
@@ -60,6 +81,14 @@ input[type="range"] {
   }
 
   .player-scrollbar:hover > input[type="range"]::-moz-range-thumb{
+    visibility: visible;
+  }
+
+  .player-volume-wrapper:hover > input[type="range"]::-webkit-slider-thumb{
+    visibility: visible;
+  }
+
+  .player-volume-wrapper:hover > input[type="range"]::-moz-range-thumb{
     visibility: visible;
   }
   /* slider thumb - chrome and safari */
@@ -73,7 +102,7 @@ input[type="range"] {
     cursor: pointer;
     position: relative;
     visibility: hidden;
-    left:-1px;
+    left:0px;
   }
   
   /* dragging thumb - chrome and safari */
@@ -91,7 +120,7 @@ input[type="range"] {
     border: transparent;
     position: relative;
     visibility: hidden;
-    left:-1px;
+    left:0px;
   }
   /* dragging thumb - firefox */
   input[type="range"]:active::-moz-range-thumb {

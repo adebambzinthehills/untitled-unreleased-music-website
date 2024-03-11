@@ -18,6 +18,10 @@ import { GoDotFill } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs"
 import { IoChevronBack } from "react-icons/io5";
 
+import { IoMdVolumeHigh, IoMdVolumeOff, IoMdVolumeLow} from 'react-icons/io';
+import { IoVolumeMedium} from "react-icons/io5";
+
+
 import ColorThief from 'colorthief';
 
 import { tracks } from '../audio/TemporaryTracks';
@@ -28,18 +32,20 @@ function Player() {
         miniplayerEnabled, enableMiniplayer, removeMiniplayer, 
         enableFullscreenPlayer, disableFullscreenPlayer, playerUpdated} = useContext(PlayerContext);  
 
-    const {playerTracklist, setPlayerTracks} = useContext(PlayerContext);
+    const { playerTracklist, setPlayerTracks} = useContext(PlayerContext);
 
-    console.log(playerTracklist)
+    // console.log(playerTracklist)
 
     const [pageLoaded, setPageLoaded] = useState(false);
 
-    console.log("Rendering!")
+    // console.log("Rendering!")
 
     const [shufflePlayer, setShufflePlayer] = useState(false);
     const [repeatCount, setRepeatCount] = useState(0);
     const [repeatOn, setRepeatOn] = useState(false);
     const [playPress, setPlayPress] = useState(false);
+    const [volume, setVolume] = useState(100);
+    const [muteVolume, setMuteVolume] = useState(false);
 
     const [isPlaying, setIsPlaying] = useState(false);
     const music = useRef();
@@ -64,6 +70,7 @@ function Player() {
     const [playerFullscreen, setPlayerFullscreen] = useState(false);
 
     const progressBarRef = useRef();
+    const volumeBarRef = useRef();
     const [timeProgress, setTimeProgress] = useState(0);
 
     const animationRef = useRef();
@@ -89,12 +96,11 @@ function Player() {
     }, [])
 
     useEffect(() => {
-            console.log("RE-RENDERING PLAYER!!!!!!!")
-            console.log("Current player tracklist! : ", playerTracklist);
-            setTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
-            setShuffleTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
+        console.log("RE-RENDERING PLAYER!!!!!!!")
+        console.log("Current player tracklist! : ", playerTracklist);
+        setTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
+        setShuffleTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
 
-       
     }, [playerTracklist])
 
     useEffect(() => {
@@ -108,6 +114,22 @@ function Player() {
         console.log(playlistOrder[trackIndex])
         setCurrentTrack(playlistOrder[trackIndex]);
     }, [shuffleTracks])
+
+    const {externalPlayerBackgroundState } = useContext(PlayerContext);
+
+    useEffect(() => {
+
+        setPlayerBackgroundColour(externalPlayerBackgroundState);
+        console.log("Background!");
+
+    }, [externalPlayerBackgroundState])
+
+    useEffect(() => {
+        setPlayerBackgroundColour(externalPlayerBackgroundState);
+        console.log("Background!");
+    }, [])
+
+    console.log("State !!! :/ : " , externalPlayerBackgroundState)
     
     useEffect(() => {
         let image = (currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail
@@ -124,7 +146,8 @@ function Player() {
 
         awaitPromise.then((res) => {
             console.log(res);
-            setPlayerBackgroundColour(res)
+            setPlayerBackgroundColour(externalPlayerBackgroundState)
+            
 
         }).catch((err) => {
             console.log(err);
@@ -132,6 +155,8 @@ function Player() {
         })
 
     }, [currentTrack])
+
+
 
 
     let newPlayerColourValues = [];
@@ -390,6 +415,10 @@ function Player() {
                     setTrackIndex(0);
                     currentIndex = 0
                     setCurrentTrack(tracklist[currentIndex]);
+
+                    progressBarRef.current.currentTime = 0;
+                    music.current.currentTime = 0;
+                    music.current.play();
                 }
                 else{
                     setTrackIndex(currentIndex + 1);
@@ -479,14 +508,14 @@ function Player() {
         function applyClassesAndScroll(wrapperWidths, widths, wrappers, items, fullscreen){
 
             for(let i = 0; i < wrapperWidths.length; i++){
-                console.log(wrappers[i].current.className)
-                console.log('current width id: ', items[i], '; current width: ', widths[i])
+                // console.log(wrappers[i].current.className)
+                // console.log('current width id: ', items[i], '; current width: ', widths[i])
 
-                console.log(widths[i] - wrapperWidths[i])
+                // console.log(widths[i] - wrapperWidths[i])
                 if(widths[i] > wrapperWidths[i]){
                     
-                    console.log("Span width is greater than wrapper width at postion ", i , "!");
-                    console.log(wrappers[i].current.className)
+                    // console.log("Span width is greater than wrapper width at postion ", i , "!");
+                    // console.log(wrappers[i].current.className)
     
                     if(i == 2 && fullscreen){
                         if(!wrappers[i].current.className.includes(" justify-left")){
@@ -507,7 +536,7 @@ function Player() {
                         `${-(widths[i] - wrapperWidths[i])}px`
                     );
     
-                    console.log(widths[i] - wrapperWidths[i]);
+                    // console.log(widths[i] - wrapperWidths[i]);
                 }
                 else {
                     if(wrappers[i].current.className.includes(" scrollable")){
@@ -655,7 +684,26 @@ function Player() {
         handleResize();
     }, [trackIndex, playerFullscreen])
 
+    useEffect(() => {
+        if (music) {
+            music.current.volume = volume / 100;
+            music.current.muted = muteVolume;
+        }
+      }, [volume, music, muteVolume]);
 
+    useEffect(() => {
+        if(volume > 0){
+            setMuteVolume(false)
+        }
+    }, [volume])
+
+    useEffect(() => {
+        volumeBarRef.current.style.setProperty(
+            '--volume-progress', `${volume}%`
+            );
+    }, [])
+
+    
   return (
 
     <div>
@@ -720,6 +768,25 @@ function Player() {
                     </div>
                     <div className='player-queue-wrapper'>
                         <button className='player-queue-button'><span><HiOutlineQueueList/></span></button>
+                    </div> 
+                    <div className='player-volume-button'>
+                        <button onClick={() => setMuteVolume((prev) => !prev)}>
+                            <span>
+                            {muteVolume || volume == 0 ? (
+                                <IoMdVolumeOff />
+                            ) : volume < 20 ? (
+                                <IoMdVolumeLow />
+                            ) : volume < 50 ? (
+                            <IoVolumeMedium/>
+                            ): 
+                            (<IoMdVolumeHigh />)}
+                            </span>
+                        </button>
+                    </div>
+                    <div className="player-volume-wrapper">
+                        <input className="player-volume-slider" ref={volumeBarRef} type="range" min={0} max={100} value={volume} onChange={(e) => {setVolume(e.target.value); volumeBarRef.current.style.setProperty(
+                        '--volume-progress', `${e.target.value}%`
+                        );}}/>
                     </div>
                 </div>
             </div>

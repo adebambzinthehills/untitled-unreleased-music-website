@@ -3,8 +3,11 @@ import { useLocation } from 'react-router-dom';
 import '../css/MusicContent.css'
 import ColorThief from 'colorthief';
 import { FaPalette } from 'react-icons/fa';
+import { doc, setDoc, getDoc } from "firebase/firestore"; 
+import { auth, db, storage } from '../firebase'
+import { useAuth } from '../contexts/AuthContext';
 
-function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteBlock, image, key, changeBackgroundState}) {
+function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteBlock, image, key, changeBackgroundState, projectKey}) {
 
     const [palette, setPalette] = useState([]);
     const [paletteVisible, setPaletteVisible] = useState(false);
@@ -44,6 +47,31 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
         })
     }, [image])
 
+    async function writeProjectsToFirebase(projects){
+        var currentUser = getCurrentUserIdString();
+        await setDoc(doc(db, "users", currentUser), {projects});
+    }
+
+    async function ReadProjectsFromFirebase(currentUser){
+        const docRef = doc(db, "users", currentUser);
+        const docSnap = await getDoc(docRef);
+        var data;
+    
+        if(docSnap.exists()){
+            data = docSnap.data().projects;
+            // console.log("Data! ", data)
+        }
+        else {
+            console.log("There were no documents to be found!")
+            data = []
+        }
+    
+        return data
+    
+    }
+
+    const { getCurrentUserIdString } = useAuth();
+
     function handleColourPicker(key){
         const colour = palette[key];
 
@@ -55,9 +83,28 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
         console.log(document.body.getElementsByClassName('header'));
         document.body.getElementsByClassName('header')[0].style.backgroundColor = newContentColourBackground.backgroundColor;
 
+
         setBackgroundColour(newContentColourBackground);
         changeBackgroundState(colour);
         setPaletteActive(true);
+
+
+        ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+            let currentProjects = result;
+            let tempProjects = [];
+            for(let i = 0; i < currentProjects.length; i++){
+                let project = currentProjects[i];
+                if(project.key == projectKey){
+                    console.log("Writing new colour to the database!")
+                    project.colour = colour
+                }
+                tempProjects.push(project)
+            }
+            if(tempProjects.length > 0){
+                writeProjectsToFirebase(tempProjects)
+            }
+
+        });
 
     }
 
