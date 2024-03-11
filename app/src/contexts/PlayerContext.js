@@ -21,6 +21,7 @@ export function PlayerProvider({children}){
     }])
     const [miniplayerEnabled, setMiniplayerEnabled] = useState(false);
     const [fullscreenPlayerEnabled, setFullscreenPlayerEnabled] = useState (false);
+    const [externalPlayerBackgroundState, setExternalPlayerBackgroundState] = useState('');
 
     const play = () => {
         setPlayerOn(true);
@@ -61,12 +62,18 @@ export function PlayerProvider({children}){
         setPlayerTracklist(tracks)
     }
 
+    const setExternalPlayerBackground = (colour) => {
+        let colourVal = colour;
+        console.log("Changing player background!");
+        setExternalPlayerBackgroundState(colourVal)
+    }
+
     return(
         <PlayerContext.Provider value={{playerOn, play, stop, toggle, playerImgSrc, 
         changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer,
         fullscreenPlayerEnabled, enableFullscreenPlayer, disableFullscreenPlayer,
         playerOff, playerTracklist, setPlayerTracklist, setPlayerTracks,
-        playerUpdated, setPlayerUpdated}}>
+        playerUpdated, setPlayerUpdated, setExternalPlayerBackground, externalPlayerBackgroundState}}>
             {children}
         </PlayerContext.Provider>
     );

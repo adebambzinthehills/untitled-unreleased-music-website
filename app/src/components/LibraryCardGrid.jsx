@@ -25,7 +25,7 @@ import AlbumManagement from './AlbumManagement'
 
 import "../css/App.css"
 
-function LibraryCardGrid({userCards, setUserCards, projects, setProjects}) {
+function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSelectedProjectKey, setSelectedProject}) {
   console.log(projects)
 
   const [addButtonClicked, setAddButtonClicked] = useState(false);
@@ -105,7 +105,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects}) {
 
         tempArray = [...tempArray,
           <LibraryCard key={key} id={key} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
-          edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>
+          edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue} setSelectedProjectKey={setSelectedProjectKey} setSelectedProject={setSelectedProject}></LibraryCard>
         ];
         // console.log('Temp', tempArray[0].props.title)
       }
@@ -136,10 +136,10 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects}) {
           <div className='search-bar-item'>
             <input className='search-bar' placeholder='Search for an song, album or playlist here.'></input>
           </div>
-          <div className='search-bar-row'>
+          { false && <div className='search-bar-row'>
             <button>Albums</button>
             <button>Playlists</button>
-          </div>
+          </div>}
         </div>
         <div className='library-search-bar-block'></div>
       </div>

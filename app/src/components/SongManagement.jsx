@@ -6,7 +6,7 @@ import { ReadProjectsFromFirebase } from './AlbumManagement';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
 import { auth, db, storage } from '../firebase'
 import { useAuth } from '../contexts/AuthContext';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getStorage, ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 
 
 function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks, setTracks, setProjects, projectKey, currentProject, setProject, selectedSongKey}) {
@@ -139,7 +139,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                                                 unformattedDuration: duration, 
                                                                 thumbnail: project.image, 
                                                                 album: project.projectTitle, 
-                                                                author: project.artist
+                                                                author: project.artist,
+                                                                path: path
                                                             });
                                                     }
                                                     else{
@@ -157,7 +158,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                                         unformattedDuration: duration, 
                                                         thumbnail: project.image, 
                                                         album: project.projectTitle, 
-                                                        author: project.artist
+                                                        author: project.artist,
+                                                        path: path
                                                     }
                                                 ]
                                             }
@@ -198,6 +200,7 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                     let currentTrackSrc = "";
                     let currentTrackDuration = "";
                     let currentUnformattedTrackDuration = "";
+                    let currentTrackPath = "";
                     console.log(`State key: `, selectedSongKey);
                     let tempTracks = []
                     for(let i = 0; i < tracks.length; i++){
@@ -205,6 +208,7 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                             currentTrackSrc = tracks[i].src;
                             currentTrackDuration = tracks[i].duration;
                             currentUnformattedTrackDuration = tracks[i].unformattedDuration;
+                            currentTrackPath =  tracks[i].path;
                             tempTracks.push(
                                 {
                                     key: selectedSongKey, 
@@ -214,7 +218,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                     unformattedDuration: currentUnformattedTrackDuration, 
                                     thumbnail: project.image, 
                                     album: project.projectTitle, 
-                                    author: project.artist
+                                    author: project.artist,
+                                    path: currentTrackPath
                                 });
                         }
                         else{
@@ -238,6 +243,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                 setProjects(tempProjects);
                 writeProjectsToFirebase(tempProjects)
 
+                
+
                 clickOff(false); editClickOff(false); setMode(false)
             });
         }
@@ -250,6 +257,61 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
         }
         
 
+    }
+
+
+    function deleteSong() {
+        console.log("#nooticer")
+        if(window.confirm("Are you sure you want to delete this track?")){
+            ReadProjectsFromFirebase(currentUser).then((result) => {
+                let tempProjects = [];
+                let currentProjects = result;
+                let deletePath = ""
+
+                for(let i = 0; i < currentProjects.length; i++){
+                    let project = currentProjects[i];
+
+                    let currentTrackSrc = "";
+                    let currentTrackDuration = "";
+                    let currentUnformattedTrackDuration = "";
+                    let tempTracks = [];
+                    for(let i = 0; i < tracks.length; i++){
+                        if(!(tracks[i].key == selectedSongKey)){
+                            tempTracks.push(tracks[i]);
+                        }
+                        else {
+                            deletePath = tracks[i].path;
+                        }
+                    }
+                    if(project.key == projectKey){
+                        let updatedProject = project;
+                        updatedProject.songs = tempTracks
+
+                        setTracks(tempTracks)
+                        setProject(updatedProject);
+                        tempProjects.push(updatedProject);
+                        console.log("Updated project values (removed songs): ", updatedProject);
+                    }
+                    else{
+                        tempProjects.push(currentProjects[i])
+                    }
+                }
+
+                console.log('Updated Projects (Song Change)! : ', tempProjects);
+                setProjects(tempProjects);
+                writeProjectsToFirebase(tempProjects)
+                const storage = getStorage();
+                const storageRef = ref(storage, deletePath);
+
+                deleteObject(storageRef).then(() => {
+                    console.log("Hooray! My reference has been deleted [ADMIN]")
+                }).catch((error) => {
+                    console.log("Error deleting the database entry in Firebase! [ADMIN]")
+                })
+
+                clickOff(false); editClickOff(false); setMode(false)
+            });
+        }
     }
 
     return (
@@ -307,7 +369,7 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                     <div className='controls-row row'>
                         <div className='album-manager-controls-icons col-2 col-sm-6'>
                             {editMode && <div className='controls-icons-left'>
-                                <button><span><FaTrashAlt/></span></button>
+                                <button onClick={() => deleteSong()}><span><FaTrashAlt/></span></button>
                             </div>}
                         </div>
                         <div className='album-manager-controls-save-create col-10 col-sm-6'>

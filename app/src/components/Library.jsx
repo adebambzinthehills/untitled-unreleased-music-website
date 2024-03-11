@@ -20,7 +20,19 @@ function Library({player, playerToggle}) {
   const [addButtonClicked, setAddButtonClicked] = useState(false);
   const [albumManagerMode, setAlbumManagerMode] = useState(false);
   const [firstCreationSuccessful, setFirstCreationSuccessful] = useState(false);
+  const [selectedProjectKey, setSelectedProjectKey] = useState("");
+  const [libraryKeyActive, setLibraryKeyActive] = useState(false);
   const [projects, setProjects] = useState([]);
+  const [selectedProject, setSelectedProject] = useState({
+    title: '', 
+    label: '[label]', 
+    image: '', 
+    artist: '',
+    date: new Date(), 
+    type: {label: 'Single', value: 'Single'},
+    songs: '',
+    duration: ''
+  });
 
   function displayManager() {
     setAddButtonClicked(true)
@@ -58,11 +70,13 @@ function Library({player, playerToggle}) {
     });
   }, [])
 
+  useEffect(() => {console.log("CHANGE!", selectedProjectKey); setLibraryKeyActive(true)}, [selectedProjectKey])
+
   return (
     <div className='page'>
       <Header></Header>
       <div className='library' style={staticStyle}>
-        {hasProjects ? (<LibraryCardGrid projects={projects} setProjects={setProjects} player={player} playerValue={playerToggle} userCards={userCards} setUserCards={setUserCards}/>) : (
+        {hasProjects ? (<LibraryCardGrid projects={projects} setProjects={setProjects} player={player} playerValue={playerToggle} userCards={userCards} setUserCards={setUserCards} setSelectedProjectKey={setSelectedProjectKey} setSelectedProject={setSelectedProject}/>) : (
 
           <div className='noProjectsContainer'>
             <div className="noProjectsContent">
@@ -74,8 +88,8 @@ function Library({player, playerToggle}) {
             </div>
           </div>
         )}
-        {addButtonClicked &&
-          <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setAddButtonClicked} edit={albumManagerMode} setMode={setAlbumManagerMode} cards={userCards} setCards={setUserCards} setFirstCreationSuccessful={setFirstCreationSuccessful}/>
+        {addButtonClicked && 
+          <AlbumManagement projects={projects} setProjects={setProjects} clickOff={setAddButtonClicked} edit={albumManagerMode} setMode={setAlbumManagerMode} cards={userCards} setCards={setUserCards} setFirstCreationSuccessful={setFirstCreationSuccessful} libraryProjectKey={selectedProjectKey} selectedProject={selectedProject}/>
         }
       </div>
     </div>

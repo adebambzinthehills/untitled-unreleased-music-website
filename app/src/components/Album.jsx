@@ -29,7 +29,8 @@ import { TbTable, TbTableRow } from 'react-icons/tb'
 
 function Album({player}) {
     const [loading, setLoading] = useState(true)
-    const {playerOn, play, stop, toggle, setPlayerTracks, setPlayerTracklist, setPlayerUpdated, playerUpdated} = useContext(PlayerContext);
+    const {playerOn, play, stop, toggle, setPlayerTracks, setPlayerTracklist, 
+        setPlayerUpdated, playerUpdated, setExternalPlayerBackground } = useContext(PlayerContext);
 
     const [tracks, setTracksState] = useState([]);
     const [selectedSongKey, setSelectedSongKey] = useState("")
@@ -88,12 +89,14 @@ function Album({player}) {
 
 
     useEffect(() => {
-        console.log("Background updated!")
+        console.log("Background updated!");
+
+        setExternalPlayerBackground(backgroundColour);
+        
     }, [backgroundColour])
 
 
-    //THE REASON THAT USING PROJECTS SOMETIMES GET CLEARED OUT IS BECAUSE PROJECT ISNT UPDATING SO STAYS AT ZERO!
-    // THIS CODE DOES NOT RUN!!!!!!
+    
     useEffect(() => {
         
 
@@ -119,7 +122,13 @@ function Album({player}) {
             })
 
             setProjects(result)
-            // setBackgroundColour(project.colour)
+            setBackgroundColour(project.colour)
+
+            var musicHeaderColor = {
+                backgroundColor: 'rgb(' + project.colour + ')',
+                background: 'linear-gradient(rgb(' + project.colour + '), #121212)'
+            }
+            setMusicHeaderColourState(musicHeaderColor)
             setTracks(project.songs)
             console.log("Re-rendering and re-reading projects!")
             console.log("Information! : ", information)
@@ -143,6 +152,7 @@ function Album({player}) {
                         type: project.projectType
                     })
                     setBackgroundColour(project.colour)
+                    setExternalPlayerBackground(project.colour)
                 }
             }
             console.log("Rendering and reading projects for the first time!")
@@ -162,12 +172,12 @@ function Album({player}) {
     const contentShuffleButton = shuffle ? 'green-content-shuffle-button' : 'content-shuffle-button';
     const contentShuffleDotVisible = shuffle? 'green-content-shuffle-dot' : 'green-content-shuffle-dot-invisible';
 
-    const musicHeaderColor = {
+    var musicHeaderColor = {
         backgroundColor: 'rgb(' + backgroundColour + ')',
         background: 'linear-gradient(rgb(' + backgroundColour + '), #121212)'
     }
 
-    const headerColour = {
+    var headerColour = {
         backgroundColor: 'rgb(' + backgroundColour + ')'
     }
 
@@ -311,12 +321,12 @@ function Album({player}) {
     function formatAlbumTime(time){
         if (time && !isNaN(time)) {
             const minutes = Math.floor(time / 60);
-            if(minutes > 60){
+            if(minutes >= 60){
                 const hours = Math.floor(time / 3600)
-                const formatMinutes =`${minutes} min`;
-                const seconds = Math.floor((time - (hours * 3600)) / 60);
+                const formatMinutes =`${Math.floor((time % 3600) / 60)} min`;
+                const seconds = Math.floor();
                 const formatSeconds =`${seconds} sec`;
-                return `${formatMinutes} ${formatSeconds}`;
+                return `${hours} hr ${formatMinutes}`;
             }
             else {
                 const formatMinutes =`${minutes} min`;
@@ -383,7 +393,7 @@ function Album({player}) {
                             </div>
                         </div>
                         <div className='content-palette-wrapper'>
-                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock} image={information.image} changeBackgroundState={setBackgroundColour}/>
+                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock} image={information.image} changeBackgroundState={setBackgroundColour} projectKey={key}/>
                         </div>
                     </div>
                     {paletteBlock && <div className='palette-small-screen-block'>

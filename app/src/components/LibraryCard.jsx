@@ -8,7 +8,7 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from '../contexts/PlayerContext';
 
-function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date, label, songList}) {
+function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date, label, songList, setSelectedProjectKey, setSelectedProject}) {
 
   const [buttonClick, setButtonClicked] = useState(false);
   const [editButtonClicked, setEditButtonClicked] = useState(false);
@@ -37,6 +37,11 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
     }
   }
 
+  function handleEditPress() {
+
+    setSelectedProjectKey(id); edit(true); setMode(true)
+  }
+
 
   return (
     <div className='card-container grid-item'>
@@ -44,16 +49,16 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
         <button className='card-click-button' onClick={() => cardClickHandler()}></button>
       </div>
       <div className="card-header" onMouseLeave={() => setButtonClicked(false)}> 
-        <div className='card-header-block-wrapper'>
+        <div className='card-header-block-wrapper' style={{height: '10px'}}>
           <div className='card-header-button'>
-            <button onClick={() => setButtonClicked(!buttonClick)}>
+          {  false && <button  onClick={() => {console.log(id); setSelectedProjectKey(id); setButtonClicked(!buttonClick)}}>
                 <BsThreeDots/>
-            </button>
+            </button>}
           </div>
           {buttonClick && (
           <div className='card-header-sub-menu' onMouseLeave={() => setButtonClicked(false)}>
             <ul>
-              <li><button onClick={() => {edit(true); setMode(true)}}><span><FaRegEdit></FaRegEdit></span> Edit Album</button></li>
+              <li><button onClick={() => handleEditPress()}><span><FaRegEdit></FaRegEdit></span> Edit Album</button></li>
               <li><button disabled><span><CiFolderOn></CiFolderOn></span> Move to Folder</button></li>
               <li><button><span><FaRegTrashCan></FaRegTrashCan></span> Delete Album</button></li>
             </ul>
