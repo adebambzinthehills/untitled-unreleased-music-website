@@ -13,7 +13,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { currentUser, login } = useAuth();
+    const { currentUser, login, signInWithGoogle } = useAuth();
     const [waiting, setWaiting] = useState(false);
 
     useEffect(() => {
@@ -38,12 +38,22 @@ function Login() {
           setWaiting(false);
     }
 
+    async function googleSignIn(){
+        signInWithGoogle().then(() => {
+            navigate("/library");
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
+    }
+
     return (
         <div className='fullBackgroundBlack'>
             <div className='container'>
                 <div className='enterDetails'>
                     <h1>Login to Preview</h1>
-                    <button className='googleButton'>
+                    <button className='googleButton' onClick={() => {googleSignIn()}} disabled={waiting}>
                         <img alt='Google Logo' src={googleLogo}/>
                         <span>Sign in with Google</span>
                     </button>
@@ -59,9 +69,9 @@ function Login() {
                             <input type="password" value={password} autoComplete='password' required className='form-control' id="loginPassword" placeholder='Enter your password.'
                             onChange={(e) => setPassword(e.target.value)}/>
                         </div>
-                        <button type="submit" className=' detailsButton' onClick={formHandler}> Log In </button> 
+                        <button type="submit" className=' detailsButton' onClick={formHandler} disabled={waiting}> Log In </button> 
                         <p className='forgotPassword'><Link className='switchPageLink'>Forgot Password?</Link></p>
-                        <p className='small detailsParagraph'><span>Don't have an account? </span><br></br><Link className='switchPageLink' to="/createaccount">Create one!</Link></p>
+                        {/* <p className='small detailsParagraph'><span>Don't have an account? </span><br></br><Link className='switchPageLink' to="/createaccount">Create one!</Link></p> */}
                     </form> 
                 </div>
             </div>

@@ -17,7 +17,7 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
     async function writeProjectsToFirebase(projects){
         var currentUser = getCurrentUserIdString();
         await setDoc(doc(db, "users", currentUser), {projects});
-        setProjects(ReadProjectsFromFirebase(currentUser))
+        ReadProjectsFromFirebase(currentUser).then((res) => setProjects(res))
     }
 
     const [song, setSong] = useState(null);

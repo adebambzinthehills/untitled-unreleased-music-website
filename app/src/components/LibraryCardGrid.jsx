@@ -25,8 +25,13 @@ import AlbumManagement from './AlbumManagement'
 
 import "../css/App.css"
 
-function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSelectedProjectKey, setSelectedProject}) {
+function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSelectedProjectKey, setSelectedProject, setSearchActive}) {
   console.log(projects)
+
+  const [search, setSearch] = useState('');
+  const [filteredCards, setFilteredCards] = useState(userCards)
+  const [cardsMemory, setCardsMemory] = useState(userCards)
+  const [hasSearched, setHasSearched] = useState(false);
 
   const [addButtonClicked, setAddButtonClicked] = useState(false);
   const [newProjectButtonClicked, setNewProjectButtonClicked] = useState(false);
@@ -114,6 +119,55 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
     }
   }, [])
 
+  function handleSearch(value) { 
+    setSearch(value)
+    setHasSearched(true)
+  }
+
+  useEffect(() => {
+    const filteredItems = projects.filter((project) => project.projectTitle.toLocaleLowerCase().includes(search.toLocaleLowerCase().trim()))
+    console.log(filteredItems)
+    
+    if(filteredItems.length > 0){
+      var tempArray = [];
+      for(let i = 0; i < filteredItems.length; i++ ){
+        var currentProject = filteredItems[i];
+        console.log(currentProject)
+        var title = currentProject.projectTitle;
+        var artist = currentProject.artist;
+        var albumImage = currentProject.image;
+        var label = currentProject.label;
+        var dateValue = currentProject.date;
+        var colour = currentProject.colour;
+        var projectTypeChoice = currentProject.projectType
+        var songs = Object.keys(currentProject.songs).length;
+        var songList = currentProject.songs;
+        var key = currentProject.key;
+
+        console.log('@Songs: ', songs);
+        console.log("KEy: ", key);
+
+        tempArray = [...tempArray,
+          <LibraryCard key={key} id={key} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
+          edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue} setSelectedProjectKey={setSelectedProjectKey} setSelectedProject={setSelectedProject}></LibraryCard>
+        ];
+        // console.log('Temp', tempArray[0].props.title)
+        setSearchActive(true)
+        setUserCards(tempArray)
+        setCardsMemory(tempArray)
+      }
+    }
+    else {
+      setUserCards([])
+
+      if(search.trim() == ""){
+        setSearchActive(false)
+        setHasSearched(false)
+        setUserCards(cardsMemory)
+      }
+    }
+  }, [search])
+
   const exampleCards = [
   <LibraryCard title="CTV3: Day Tripper's Edition" artist="Jaden" image={ctv3} type="Album" songs={2} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>,
   <LibraryCard title="CTV3: Cool Tape Vol. 3" artist="Jaden" image={ctv30} type="Album" songs={3} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode}></LibraryCard>,
@@ -134,7 +188,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
       <div className='search-bar-wrapper container'>
         <div className='library-search-bar-content'>
           <div className='search-bar-item'>
-            <input className='search-bar' placeholder='Search for an song, album or playlist here.'></input>
+            <input className='search-bar' placeholder='search for a single, ep or a project here...' value={search} onChange={(e) => handleSearch(e.target.value)}></input>
           </div>
           { false && <div className='search-bar-row'>
             <button>Albums</button>

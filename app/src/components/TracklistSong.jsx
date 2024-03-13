@@ -25,7 +25,7 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content,
                             <span>{content.title}</span>
                         </div>
                         <div className='song-artist'>
-                            <span>[artistname]</span>
+                            <span>{content.author}</span>
                         </div>
                     </div>
                   </div>

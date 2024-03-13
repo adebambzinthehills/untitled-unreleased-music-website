@@ -34,7 +34,9 @@ export async function ReadProjectsFromFirebase(currentUser){
 
 export async function writeProjectsToFirebaseGlobal(projects, currentUser, {setProjects}){
     await setDoc(doc(db, "users", currentUser), {projects});
-    setProjects(ReadProjectsFromFirebase(currentUser))
+    ReadProjectsFromFirebase(currentUser).then((res) => {
+        setProjects(res)
+    })
 }
 
 function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlbumManagerMode, setNewProjectButtonClicked,
@@ -94,46 +96,6 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
 
     const location = useLocation().pathname;
     console.log(location)
-
-    useEffect(() => {
-        if(location == "/library" && libraryProjectKey != undefined){
-            ReadProjectsFromFirebase(getCurrentUserIdString()).then((res) => {
-                console.log("2H!", projectKey)
-                projects = res;
-                for(let i = 0; i < projects.length; i++){
-                    if(projects[i].key == projectKey){
-                        let informationValues = {
-                            title: projects[i].projectTitle,
-                            image: projects[i].image,
-                            artist: projects[i].artist,
-                            type: projects[i].projectType,
-                            songs: projects[i].songs,
-                            date: projects[i].date,
-                            label: projects[i].label
-                          }
-
-                        
-                        setTempImage({backgroundImage: 'url(' +  informationValues.image + ')', backgroundSize: '100% 100%'});
-                        albumTitle.current.value = informationValues.title;
-                        labelText.current.value = informationValues.label;
-
-                        let updateDay = ("0" + informationValues.date[0]).slice(-2);
-                        let updateMonth = ("0" + informationValues.date[1]).slice(-2);
-                        let updateDate = informationValues.date[2] + "-" + updateMonth + "-" + updateDay;
-
-                        releaseDate.current.value =  updateDate;
-
-                        setProjectTypeChoice(informationValues.type)
-                    }
-                }
-
-            })
-
-        }
-        else{
-            console.log("Dumbass!")
-        }
-    }, [libraryProjectKey])
 
     useEffect(() => {
         let informationValues = ""
@@ -233,7 +195,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                 label = labelText.current.value;
             }
             
-            if(releaseDate.current.value != null || releaseDate.current.value.trim() != ""){
+            if(Date.parse(releaseDate.current.value)){
                 releaseDateObject = new Date(releaseDate.current.value);
                 month = releaseDateObject.getMonth() + 1;
                 day = releaseDateObject.getDate();
@@ -242,7 +204,10 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
             }
             else {
                 allowCreation = false;
+                alert("Fill in release date in order to create a project!")
             }
+
+            console.log(allowCreation)
 
             if(entryPhoto.current.files[0] != null){
                 newImageAdded = true;
@@ -312,7 +277,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                     croppedFile = blob;
                                     console.log(croppedFile)
 
-                                    let path = `${getCurrentUserIdString()}/${projectKey}/album-cover`;
+                                    let path = `${getCurrentUserIdString()}/${key}/album-cover`;
 
                                         const storage = getStorage();
                                         const storageRef = ref(storage, path);
@@ -344,10 +309,6 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                     if(edit == false){
                                                         if(allowCreation){
 
-                                                            setCards([...cards, 
-                                                                <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={url} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
-                                                            );
-
                                                             var currentProjects = projects;
                                                             currentProjects = [...currentProjects, 
                                                                 {
@@ -362,12 +323,17 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                                 songs: []
                                                             }]
                                                             console.log('Current projects now: ', currentProjects)
-                                                            setProjects(currentProjects);
+                                                            // setProjects(currentProjects);
                                                             writeProjectsToFirebase(currentProjects);
 
                                                             if(setFirstCreationSuccessful != null){
                                                                 setFirstCreationSuccessful(true)
                                                             }
+
+
+                                                            setCards([...cards, 
+                                                                <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={url} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
+                                                            );
 
                                                             clickOff(false)
 
@@ -415,7 +381,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                                 }
                                                                 
                                                                 console.log('Updated Projects! : ', tempProjects);
-                                                                setProjects(tempProjects);
+                                                                // setProjects(tempProjects);
                                                                 writeProjectsToFirebase(tempProjects)
 
                                                                 clickOff(false)
@@ -433,7 +399,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                 }, 'image/jpeg');
                             }
                             else {
-                                let path = `${getCurrentUserIdString()}/${projectKey}/album-cover`;
+                                let path = `${getCurrentUserIdString()}/${key}/album-cover`;
 
                                         const storage = getStorage();
                                         const storageRef = ref(storage, path);
@@ -465,10 +431,6 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                     if(edit == false){
                                                         if(allowCreation){
 
-                                                            setCards([...cards, 
-                                                                <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={url} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
-                                                            );
-
                                                             var currentProjects = projects;
                                                             console.log(projects)
                                                             currentProjects = [...currentProjects, 
@@ -484,14 +446,21 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                                 songs: []
                                                             }]
                                                             console.log('Current projects now: ', currentProjects)
-                                                            setProjects(currentProjects);
+                                                            // setProjects(currentProjects);
                                                             writeProjectsToFirebase(currentProjects);
 
                                                             if(setFirstCreationSuccessful != null){
                                                                 setFirstCreationSuccessful(true)
                                                             }
 
+
+                                                            setCards([...cards, 
+                                                                <LibraryCard key={key} id={key} title={title} artist="[artistname]" image={url} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>]
+                                                            );
+
                                                             clickOff(false)
+
+
 
                                                         }
                                                             
@@ -537,7 +506,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                                 }
                                                                 
                                                                 console.log('Updated Projects! : ', tempProjects);
-                                                                setProjects(tempProjects);
+                                                                // setProjects(tempProjects);
                                                                 writeProjectsToFirebase(tempProjects)
 
                                                                 clickOff(false)
@@ -566,11 +535,6 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                     console.log(typeof(cards))
                     if(allowCreation){
 
-                        setCards([...cards, 
-                        <LibraryCard key={key} id={key}  title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>])
-                        if(setFirstCreationSuccessful != null){
-                            setFirstCreationSuccessful(true)
-                        }
                         
                         var currentProjects = projects;
                         console.log(currentProjects)
@@ -589,8 +553,15 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                             songs: []
                         }]
                         console.log('Current projects now: ', currentProjects)
-                        setProjects(currentProjects);
+                        // setProjects(currentProjects);
                         writeProjectsToFirebase(currentProjects);
+
+
+                        setCards([...cards, 
+                            <LibraryCard key={key} id={key}  title={title} artist="[artistname]" image={albumImage} type={projectTypeChoice} songs={0} edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue}></LibraryCard>])
+                            if(setFirstCreationSuccessful != null){
+                                setFirstCreationSuccessful(true)
+                            }
 
                         clickOff(false)
 
@@ -636,7 +607,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                 }
                                 
                                 console.log('Updated Projects! : ', tempProjects);
-                                setProjects(tempProjects);
+                                // setProjects(tempProjects);
                                 writeProjectsToFirebase(tempProjects)
 
                                 clickOff(false)
@@ -670,7 +641,9 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
     async function writeProjectsToFirebase(projects){
         var currentUser = getCurrentUserIdString();
         await setDoc(doc(db, "users", currentUser), {projects});
-        setProjects(ReadProjectsFromFirebase(currentUser))
+        ReadProjectsFromFirebase(currentUser).then((res) => {
+            setProjects(res)
+        })
     }
 
     const navigate = useNavigate();
@@ -716,7 +689,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
 
                     }
                 }
-                setProjects(tempProjects);
+                // setProjects(tempProjects);
                 writeProjectsToFirebase(tempProjects)
 
                 LibraryTime();

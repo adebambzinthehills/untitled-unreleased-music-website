@@ -20,6 +20,7 @@ function Login({loggedIn, setLoggedIn}){
           <button className='loginBtn btn btn-success' onClick={() => navigate("/login")} > Let's start your Preview experience.</button>
           <p className='small'>This is a solo student developer project by Ayomide Balogun as part 
           of his third year project. </p>
+          <p className='small' style={{fontSize:'0.6rem'}}>This project is still HEAVILY under development, so there will be a few bugs!</p>
         </div>
       </div>
     )

@@ -39,6 +39,10 @@
     font-weight: 500;
 }
 
+.music-header-content-information-row {
+    display:flex;
+}
+
 .music-header-content-type {
     font-size: 0.9em;
 }
@@ -52,6 +56,18 @@
     font-size:4.5rem;
 }
 
+.music-header-artist-image-wrapper {
+    border-radius:15px;
+    height:20px;
+    width:20px;
+    background-color: white;
+    margin-right:5px;
+    margin-top:1px;
+}
+
+.music-header-artist-image {
+    
+}
 
 .back-button-row {
     position: relative;
@@ -85,6 +101,15 @@
     width: 1.5em;
     height: 1.5em;
     left: -1px;
+}
+
+.album-account-link {
+    color:white;
+    text-decoration: none;
+}
+
+.album-account-link:hover {
+    text-decoration: underline;
 }
 
 @media screen and (max-width: 1200px) {

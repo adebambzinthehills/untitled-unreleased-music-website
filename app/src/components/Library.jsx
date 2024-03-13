@@ -21,6 +21,7 @@ function Library({player, playerToggle}) {
   const [albumManagerMode, setAlbumManagerMode] = useState(false);
   const [firstCreationSuccessful, setFirstCreationSuccessful] = useState(false);
   const [selectedProjectKey, setSelectedProjectKey] = useState("");
+  const [searchActive, setSearchActive] = useState(false);
   const [libraryKeyActive, setLibraryKeyActive] = useState(false);
   const [projects, setProjects] = useState([]);
   const [selectedProject, setSelectedProject] = useState({
@@ -52,7 +53,7 @@ function Library({player, playerToggle}) {
   }, [fullscreenPlayerEnabled]);
 
   useEffect(() => {
-    if(firstCreationSuccessful || userCards.length > 0){
+    if(firstCreationSuccessful || userCards.length > 0 || searchActive ){
       setHasProjects(true)
     }
     else {
@@ -62,6 +63,7 @@ function Library({player, playerToggle}) {
 
   useEffect(() => {
     ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
+
       setProjects(result)
       if(result.length > 0){
         console.log("Result TRUE")
@@ -76,7 +78,7 @@ function Library({player, playerToggle}) {
     <div className='page'>
       <Header></Header>
       <div className='library' style={staticStyle}>
-        {hasProjects ? (<LibraryCardGrid projects={projects} setProjects={setProjects} player={player} playerValue={playerToggle} userCards={userCards} setUserCards={setUserCards} setSelectedProjectKey={setSelectedProjectKey} setSelectedProject={setSelectedProject}/>) : (
+        {hasProjects ? (<LibraryCardGrid setSearchActive={setSearchActive} projects={projects} setProjects={setProjects} player={player} playerValue={playerToggle} userCards={userCards} setUserCards={setUserCards} setSelectedProjectKey={setSelectedProjectKey} setSelectedProject={setSelectedProject}/>) : (
 
           <div className='noProjectsContainer'>
             <div className="noProjectsContent">

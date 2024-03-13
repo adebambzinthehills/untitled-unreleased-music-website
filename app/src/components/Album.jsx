@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useContext} from 'react'
 import Tracklist from '../components/Tracklist'
 import Player from './Player'
 import Header from './Header'
-import { useNavigate, useLocation, useParams } from 'react-router-dom'
+import { useNavigate, useLocation, useParams, Link } from 'react-router-dom'
 import "../css/MusicContent.css"
 import { FaPlay, FaPlus } from 'react-icons/fa'
 import { TiArrowShuffle } from "react-icons/ti"
@@ -114,7 +114,7 @@ function Album({player}) {
                 title: project.projectTitle, 
                 label: project.label, 
                 image: project.image, 
-                artist: project.artist,
+                artist: project.artist ,
                 date: project.date, 
                 type: project.projectType,
                 songs: project.songs.length,
@@ -337,6 +337,32 @@ function Album({player}) {
         }
     };
 
+    async function ReadInformationFromFirebase(currentUser){
+        const docRef = doc(db, "users", currentUser, 'information', currentUser);
+        const docSnap = await getDoc(docRef);
+        var data;
+    
+        if(docSnap.exists()){
+            data = docSnap.data().information;
+            // console.log("Data! ", data)
+        }
+        else {
+            console.log("There were no documents to be found!")
+            data = []
+        }
+    
+        return data
+    
+    }
+
+    const [artistImage, setArtistImage] = useState({background: ''})
+
+    useEffect(() => {
+        ReadInformationFromFirebase(getCurrentUserIdString()).then((res) => {
+            setArtistImage({backgroundImage: 'url(' + res.profileImage + ')', backgroundSize: '100% 100%'})
+        })
+    }, [])
+
     return (
         
         <div className='content-page'>
@@ -364,10 +390,21 @@ function Album({player}) {
                             <div className='music-header-content-wrapper'>
                                 {!mobileView && <span className='music-header-content-type'>{information.type.value}</span>}
                                 <h1>{information.title}</h1>
-                                {!mobileView && <span className='music-header-content-artist'>{information.artist} • {information.date[2]} • {information.songs} {information.songs == 1 ? 'song': 'songs'}{information.songs == 0? '': ','} {information.songs > 0 ?formatAlbumTime(information.duration) : ''} </span>}
-                                {mobileView && <span className='music-header-content-artist'>{information.artist}</span>}
-                                {mobileView && <span className='music-header-content-artist'>{information.type.value} • {information.date[2]} </span>}
+                                <div className='music-header-content-information-row' style={mobileView ? {display: 'block'} : {display: 'flex'}}>
+                                    {!mobileView && <span className='music-header-content-artist' style={{display: 'flex'}}><div className='music-header-artist-image-wrapper' style={artistImage}></div> 
+                                        <Link className="album-account-link" to="/account">
+                                        {information.artist}
+                                        </Link> 
+                                        <div style={{width:'4px'}}></div>
+                                        • {information.date[2]} • {information.songs} {information.songs == 1 ? 'song': 'songs'}{information.songs == 0? '': ','} {information.songs > 0 ?formatAlbumTime(information.duration) : ''} 
+                                    </span>}
+                                    {mobileView && <span className='music-header-content-artist' style={{display: 'flex', marginBottom:'5px'}}>
+                                        <div className='music-header-artist-image-wrapper' style={artistImage}></div>{information.artist} 
+                                        </span>}
+                                    {mobileView && <span className='music-header-content-artist' style={{color: '#a7a7a7'}}>{information.type.value} • {information.date[2]} </span>}
+                                </div>
                             </div>
+                                
                         </div>
                     </div>
                     <div className='music-content-functions'>

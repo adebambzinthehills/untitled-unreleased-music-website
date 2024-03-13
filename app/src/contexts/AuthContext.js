@@ -1,6 +1,6 @@
 import { createContext, useContext } from "react";
 import { useState, useEffect } from "react";
-import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut} from "firebase/auth";
+import {createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, GoogleAuthProvider, signInWithPopup, deleteUser} from "firebase/auth";
 import { auth }  from '../firebase';
 
 const AuthContext = createContext();
@@ -14,6 +14,8 @@ export function logOut(){
  }
 
 export function AuthProvider({ children }) {
+    const provider = new GoogleAuthProvider();
+
     const [currentUser, setCurrentUser] = useState();
     const [waiting, setWaiting] = useState(true);
 
@@ -23,6 +25,14 @@ export function AuthProvider({ children }) {
      
     function login(email, password) {
         return signInWithEmailAndPassword(auth, email, password);
+    }
+
+    function signInWithGoogle() {
+        return signInWithPopup(auth, provider)
+    }
+
+    function deleteAccount() {
+        return deleteUser(auth.currentUser)
     }
 
     function getCurrentUserIdString() {
@@ -42,7 +52,9 @@ export function AuthProvider({ children }) {
         currentUser,
         signup,
         login,
-        getCurrentUserIdString
+        getCurrentUserIdString,
+        signInWithGoogle,
+        deleteAccount
     }
 
     return (
