@@ -33,6 +33,7 @@
 }
 .music-header-content-wrapper { 
     position: relative;
+    width:100%;
 }
 .music-content-information span {
     display: block;
@@ -49,6 +50,18 @@
 
 .music-header-content-artist {
     font-size: 0.9em;
+    overflow: hidden;
+    text-wrap:wrap;
+
+    text-overflow: ellipsis;
+    width: 100% ;
+}
+
+.music-header-content-artist .album-account-link,
+.album-account-link-no-hover {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .music-content-information h1 {
@@ -63,6 +76,7 @@
     background-color: white;
     margin-right:5px;
     margin-top:1px;
+    flex-shrink: 0;
 }
 
 .music-header-artist-image {
@@ -103,7 +117,8 @@
     left: -1px;
 }
 
-.album-account-link {
+.album-account-link, 
+.album-account-link-no-hover {
     color:white;
     text-decoration: none;
 }
@@ -179,6 +194,12 @@
     height: 1.2em;
     left: 2px;
     top:-2px;
+}
+
+.content-play-button > span > svg.pause {
+    width:1.5em;
+    height:1.5em;
+    left:0.5px;
 }
 
 .add-tracks-wrapper {
@@ -521,7 +542,7 @@
     align-items: center;
     height: 100%;
     font-size:0.9rem;
-    width:50%;
+    width:70%;
 
     justify-content: right;
 }
@@ -536,24 +557,43 @@
 }
 
 .song-options-button-wrapper {
-    width: 50%;
+    width: 30%;
     display: none;
     justify-content: right;
     z-index: 5;
 }
 
+
 @media screen and (max-width:768px){
     .song-options-button-wrapper{
         display: flex;
     }
+
+    .song-time {
+        width:50%;
+    }
+
+    .song-options-button-wrapper {
+        width:50%;
+    }
 }
 
 .information-wrapper {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
     display: block;
+    min-width: 0;
 }
 
-.information-wrapper span {
-    float: left;
+
+
+.song-title, .song-artist {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-wrap: nowrap;
+    display: block;
 }
 
 .buttons-wrapper {

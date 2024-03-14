@@ -22,6 +22,11 @@ export function PlayerProvider({children}){
     const [miniplayerEnabled, setMiniplayerEnabled] = useState(false);
     const [fullscreenPlayerEnabled, setFullscreenPlayerEnabled] = useState (false);
     const [externalPlayerBackgroundState, setExternalPlayerBackgroundState] = useState('');
+    const [globalPlaying, setGlobalPlaying] = useState(false);
+    const [globalShuffle, setGlobalShuffle] = useState(false);
+    const [currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey] = useState('');
+    const [globalTrackIndex, setGlobalTrackIndex] = useState(0);
+    const [playerPageKey, setPlayerPageKey] = useState('library');
 
     const play = () => {
         setPlayerOn(true);
@@ -73,7 +78,10 @@ export function PlayerProvider({children}){
         changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer,
         fullscreenPlayerEnabled, enableFullscreenPlayer, disableFullscreenPlayer,
         playerOff, playerTracklist, setPlayerTracklist, setPlayerTracks,
-        playerUpdated, setPlayerUpdated, setExternalPlayerBackground, externalPlayerBackgroundState}}>
+        playerUpdated, setPlayerUpdated, setExternalPlayerBackground, externalPlayerBackgroundState,
+        setGlobalPlaying, globalPlaying, setGlobalShuffle, globalShuffle,
+        currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey, 
+        globalTrackIndex, setGlobalTrackIndex, playerPageKey, setPlayerPageKey}}>
             {children}
         </PlayerContext.Provider>
     );

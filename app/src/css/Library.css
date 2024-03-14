@@ -161,6 +161,12 @@
 .card-play-button span > svg {
     width:15px;
 }
+
+.card-play-button > span > svg.pause {
+    width:1.1em;
+    height:1.1em;
+    left:-1px;
+}
 .card-click {
     position: absolute;
     width: 100%;

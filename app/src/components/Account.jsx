@@ -193,7 +193,7 @@ function Account() {
 
                             getDownloadURL(storageRef).then((url) => {
                                     let newArtistInformation = {
-                                        artistName: artistName,
+                                        artistName: artistName.trim(),
                                         email: 'artistInformation.email',
                                         profileImage: url
                                     }
@@ -236,16 +236,22 @@ function Account() {
 
     useEffect(() => {
         if(artistName != undefined){
-            if(artistName.trim() == ""){
-                setArtistName("[artistname]")
-            }
+            
         }
     }, [artistName])
 
     function handleSave() {
+        let artistNameVal= ''
+        if(artistName.trim() == ""){
+            setArtistName("[artistname]")
+            artistNameVal = "[artistname]"
+        }
+        else {
+            artistNameVal = artistName.trim()
+        }
 
         let newArtistInformation = {
-            artistName: artistName,
+            artistName: artistNameVal,
             email: artistInformation.email,
             profileImage: artistImageValue
         }
@@ -258,9 +264,9 @@ function Account() {
             let tempProjects = []
             for (let i = 0; i < projects.length; i++){
                 let project = projects[i]
-                project.artist = artistName;
+                project.artist = artistNameVal;
                 for(let j = 0; j < project.songs.length; j++){
-                    project.songs[j].author = artistName
+                    project.songs[j].author = artistNameVal
                 }
 
                 tempProjects.push(project)
@@ -402,7 +408,7 @@ function Account() {
                         <div className='form details'>
                             <div className='form-group'>
                                 <h4>Artist Name</h4>
-                                <input className='account' placeholder='Enter an artist name, the default is [artistname]' ref={artistNameRef} value={artistName} onChange={(e) => setArtistName(e.target.value.trim())}></input>
+                                <input className='account' placeholder='Enter an artist name, the default is [artistname]' ref={artistNameRef} value={artistName} onChange={(e) => setArtistName(e.target.value)}></input>
                             </div>
                             {/* <div className='form-group'>
                                 <h4>Email Address</h4>

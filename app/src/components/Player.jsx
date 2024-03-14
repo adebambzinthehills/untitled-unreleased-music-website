@@ -17,6 +17,7 @@ import { TbMicrophone2 } from "react-icons/tb";
 import { GoDotFill } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs"
 import { IoChevronBack } from "react-icons/io5";
+import { Link, useParams } from 'react-router-dom';
 
 
 import { IoVolumeMedium, IoVolumeHigh, IoVolumeMute, IoVolumeLow} from "react-icons/io5";
@@ -30,7 +31,10 @@ function Player() {
 
     const {playerOn, play, stop, toggle, playerImgSrc, changePlayerImage,
         miniplayerEnabled, enableMiniplayer, removeMiniplayer, 
-        enableFullscreenPlayer, disableFullscreenPlayer, playerUpdated} = useContext(PlayerContext);  
+        enableFullscreenPlayer, disableFullscreenPlayer, playerUpdated, setGlobalPlaying, globalPlaying,
+        globalShuffle, setGlobalShuffle, currentlyPlayingProjectKey,
+        globalTrackIndex, setGlobalTrackIndex, playerPageKey
+    } = useContext(PlayerContext);  
 
     const { playerTracklist, setPlayerTracks} = useContext(PlayerContext);
 
@@ -77,6 +81,9 @@ function Player() {
 
     const playerAppearanceStyle = playerFullscreen? {display: 'block'} : {display: 'none'};
 
+
+    const { key } = useParams();
+
     useEffect(() => {
 
         const documentBody = document.body;
@@ -100,13 +107,36 @@ function Player() {
         console.log("Current player tracklist! : ", playerTracklist);
         setTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
         setShuffleTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
+        setTracklist(playerTracklist)
 
     }, [playerTracklist])
+
+    useEffect(() => {
+        if(globalShuffle){
+            setShufflePlayer(true)
+        }
+        else {
+            setShufflePlayer(false)
+        }
+    }, [globalShuffle])
 
     useEffect(() => {
         console.log(shuffleTracksStorage)
         setShuffleTracks(shuffleTracksStorage);
     }, [shuffleTracksStorage])
+
+    useEffect(() => {
+        if(globalTrackIndex != undefined){
+            console.log("Global tracklist index: ", globalTrackIndex)
+            setTrackIndex(globalTrackIndex)
+            console.log(tracklist)
+            setCurrentTrack(playerTracklist[globalTrackIndex])
+        }
+    }, [globalTrackIndex])
+
+    useEffect(() => {
+        console.log("New tracklist! : ", tracklist)
+    }, [tracklist])
 
     useEffect(() => {
         playlistOrder = shufflePlayer ? shuffleTracks : tracksStorage;
@@ -122,14 +152,15 @@ function Player() {
         setPlayerBackgroundColour(externalPlayerBackgroundState);
         console.log("Background!");
 
-    }, [externalPlayerBackgroundState])
+    }, [externalPlayerBackgroundState, currentlyPlayingProjectKey])
 
     useEffect(() => {
         setPlayerBackgroundColour(externalPlayerBackgroundState);
         console.log("Background!");
+        console.log(playerPageKey)
     }, [])
 
-    console.log("State !!! :/ : " , externalPlayerBackgroundState)
+    // console.log("State !!! :/ : " , externalPlayerBackgroundState)
     
     useEffect(() => {
         let image = (currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail
@@ -154,7 +185,7 @@ function Player() {
             alert("Couldn't display player background colour!");
         })
 
-    }, [currentTrack])
+    }, [currentTrack, currentlyPlayingProjectKey])
 
 
 
@@ -234,6 +265,7 @@ function Player() {
 
     const handleShuffle = () => {
         setShufflePlayer(!shufflePlayer);
+        setGlobalShuffle(prev => !prev)
 
         var defaultIndex;
         if(shufflePlayer){
@@ -298,7 +330,19 @@ function Player() {
     function handlePlayPress() {
         setPlayPress(!playPress);
         setIsPlaying(!isPlaying);
+        setGlobalPlaying(prev => !prev)
     }
+
+    useEffect(() => {
+        if(globalPlaying){
+            setPlayPress(true);
+            setIsPlaying(true);
+        }
+        else{
+            setPlayPress(false);
+            setIsPlaying(false);
+        }
+    }, [globalPlaying])
 
     // ----------- IMPORTANT CODE FOR PLAYING BELOW -------------
      
@@ -398,10 +442,13 @@ function Player() {
                 if(currentIndex >= (tracklist.length - 1) ){
                     currentIndex = 0
                     setPlayPress(false);
-                    setIsPlaying(false);    
+                    setIsPlaying(false);  
+                    setGlobalPlaying(false)  ;
                     setTrackIndex((currentIndex));
                     setCurrentTrack(tracklist[currentIndex])
                     console.log("I'm here too somewhere!")
+                    progressBarRef.current.currentTime = 0;
+                    music.current.currentTime = 0;
                 }
                 else{
                     skipPlay();
@@ -501,7 +548,7 @@ function Player() {
     const artistNameWrapper = useRef();
     
 
-    console.log("PLayer fullscreen value outside of handleResize: ", playerFullscreen)
+    // console.log("PLayer fullscreen value outside of handleResize: ", playerFullscreen)
 
     function handleResize() {
 
@@ -714,7 +761,9 @@ function Player() {
             <div className='col-3 player-col'>
                 <div className='left-information-wrapper'>
                     <div className='player-image-wrapper'>
-                        <button className='player-image-button'><img className='player-image' src={(currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail }></img></button>
+                        <Link to={`/project/${currentlyPlayingProjectKey}`} style={{textDecoration: 'none'}}>
+                            <button className='player-image-button'><img className='player-image' src={(currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail }></img></button>
+                        </Link>
                     </div>
                     <div className='player-song-information-wrapper'>
                         <div className="span-information-wrap" ref={songTitleWrapper} >

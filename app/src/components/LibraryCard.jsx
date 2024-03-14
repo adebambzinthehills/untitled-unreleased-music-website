@@ -7,6 +7,7 @@ import { CiFolderOn } from "react-icons/ci";
 import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from '../contexts/PlayerContext';
+import { IoMdPause } from 'react-icons/io';
 
 function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date, label, songList, setSelectedProjectKey, setSelectedProject}) {
 
@@ -17,7 +18,7 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
 
   const navigate = useNavigate();
 
-  const {playerOn, play, stop, toggle} = useContext(PlayerContext);
+  const {playerOn, play, stop, toggle, setGlobalPlaying, globalPlaying, currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey} = useContext(PlayerContext);
 
   function cardClickHandler(){
     console.log(id, image, title, songs, type, artist, setMode, date, label);
@@ -30,7 +31,9 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
     if(songList.length > 0){
       console.log("SONG LIST!", songList)
       setPlayerTracklist(songList);
-      play(); 
+      play();
+      setGlobalPlaying(prev => !prev); 
+      setCurrentlyPlayingProjectKey(id);
     }
     else {
       alert("There are no songs to play!");
@@ -79,7 +82,7 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
       </div>
       <div className='card-play-content'>
         {/* absolute position, floating right, border radius 500, z index 2 */}
-        <button className='card-play-button' onClick={() => {handleCardPlay()}} ><span><FaPlay/></span></button>
+        <button className='card-play-button' onClick={() => {handleCardPlay()}} ><span>{globalPlaying && id == currentlyPlayingProjectKey ? (<IoMdPause className='pause'/>):(<FaPlay/>)}</span></button>
       </div>
     </div>
   )

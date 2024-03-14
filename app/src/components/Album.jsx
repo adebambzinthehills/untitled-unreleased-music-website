@@ -5,6 +5,7 @@ import Header from './Header'
 import { useNavigate, useLocation, useParams, Link } from 'react-router-dom'
 import "../css/MusicContent.css"
 import { FaPlay, FaPlus } from 'react-icons/fa'
+import { IoMdPause } from "react-icons/io"
 import { TiArrowShuffle } from "react-icons/ti"
 import { BsThreeDots } from "react-icons/bs"
 import { useState } from 'react'
@@ -30,23 +31,33 @@ import { TbTable, TbTableRow } from 'react-icons/tb'
 function Album({player}) {
     const [loading, setLoading] = useState(true)
     const {playerOn, play, stop, toggle, setPlayerTracks, setPlayerTracklist, 
-        setPlayerUpdated, playerUpdated, setExternalPlayerBackground } = useContext(PlayerContext);
+        setPlayerUpdated, playerUpdated, setExternalPlayerBackground,
+        globalPlaying, setGlobalPlaying,
+        currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey,
+        globalShuffle, setGlobalShuffle, setPlayerPageKey} = useContext(PlayerContext);
 
     const [tracks, setTracksState] = useState([]);
     const [selectedSongKey, setSelectedSongKey] = useState("")
 
     useEffect(() => {
-        if(loading == false && tracks.length != 0){
-            console.log("Updating player tracks!");
-            console.log(tracks);
-            setPlayerUpdated(!playerUpdated)
-            setPlayerTracklist(tracks)
+        if(loading == false && tracks.length != 0 ){
+            if(key == currentlyPlayingProjectKey){
+
+                console.log("Updating player tracks!");
+                console.log(tracks);
+                setPlayerUpdated(!playerUpdated)
+                setPlayerTracklist(tracks)
+            }
         }
     }, [tracks])
 
 
     const {state} = useLocation();
     const { key } = useParams();
+
+    useEffect(() => {
+        setPlayerPageKey(key)
+    }, [])
     // console.log("Page key!: ", key )
 
     const { getCurrentUserIdString } = useAuth();
@@ -91,9 +102,11 @@ function Album({player}) {
     useEffect(() => {
         console.log("Background updated!");
 
-        setExternalPlayerBackground(backgroundColour);
+        if(currentlyPlayingProjectKey == key){
+            setExternalPlayerBackground(backgroundColour);
+        }
         
-    }, [backgroundColour])
+    }, [backgroundColour, currentlyPlayingProjectKey])
 
 
     
@@ -152,7 +165,10 @@ function Album({player}) {
                         type: project.projectType
                     })
                     setBackgroundColour(project.colour)
-                    setExternalPlayerBackground(project.colour)
+
+                    if(currentlyPlayingProjectKey == key){
+                        setExternalPlayerBackground(project.colour)
+                    }
                 }
             }
             console.log("Rendering and reading projects for the first time!")
@@ -169,8 +185,8 @@ function Album({player}) {
     const [paletteActive, setPaletteActive] = useState(false);
     const [paletteBlock, setPaletteBlock] = useState(false);
     const [fullAlbumCover, setFullAlbumCover] = useState(false);
-    const contentShuffleButton = shuffle ? 'green-content-shuffle-button' : 'content-shuffle-button';
-    const contentShuffleDotVisible = shuffle? 'green-content-shuffle-dot' : 'green-content-shuffle-dot-invisible';
+    var contentShuffleButton = shuffle ? 'green-content-shuffle-button' : 'content-shuffle-button';
+    var contentShuffleDotVisible = shuffle ? 'green-content-shuffle-dot' : 'green-content-shuffle-dot-invisible';
 
     var musicHeaderColor = {
         backgroundColor: 'rgb(' + backgroundColour + ')',
@@ -363,6 +379,23 @@ function Album({player}) {
         })
     }, [])
 
+    function handleAlbumShuffle() {
+        setShuffle(!shuffle); 
+        if(key == currentlyPlayingProjectKey){
+            setGlobalShuffle(prev => !prev)
+        }
+    }
+
+    useEffect(() => {
+        if(globalShuffle && key == currentlyPlayingProjectKey){
+            setShuffle(true)
+        }
+        else {
+            setShuffle(false)
+        }
+
+    }, [globalShuffle])
+
     return (
         
         <div className='content-page'>
@@ -391,15 +424,26 @@ function Album({player}) {
                                 {!mobileView && <span className='music-header-content-type'>{information.type.value}</span>}
                                 <h1>{information.title}</h1>
                                 <div className='music-header-content-information-row' style={mobileView ? {display: 'block'} : {display: 'flex'}}>
-                                    {!mobileView && <span className='music-header-content-artist' style={{display: 'flex'}}><div className='music-header-artist-image-wrapper' style={artistImage}></div> 
-                                        <Link className="album-account-link" to="/account">
-                                        {information.artist}
-                                        </Link> 
-                                        <div style={{width:'4px'}}></div>
-                                        • {information.date[2]} • {information.songs} {information.songs == 1 ? 'song': 'songs'}{information.songs == 0? '': ','} {information.songs > 0 ?formatAlbumTime(information.duration) : ''} 
-                                    </span>}
-                                    {mobileView && <span className='music-header-content-artist' style={{display: 'flex', marginBottom:'5px'}}>
-                                        <div className='music-header-artist-image-wrapper' style={artistImage}></div>{information.artist} 
+                                    {!mobileView && 
+                                        <span className='music-header-content-artist' style={{display: 'inline'}}>
+                                        {/* <div style={{display: 'flex'}}> */}
+                                            <div className='music-header-artist-image-wrapper' style={artistImage}></div> 
+                                            <Link className="album-account-link" to="/account">
+                                            {information.artist}
+                                            </Link> 
+                                        {/* </div> */}
+                                        
+                                        {/* <div style={{display: 'flex'}}> */}
+                                            <div style={{width:'4px'}}></div>
+                                            • {information.date[2]} • {information.songs} {information.songs == 1 ? 'song': 'songs'}{information.songs == 0? '': ','} {information.songs > 0 ?formatAlbumTime(information.duration) : ''} 
+                                        
+                                        {/* </div> */}
+                                        </span>}
+                                        {mobileView && <span className='music-header-content-artist' style={{display: 'flex', marginBottom:'5px'}}>
+                                            <div className='music-header-artist-image-wrapper' style={artistImage}></div>
+                                            <Link className="album-account-link-no-hover" to="/account">
+                                                {information.artist}
+                                            </Link> 
                                         </span>}
                                     {mobileView && <span className='music-header-content-artist' style={{color: '#a7a7a7'}}>{information.type.value} • {information.date[2]} </span>}
                                 </div>
@@ -409,11 +453,11 @@ function Album({player}) {
                     </div>
                     <div className='music-content-functions'>
                         <div className='content-button-wrapper'>
-                            <button className='content-play-button' onClick={toggle}><span><FaPlay></FaPlay></span></button>
+                            <button className='content-play-button' onClick={() => {setPlayerTracklist(tracks); setPlayerUpdated(prev => !prev);setCurrentlyPlayingProjectKey(key); play(); setGlobalPlaying(prev => !prev);}}><span>{globalPlaying && key == currentlyPlayingProjectKey ? (<IoMdPause className='pause'/>):(<FaPlay></FaPlay>)}</span></button>
                         </div>
                         <div className='content-other-functions'>
                             <div className='content-icon-wrapper'>
-                                <button className={contentShuffleButton} onClick={()=> setShuffle(!shuffle)}><span><TiArrowShuffle/></span></button>
+                                <button className={contentShuffleButton} onClick={()=> {handleAlbumShuffle()}}><span><TiArrowShuffle/></span></button>
                                 <span className={contentShuffleDotVisible}><GoDotFill/></span>
                             </div>
                             <div className='content-icon-wrapper'>
@@ -468,7 +512,7 @@ function Album({player}) {
                 </div>
             </div>
 
-            <Tracklist songs={tracks.length} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode} setSelectedSongKey={setSelectedSongKey}></Tracklist>
+            <Tracklist songs={tracks.length} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode} setSelectedSongKey={setSelectedSongKey} projectKey={key}></Tracklist>
             <div className='container information'>
                 <div className='bottom-information-wrapper'>
                     <div className='bottom-information date'>
