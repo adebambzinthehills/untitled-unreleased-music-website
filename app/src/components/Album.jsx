@@ -36,6 +36,7 @@ function Album({player}) {
         currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey,
         globalShuffle, setGlobalShuffle, setPlayerPageKey} = useContext(PlayerContext);
 
+
     const [tracks, setTracksState] = useState([]);
     const [selectedSongKey, setSelectedSongKey] = useState("")
 
@@ -79,8 +80,6 @@ function Album({player}) {
         }
     );
     const [projects, setProjects] = useState([])
-
-    
 
     const setTracks = (val) => {
         setTracksState(val)
@@ -396,6 +395,39 @@ function Album({player}) {
 
     }, [globalShuffle])
 
+
+
+    const artistNameRef = useRef();
+    const projectHeaderRef = useRef();
+    const spanWrapperRef = useRef()
+    
+    function handleDynamicClass() {
+
+        console.log(artistNameRef)
+        if(artistNameRef.current != null && spanWrapperRef.current != null && projectHeaderRef.current != null) {
+            if(artistNameRef.current.offsetWidth > 170 && window.innerWidth < 770){
+                if(!spanWrapperRef.current.className.includes(" make-inline")){
+                    spanWrapperRef.current.className = spanWrapperRef.current.className + " make-inline";
+                }
+            }
+            else {
+                if(spanWrapperRef.current.className.includes(" make-inline")){
+                    let tempClassName = spanWrapperRef.current.className.replace(" make-inline", "");
+                    spanWrapperRef.current.className = tempClassName;
+                }
+            }
+        }
+    }
+
+    useEffect(() => {
+        handleDynamicClass()
+        window.addEventListener('resize', handleDynamicClass);
+        
+        return () => {
+          window.removeEventListener('resize', handleDynamicClass);
+        };
+    }, [information]);
+
     return (
         
         <div className='content-page'>
@@ -423,12 +455,12 @@ function Album({player}) {
                             <div className='music-header-content-wrapper'>
                                 {!mobileView && <span className='music-header-content-type'>{information.type.value}</span>}
                                 <h1>{information.title}</h1>
-                                <div className='music-header-content-information-row' style={mobileView ? {display: 'block'} : {display: 'flex'}}>
+                                <div ref={projectHeaderRef} className='music-header-content-information-row' style={mobileView ? {display: 'block'} : {display: 'flex'}} >
                                     {!mobileView && 
-                                        <span className='music-header-content-artist' style={{display: 'inline'}}>
+                                        <span className='music-header-content-artist' ref={spanWrapperRef}>
                                         {/* <div style={{display: 'flex'}}> */}
                                             <div className='music-header-artist-image-wrapper' style={artistImage}></div> 
-                                            <Link className="album-account-link" to="/account">
+                                            <Link className="album-account-link" to="/account" ref={artistNameRef}>
                                             {information.artist}
                                             </Link> 
                                         {/* </div> */}

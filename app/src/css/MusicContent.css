@@ -36,7 +36,6 @@
     width:100%;
 }
 .music-content-information span {
-    display: block;
     font-weight: 500;
 }
 
@@ -55,6 +54,7 @@
 
     text-overflow: ellipsis;
     width: 100% ;
+    display: flex;
 }
 
 .music-header-content-artist .album-account-link,
@@ -67,6 +67,10 @@
 .music-content-information h1 {
     width:100%;
     font-size:4.5rem;
+}
+
+.make-inline {
+    display: inline;
 }
 
 .music-header-artist-image-wrapper {
@@ -603,6 +607,14 @@
     display: flex;
 }
 
+
+@media screen and (max-width:580px) and (min-width: 576px) {
+    .song-functions {
+    flex: 0 0 auto;
+    width: 33%;
+}
+    
+}
 .song-functions {
 }
 
