@@ -23,6 +23,7 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
     const [song, setSong] = useState(null);
     const songTitle = useRef();
     const explicitTag = useRef();
+    const [explicitChecked, setExplicitChecked] = useState(false);
     const file = useRef();
 
     function handleClick() {
@@ -65,6 +66,7 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                 console.log(`Tracks[${i}] key: `, tracks[i].key);
             }
             songTitle.current.value = currentTrack.title;
+            setExplicitChecked(currentTrack.explicit)
         }
     }, [selectedSongKey]);
 
@@ -140,7 +142,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                                                 thumbnail: project.image, 
                                                                 album: project.projectTitle, 
                                                                 author: project.artist,
-                                                                path: path
+                                                                path: path,
+                                                                explicit: explicitChecked
                                                             });
                                                     }
                                                     else{
@@ -159,7 +162,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                                         thumbnail: project.image, 
                                                         album: project.projectTitle, 
                                                         author: project.artist,
-                                                        path: path
+                                                        path: path,
+                                                        explicit: explicitChecked
                                                     }
                                                 ]
                                             }
@@ -219,7 +223,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                     thumbnail: project.image, 
                                     album: project.projectTitle, 
                                     author: project.artist,
-                                    path: currentTrackPath
+                                    path: currentTrackPath,
+                                    explicit: explicitChecked
                                 });
                         }
                         else{
@@ -352,7 +357,13 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                         <div className='song-manager-entry-content'>
                             <div className='song-manager-field-wrapper'>
                                 <div className='label-wrapper'><label htmlFor="">Song Title</label></div>
-                                <input className='song-entry' ref={songTitle} placeholder="What's your song title?"></input>
+                                <input className='song-entry' ref={songTitle} placeholder="What's your song title?" type="text"></input>
+                            </div>
+                            <div className='song-manager-field-wrapper'>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" checked={explicitChecked} onChange={(e) => setExplicitChecked(!explicitChecked)}/>
+                                    <label class="form-check-label" for="flexSwitchCheckDefault" style={{fontSize:'0.8rem', top:'-1px', position: 'relative'}}>Is this song explicit?</label>
+                                </div>
                             </div>
                             <div className='song-manager-field-wrapper' id={'insertSongWrapper'}>
                                 <input className='song-entry' ref={file} id={'insertSong'} placeholder='' type="file" accept='.mp3'

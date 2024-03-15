@@ -502,7 +502,7 @@
 .song-manager-entry-content {
 }
 
-.song-manager-entry-content input {
+.song-manager-entry-content input[type="text"] {
     background-color: #4f4f4f;
     color:white;
     border-radius:4px;

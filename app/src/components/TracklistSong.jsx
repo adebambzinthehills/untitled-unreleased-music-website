@@ -23,7 +23,7 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content,
                             <span>{content.title}</span>
                         </div>
                         <div className='song-artist'>
-                            <span>{content.author}</span>
+                            <span>{content.explicit? <BsExplicitFill style={{position:'relative', top:'-1px'}}/> : ''} {content.author}</span>
                         </div>
                     </div>
                   </div>
