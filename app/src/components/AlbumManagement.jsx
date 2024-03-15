@@ -54,6 +54,8 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
     const [firebaseUpdate, setFirebaseUpdate] = useState(false);
 
     const [loadingProject, setLoadingProject] = useState(true)
+    const [projectArtistName, setProjectArtistName] = useState('');
+    const [projectProfilePicture, setProjectProfilePicture] = useState('');
 
     const projectOptions = [
         { value: 'Single', label: 'Single' },
@@ -315,7 +317,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                                 key: key,
                                                                 projectTitle: title,
                                                                 projectType: projectTypeChoice,
-                                                                artist: currentProject.artist,
+                                                                artist: projectArtistName,
                                                                 date: dateValue,
                                                                 label: label,
                                                                 image: url,
@@ -363,7 +365,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                                             key: key,
                                                                             projectTitle: title,
                                                                             projectType: projectTypeChoice,
-                                                                            artist: currentProject.artist,
+                                                                            artist: projectArtistName,
                                                                             date: dateValue,
                                                                             label: label,
                                                                             image: url,
@@ -438,7 +440,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                                 key: key,
                                                                 projectTitle: title,
                                                                 projectType: projectTypeChoice,
-                                                                artist: currentProject.artist,
+                                                                artist: projectArtistName,
                                                                 date: dateValue,
                                                                 label: label,
                                                                 image: url,
@@ -488,7 +490,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                                                             key: key,
                                                                             projectTitle: title,
                                                                             projectType: projectTypeChoice,
-                                                                            artist: currentProject.artist,
+                                                                            artist: projectArtistName,
                                                                             date: dateValue,
                                                                             label: label,
                                                                             image: url,
@@ -545,7 +547,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                             key: key,
                             projectTitle: title,
                             projectType: projectTypeChoice,
-                            artist: currentProject.artist,
+                            artist: projectArtistName,
                             date: dateValue,
                             label: label,
                             image: albumImage,
@@ -589,7 +591,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                                             key: key,
                                             projectTitle: title,
                                             projectType: projectTypeChoice,
-                                            artist: currentProject.artist,
+                                            artist: projectArtistName,
                                             date: dateValue,
                                             label: label,
                                             image: currentProject.image,
@@ -696,6 +698,31 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
             })
         }
     }
+
+    async function ReadInformationFromFirebase(currentUser){
+        const docRef = doc(db, "users", currentUser, 'information', currentUser);
+        const docSnap = await getDoc(docRef);
+        var data;
+    
+        if(docSnap.exists()){
+            data = docSnap.data().information;
+            // console.log("Data! ", data)
+        }
+        else {
+            console.log("There were no documents to be found!")
+            data = []
+        }
+    
+        return data
+    
+    }
+
+    useEffect(() => {
+        ReadInformationFromFirebase(getCurrentUserIdString()).then((res) => {
+            setProjectArtistName(res.artistName)
+            setProjectProfilePicture(res.profileImage)
+        })
+    }, [])
 
     
 
