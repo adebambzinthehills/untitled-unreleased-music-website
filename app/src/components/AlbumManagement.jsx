@@ -630,7 +630,64 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
             reader.readAsDataURL(entryPhoto.current.files[0]);
 
             reader.onload = function() {
-                setTempImage({backgroundImage: 'url(' + reader.result + ')', backgroundSize: '100% 100%'});
+
+                let image = reader.result;
+
+                let inputImage = new Image();
+                inputImage.src = image;
+
+
+                // CROP FUNCTIONALITY -> PQINA.NL
+                inputImage.onload = () => {
+                    let croppedFile = "";
+
+                    const outputImageAspectRatio = 1;
+
+                    const inputWidth = inputImage.naturalWidth;
+                    const inputHeight = inputImage.naturalHeight;
+
+                    // get the aspect ratio of the input image
+                    const inputImageAspectRatio = inputWidth / inputHeight;
+
+                    // if it's bigger than our target aspect ratio
+                    let outputWidth = inputWidth;
+                    let outputHeight = inputHeight;
+
+                    let crop = true;
+
+
+                    if (inputImageAspectRatio > outputImageAspectRatio) {
+                        outputWidth = inputHeight * outputImageAspectRatio;
+                        
+                    } else if (inputImageAspectRatio < outputImageAspectRatio) {
+                        outputHeight = inputWidth / outputImageAspectRatio;
+                    }
+                    else {
+                        crop = false
+                    }
+                    // calculate the position to draw the image at
+                    const outputX = (outputWidth - inputWidth) * 0.5;
+                    const outputY = (outputHeight - inputHeight) * 0.5;
+
+                    // create a canvas that will present the output image
+                    const outputImage = document.createElement('canvas');
+
+                    // set it to the same size as the image
+                    outputImage.width = outputWidth;
+                    outputImage.height = outputHeight;
+
+                    // draw our image at position 0, 0 on the canvas
+                    const ctx = outputImage.getContext('2d');
+                    ctx.drawImage(inputImage, outputX, outputY);
+
+                    outputImage.toBlob((blob) => {
+                        croppedFile = blob;
+                        console.log(croppedFile)
+                        
+                        var imagePath = URL.createObjectURL(blob)
+                        setTempImage({backgroundImage: 'url(' + imagePath + ')', backgroundSize: '100% 100%'});
+                    });
+                }
             }
         }
         else{
