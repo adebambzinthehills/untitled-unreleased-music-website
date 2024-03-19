@@ -70,7 +70,7 @@ function Login() {
                             onChange={(e) => setPassword(e.target.value)}/>
                         </div>
                         <button type="submit" className=' detailsButton' onClick={formHandler} disabled={waiting}> Log In </button> 
-                        <p className='forgotPassword'><Link className='switchPageLink'>Forgot Password?</Link></p>
+                        <p className='forgotPassword'><Link className='switchPageLink' to="/forgot-password">Forgot Password?</Link></p>
                         {/* <p className='small detailsParagraph'><span>Don't have an account? </span><br></br><Link className='switchPageLink' to="/createaccount">Create one!</Link></p> */}
                     </form> 
                 </div>
