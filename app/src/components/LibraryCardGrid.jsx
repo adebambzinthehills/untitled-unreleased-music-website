@@ -74,18 +74,18 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
   const [gridHeightOver, setGridHeightOver] = useState(false);
   useEffect(() => {
     let gridHeight = document.body.getElementsByClassName('grid-card-container')[0].clientHeight;
-    console.log(gridHeight);
-    if(gridHeight > 400){
+    console.log("Grid Height! : ", gridHeight);
+    if(gridHeight > 390){
       setGridHeightOver(true);
     }
   }, [])
   useEffect(() => {
     let gridHeight = document.body.getElementsByClassName('grid-card-container')[0].clientHeight;
     console.log(gridHeight);
-    if(gridHeight > 400){
+    if(gridHeight > 390){
       setGridHeightOver(true);
     }
-  }, [gridHeightOver])
+  }, [userCards])
 
   useEffect(() => {
     if(projects.length > 0){
@@ -93,7 +93,6 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
       var tempArray = [];
       for(let i = 0; i < projects.length; i++ ){
         var currentProject = projects[i];
-        console.log(currentProject)
         var title = currentProject.projectTitle;
         var artist = currentProject.artist;
         var albumImage = currentProject.image;
@@ -105,8 +104,8 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
         var songList = currentProject.songs;
         var key = currentProject.key;
 
-        console.log('@Songs: ', songs);
-        console.log("KEy: ", key);
+        // console.log('@Songs: ', songs);
+        // console.log("KEy: ", key);
 
         tempArray = [...tempArray,
           <LibraryCard key={key} id={key} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
@@ -132,7 +131,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
       var tempArray = [];
       for(let i = 0; i < filteredItems.length; i++ ){
         var currentProject = filteredItems[i];
-        console.log(currentProject)
+        // console.log(currentProject)
         var title = currentProject.projectTitle;
         var artist = currentProject.artist;
         var albumImage = currentProject.image;
@@ -144,8 +143,8 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
         var songList = currentProject.songs;
         var key = currentProject.key;
 
-        console.log('@Songs: ', songs);
-        console.log("KEy: ", key);
+        // console.log('@Songs: ', songs);
+        // console.log("KEy: ", key);
 
         tempArray = [...tempArray,
           <LibraryCard key={key} id={key} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
@@ -188,7 +187,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
       <div className='search-bar-wrapper container'>
         <div className='library-search-bar-content'>
           <div className='search-bar-item'>
-            <input className='search-bar' placeholder='search for a single, ep or a project here...' value={search} onChange={(e) => handleSearch(e.target.value)}></input>
+            <input className='search-bar' placeholder='Search for one of your projects here!' value={search} onChange={(e) => handleSearch(e.target.value)}></input>
           </div>
           { false && <div className='search-bar-row'>
             <button>Albums</button>
