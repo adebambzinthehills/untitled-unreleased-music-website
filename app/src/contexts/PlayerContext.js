@@ -27,6 +27,7 @@ export function PlayerProvider({children}){
     const [currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey] = useState('');
     const [globalTrackIndex, setGlobalTrackIndex] = useState(0);
     const [playerPageKey, setPlayerPageKey] = useState('library');
+    const [shuffleController, setShuffleController] = useState(false);
 
     const play = () => {
         setPlayerOn(true);
@@ -81,7 +82,8 @@ export function PlayerProvider({children}){
         playerUpdated, setPlayerUpdated, setExternalPlayerBackground, externalPlayerBackgroundState,
         setGlobalPlaying, globalPlaying, setGlobalShuffle, globalShuffle,
         currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey, 
-        globalTrackIndex, setGlobalTrackIndex, playerPageKey, setPlayerPageKey}}>
+        globalTrackIndex, setGlobalTrackIndex, playerPageKey, setPlayerPageKey,
+        shuffleController, setShuffleController}}>
             {children}
         </PlayerContext.Provider>
     );

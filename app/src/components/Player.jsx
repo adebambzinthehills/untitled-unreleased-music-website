@@ -17,7 +17,7 @@ import { TbMicrophone2 } from "react-icons/tb";
 import { GoDotFill } from "react-icons/go";
 import { BsThreeDots } from "react-icons/bs"
 import { IoChevronBack } from "react-icons/io5";
-import { Link, useParams } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
 
 
 import { IoVolumeMedium, IoVolumeHigh, IoVolumeMute, IoVolumeLow} from "react-icons/io5";
@@ -75,6 +75,7 @@ function Player() {
     const [playerFullscreen, setPlayerFullscreen] = useState(false);
 
     const progressBarRef = useRef();
+    const miniplayerProgressBarRef = useRef();
     const volumeBarRef = useRef();
     const [timeProgress, setTimeProgress] = useState(0);
 
@@ -84,7 +85,6 @@ function Player() {
 
 
     const { key } = useParams();
-
     useEffect(() => {
 
         const documentBody = document.body;
@@ -235,6 +235,10 @@ function Player() {
         backgroundColor: newPlayerColourValues
     }
 
+    const playerButtonColour = {
+        fill: newPlayerColourValues
+    } 
+
     const playerScrollbarColour = {
         backgroundColor: newPlayerScrollbarColourValues
     }
@@ -380,7 +384,7 @@ function Player() {
     const repeatAnimationFrame = useCallback(() => {
 
         if(playerOn){
-            if(music.current && progressBarRef.current){
+            if(music.current && progressBarRef.current && miniplayerProgressBarRef.current){
             const currentTime = music.current.currentTime;
 
             setTimeProgress(currentTime);
@@ -391,6 +395,12 @@ function Player() {
                 `${(progressBarRef.current.value / duration) * 100}%`
             );
 
+            miniplayerProgressBarRef.current.value = currentTime;
+            miniplayerProgressBarRef.current.style.setProperty(
+                '--range-progress',
+                `${(miniplayerProgressBarRef.current.value / duration) * 100}%`
+            );
+
             animationRef.current = requestAnimationFrame(repeatAnimationFrame);
             }
         }
@@ -399,7 +409,7 @@ function Player() {
 
     useEffect(() => {
         if(isPlaying){
-            music.current.play();
+            music.current.play().catch((err) => console.log("Error playing! : ", err));
         }
         else {
             music.current.pause();
@@ -437,12 +447,14 @@ function Player() {
         const seconds = music.current.duration;
         setDuration(seconds);
         progressBarRef.current.max = seconds;
+        miniplayerProgressBarRef.current.max = seconds;
       };
 
     useEffect(() => {
         const seconds = music.current.duration;
         setDuration(seconds);
         progressBarRef.current.max = seconds;
+        miniplayerProgressBarRef.current.max = seconds;
     }, [playerFullscreen])
 
     function formatTime(time){
@@ -479,6 +491,7 @@ function Player() {
                     setCurrentTrack(tracklist[currentIndex])
                     console.log("I'm here too somewhere!")
                     progressBarRef.current.currentTime = 0;
+                    miniplayerProgressBarRef.current.currentTime = 0;
                     music.current.currentTime = 0;
                 }
                 else{
@@ -495,8 +508,9 @@ function Player() {
                     setCurrentTrack(tracklist[currentIndex]);
 
                     progressBarRef.current.currentTime = 0;
+                    miniplayerProgressBarRef.current.currentTime = 0;
                     music.current.currentTime = 0;
-                    music.current.play();
+                    music.current.play().catch((err) => console.log("Error playing! : ", err));
                 }
                 else{
                     setTrackIndex(currentIndex + 1);
@@ -507,8 +521,9 @@ function Player() {
         }
         else {
             progressBarRef.current.currentTime = 0;
+            miniplayerProgressBarRef.current.currentTime = 0;
             music.current.currentTime = 0;
-            music.current.play();
+            music.current.play().catch((err) => console.log("Error playing! : ", err));
         }
     }
 
@@ -529,6 +544,7 @@ function Player() {
                 }
                 else{
                     progressBarRef.current.currentTime = 0;
+                    miniplayerProgressBarRef.current.currentTime = 0;
                     music.current.currentTime = 0;
                 }
             }
@@ -538,17 +554,19 @@ function Player() {
                     setTrackIndex(currentIndex);
                     setCurrentTrack(tracklist[currentIndex]);
                     progressBarRef.current.currentTime = 0;
+                    miniplayerProgressBarRef.current.currentTime = 0;
                     music.current.currentTime = 0;
                 }
                 else{
                     setTrackIndex(currentIndex- 1);
                     setCurrentTrack(tracklist[currentIndex - 1])
                 }
-                music.current.play();
+                music.current.play().catch((err) => console.log("Error playing! : ", err));
             }
         }
         else {
             progressBarRef.current.currentTime = 0;
+            miniplayerProgressBarRef.current.currentTime = 0;
             music.current.currentTime = 0;
         }
         setPlayPress(true);
@@ -578,7 +596,6 @@ function Player() {
     const songTitleWrapper = useRef();
     const artistNameWrapper = useRef();
     
-
     // console.log("PLayer fullscreen value outside of handleResize: ", playerFullscreen)
 
     function handleResize() {
@@ -792,7 +809,7 @@ function Player() {
             <div className='col-3 player-col'>
                 <div className='left-information-wrapper'>
                     <div className='player-image-wrapper'>
-                        <Link to={`/project/${currentlyPlayingProjectKey}`} style={{textDecoration: 'none'}}>
+                        <Link to={`/project/${currentlyPlayingProjectKey}`} style={{textDecoration: 'none', color:'inherit'}}>
                             <button className='player-image-button'><img className='player-image' src={(currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail }></img></button>
                         </Link>
                     </div>
@@ -897,6 +914,11 @@ function Player() {
                     </div>
                 </div>
             </div>
+            <div className='col-12 miniplayer-scrollbar-div'>
+                <div className='player-scrollbar miniplayer'>
+                    <input className="player-scrollbar-input" type="range" style={playerScrollbarColour} ref={miniplayerProgressBarRef}></input>
+                </div>      
+            </div>
         </div>
       </div>
       { playerFullscreen && 
@@ -930,10 +952,10 @@ function Player() {
         <div className='fullscreen-player-information-section'>
             <div className='fullscreen-player-information-wrapper'>
                 <div className='fullscreen-player-song-title' ref={fullscreenSongTitleWrapper}>
-                    <span><h1 ref={fullscreenSongTitle}>{currentTrack.title}</h1></span>
+                    <span><h1 ref={fullscreenSongTitle}><Link to={`/project/${currentlyPlayingProjectKey}`} style={{textDecoration: 'none', color:'white'}} onClick={() => {setPlayerFullscreen(false); disableFullscreenPlayer();}}>{currentTrack.title}</Link></h1></span>
                 </div>
                 <div className='fullscreen-player-artist-name' ref={fullscreenArtistNameWrapper}>
-                    <span ref={fullscreenArtistNameWrapper}><span ref={fullscreenArtistName}>{currentTrack.author}</span></span>
+                    <span ref={fullscreenArtistNameWrapper}><Link to={`/account`} style={{textDecoration: 'none', color:'#dfdfdf'}} onClick={() => {setPlayerFullscreen(false); disableFullscreenPlayer();}}><span ref={fullscreenArtistName}>{currentTrack.author}</span></Link></span>
                 </div>
             </div>
         </div>
@@ -967,7 +989,7 @@ function Player() {
                     </div>
                     <div className='col-2-4 player-buttons-section-col flex-middle'>
                         <div className='fullscreen-button-wrapper'>
-                            <button className='player-play-button' onClick={() => handlePlayPress()}><span>{playPress ? <IoMdPause className='player-pause-button'/> : <FaPlay/>}</span></button>
+                            <button className='player-play-button' onClick={() => handlePlayPress()}><span>{playPress ? <IoMdPause className='player-pause-button' style={{... playerButtonColour, left:'0.5px', top:'0px'}}/> : <FaPlay style={{... playerButtonColour, left:'2px', top:'0px'}}/>}</span></button>
                         </div>
                     </div>
                     <div className='col-2-4 player-buttons-section-col'>

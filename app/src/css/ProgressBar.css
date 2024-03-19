@@ -66,6 +66,14 @@ Custom Input range - lbaslogic
   .player-scrollbar:hover input[type="range"]::before {
     background: #1ed760;
   }
+
+  .player-scrollbar.miniplayer:hover input[type="range"]::-moz-range-progress{
+    background: white;
+  }
+
+  .player-scrollbar.miniplayer:hover input[type="range"]::before {
+    background: white;
+  }
   
   .player-volume-wrapper:hover input[type="range"]::-moz-range-progress{
     background: #1ed760;
@@ -82,6 +90,14 @@ Custom Input range - lbaslogic
 
   .player-scrollbar:hover > input[type="range"]::-moz-range-thumb{
     visibility: visible;
+  }
+
+  .player-scrollbar.miniplayer:hover > input[type="range"]::-webkit-slider-thumb{
+    visibility: hidden;
+  }
+
+  .player-scrollbar.miniplayer:hover > input[type="range"]::-moz-range-thumb{
+    visibility: hidden;
   }
 
   .player-volume-wrapper:hover > input[type="range"]::-webkit-slider-thumb{
@@ -129,10 +145,30 @@ Custom Input range - lbaslogic
   
 
   @media screen and (max-width: 768px ) {
-    input[type="range"]::-webkit-slider-thumb {
+    .player-scrollbar.fullscreen > input[type="range"]::-webkit-slider-thumb {
       visibility: visible;
     }
-    input[type="range"]::-moz-range-thumb {
+    .player-scrollbar.fullscreen > input[type="range"]::-moz-range-thumb {
       visibility: visible;
     }
+  }
+
+
+
+  .player-scrollbar.miniplayer > input[type="range"]{
+    height:3px;
+    top:0.8px;
+  }
+  .player-scrollbar.miniplayer > input[type="range"]::-moz-range-track{
+    height:3px;
+    top:0.3px;
+  }
+  .player-scrollbar.miniplayer > input[type="range"]::before{
+    height:3px;
+    top:0.3px;
+  }
+  .player-scrollbar.miniplayer >  input[type="range"]::-moz-range-progress
+  {
+    height:3px;
+    top:0.3px;
   }
