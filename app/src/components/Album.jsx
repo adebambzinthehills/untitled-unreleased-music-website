@@ -432,7 +432,6 @@ function Album({player}) {
     
     function handleDynamicClass() {
 
-        console.log(artistNameRef)
         if(artistNameRef.current != null && spanWrapperRef.current != null && projectHeaderRef.current != null) {
             if(artistNameRef.current.offsetWidth > 170 && window.innerWidth < 770){
                 if(!spanWrapperRef.current.className.includes(" make-inline")){
@@ -483,7 +482,8 @@ function Album({player}) {
                         <div className = "music-content-information">
                             <div className='music-header-content-wrapper'>
                                 {!mobileView && <span className='music-header-content-type'>{information.type.value}</span>}
-                                <h1>{information.title}</h1>
+                                {!mobileView && <h1>{information.title}</h1>}
+                                { mobileView && <h1>{information.title}</h1>}
                                 <div ref={projectHeaderRef} className='music-header-content-information-row' style={mobileView ? {display: 'block'} : {display: 'flex'}} >
                                     {!mobileView && 
                                         <span className='music-header-content-artist' ref={spanWrapperRef}>

@@ -426,6 +426,15 @@ function Account() {
                             
                         </div>
                     </div>
+                    <div className='section'>
+                        <div className='editDetailsHeader container'>
+                            <h2>Customisation</h2>
+                        </div>
+                        <div>
+                            <button id="tooltip-enable">Enable Tooltips</button>
+                            <button id="tooltip-disable">Disable Tooltips</button>
+                        </div>
+                    </div>
                     <div className="accountButtonsSection row section">
                         <div className='col-md-6 col-sm-12 accountButton'>
                             <button className='logOutBtn' onClick={() => handleLogOut()}>Log Out</button>

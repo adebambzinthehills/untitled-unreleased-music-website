@@ -13,8 +13,18 @@
         $('body').tooltip({ selector: '[data-bs-toggle="tooltip"]' });
       });
 
-      const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-      const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+      $('#tooltip-disable').on("click", function() {
+        alert("2Hi!");
+        $('body').tooltip("disable");
+      });
+
+      $('#tooltip-enable').on("click", function() {
+        $('body').tooltip({ selector: '[data-bs-toggle="tooltip"]' });
+        alert("2Hi!")
+      });
+
+      // const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+      // const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
     </script>
     <meta name="theme-color" content="#000000" />
     <meta
