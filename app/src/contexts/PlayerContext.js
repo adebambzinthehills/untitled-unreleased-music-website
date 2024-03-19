@@ -25,6 +25,7 @@ export function PlayerProvider({children}){
     const [globalPlaying, setGlobalPlaying] = useState(false);
     const [globalShuffle, setGlobalShuffle] = useState(false);
     const [currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey] = useState('');
+    const [currentlyPlayingSongKey, setCurrentlyPlayingSongKey] = useState('');
     const [globalTrackIndex, setGlobalTrackIndex] = useState(0);
     const [playerPageKey, setPlayerPageKey] = useState('library');
     const [shuffleController, setShuffleController] = useState(false);
@@ -83,7 +84,7 @@ export function PlayerProvider({children}){
         setGlobalPlaying, globalPlaying, setGlobalShuffle, globalShuffle,
         currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey, 
         globalTrackIndex, setGlobalTrackIndex, playerPageKey, setPlayerPageKey,
-        shuffleController, setShuffleController}}>
+        shuffleController, setShuffleController, currentlyPlayingSongKey, setCurrentlyPlayingSongKey}}>
             {children}
         </PlayerContext.Provider>
     );

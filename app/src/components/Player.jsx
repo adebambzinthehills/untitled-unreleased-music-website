@@ -34,7 +34,7 @@ function Player() {
         enableFullscreenPlayer, disableFullscreenPlayer, playerUpdated, setGlobalPlaying, globalPlaying,
         globalShuffle, setGlobalShuffle, currentlyPlayingProjectKey,
         globalTrackIndex, setGlobalTrackIndex, playerPageKey,
-        shuffleController, setShuffleController
+        shuffleController, setShuffleController, currentlyPlayingSongKey, setCurrentlyPlayingSongKey
     } = useContext(PlayerContext);  
 
     const { playerTracklist, setPlayerTracks} = useContext(PlayerContext);
@@ -208,12 +208,13 @@ function Player() {
         awaitPromise.then((res) => {
             console.log(res);
             setPlayerBackgroundColour(externalPlayerBackgroundState)
-            
 
         }).catch((err) => {
             console.log(err);
             alert("Couldn't display player background colour!");
         })
+
+        setCurrentlyPlayingSongKey(currentTrack.key)
 
     }, [currentTrack, currentlyPlayingProjectKey])
 
@@ -454,14 +455,14 @@ function Player() {
         const seconds = music.current.duration;
         setDuration(seconds);
         progressBarRef.current.max = seconds;
-        miniplayerProgressBarRef.current.max = seconds;
+        miniplayerProgressBarRef.current.max = seconds
     }, [playerFullscreen])
 
     function formatTime(time){
         if (time && !isNaN(time)) {
           const minutes = Math.floor(time / 60);
           const formatMinutes =
-            minutes < 10 ? `0${minutes}` : `${minutes}`;
+            minutes < 10 ? `${minutes}` : `${minutes}`;
           const seconds = Math.floor(time % 60);
           const formatSeconds =
             seconds < 10 ? `0${seconds}` : `${seconds}`;
@@ -726,7 +727,7 @@ function Player() {
 
             //had to use offsetWidth for some reason to make this work!
 
-            console.log("Running when player is not fullscreen!");
+            // console.log("Running when player is not fullscreen!");
             var songTitleWidth = songTitle.current.offsetWidth;
             var songTitleWrapperWidth = songTitleWrapper.current.clientWidth;
             var artistNameWidth = artistName.current.offsetWidth;
@@ -845,7 +846,7 @@ function Player() {
                         </div>
                     </div>
                     <div className='player-scrollbar-wrapper'>
-                        <div className='player-time-wrapper'><span className='player-time-left'>{formatTime(timeProgress)}</span></div>
+                        <div className='player-time-wrapper normal left'><span className='player-time-left'>{formatTime(timeProgress)}</span></div>
                         <div className='player-scrollbar'>
                             {/* <div className='player-scrollbar-grey'>
                                 <div className='player-scrollbar-overlay'>
@@ -854,7 +855,7 @@ function Player() {
                             </div> */}
                             <input className="player-scrollbar-input" type="range" onChange={() => handleProgress()} ref={progressBarRef}></input>
                         </div>
-                        <div className='player-time-wrapper'><span className='player-time-right'>{formatTime(duration)}</span></div>
+                        <div className='player-time-wrapper normal'><span className='player-time-right'>{formatTime(duration)}</span></div>
                     </div>
                 </div>
             </div>

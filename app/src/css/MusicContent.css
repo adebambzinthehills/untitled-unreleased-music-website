@@ -402,10 +402,28 @@
 
 .fullscreen-album-cover {
     width: 100%;
-    height:100%;
     border-radius: 6px;
     margin-bottom:30px;
-    max-width: 600px;
+    max-width: 550px;
+    height:100%;
+}
+
+@media screen and (max-height:660px) {
+    .fullscreen-album-cover {
+        max-width: 420px;
+    }
+}
+
+@media screen and (max-height:550px) {
+    .fullscreen-album-cover {
+        max-width: 320px;
+    }
+}
+
+@media screen and (max-height:450px) {
+    .fullscreen-album-cover {
+        max-width: 250px;
+    }
 }
 
 .cover-wrapper {
@@ -529,6 +547,12 @@
 
 .number-wrapper {
     padding-left:50%;
+}
+
+.number-wrapper > span > svg {
+    color: #1ed76b;
+    width: 25px;
+    height: 25px
 }
 
 .song-information {

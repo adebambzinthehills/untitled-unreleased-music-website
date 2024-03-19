@@ -173,10 +173,18 @@
 
 .player-button-wrapper .player-shuffle-button > span > svg {
     width:23px;
+    left:-2px
 }
 
 .player-button-wrapper .player-skip-button > span > svg {
     transform: scale(-1, 1);
+    width: 25px;
+    left: -5px
+}
+
+.player-button-wrapper .player-rewind-button > span > svg {
+    width: 25px;
+    left: -12px
 }
 
 .player-button-wrapper .player-play-button > span > svg {
@@ -188,7 +196,7 @@
 
 .player-button-wrapper .player-rewind-button,
 .player-button-wrapper .player-skip-button {
-    width:35px
+    width:20px
 }
 
 .player-time-wrapper {
@@ -200,6 +208,9 @@
 .player-scrollbar-wrapper{
     display: flex;
     height: 15px;
+    width: 90%;
+    align-items: center;
+    margin: 0 auto;
 }
 
 .player-scrollbar {
@@ -267,12 +278,22 @@
     position: relative;
 }
 
+.player-time-wrapper.normal {
+    width:7.5%;
+    font-size:1.1rem
+}
+
+.normal.left {
+    justify-content: right;
+}
+
 .player-time-left {
-    margin-right:5px;
+    margin-right:7px;
 }
 .player-time-right {
-    margin-left:5px;
+    margin-left:7px;
 }
+
 
 /* INPUT RANGE CHANGING */
 
@@ -865,14 +886,14 @@ input[type=range].player-scrollbar-input::-webkit-slider-runnable-track:hover > 
 }
 
 .player-scrollbar.fullscreen{
-    width:90%
+    width:100%
 }
 
 .fullscreen-time-wrapper {
     position: absolute;
     top:17px;
     display:flex;
-    width:90%;
+    width:100%;
     margin:0 auto;
     left:0;
     right:0;

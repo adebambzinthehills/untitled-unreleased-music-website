@@ -2,25 +2,30 @@ import React, {useEffect, useContext, useState }from 'react'
 import { BsThreeDots } from "react-icons/bs"
 import { FaRegEdit } from "react-icons/fa"
 import { PlayerContext } from '../contexts/PlayerContext';
+import { BsExplicitFill } from "react-icons/bs";
+import { CgLoadbarSound } from "react-icons/cg";
+
+import Draggable from 'react-draggable'
+
 
 function TracklistSong({number, title, duration, artist, edit, setMode, content, setSelectedSongKey, id, tracks, projectKey}) {
 
-  const {playerOn, play, stop, toggle, setGlobalTrackIndex, setPlayerTracklist, setCurrentlyPlayingProjectKey, setGlobalPlaying, setPlayerUpdated} = useContext(PlayerContext);
+  const {playerOn, play, stop, toggle, setGlobalTrackIndex, setPlayerTracklist, setCurrentlyPlayingProjectKey, setGlobalPlaying, setPlayerUpdated, currentlyPlayingSongKey, setCurrentlyPlayingSongKey} = useContext(PlayerContext);
 
   return (
-    <div>
-      <li className>
+      <div>
+        <li className>
                 <div className='row tracklist-row'>
-                <button className='tracklist-song-button' onClick={() => {setCurrentlyPlayingProjectKey(projectKey); setPlayerTracklist(tracks); setPlayerUpdated(prev => !prev); play(); setGlobalPlaying(true); setGlobalTrackIndex((number-1))}}></button>
+                <button className='tracklist-song-button' onClick={() => {setCurrentlyPlayingProjectKey(projectKey); setPlayerTracklist(tracks); setPlayerUpdated(prev => !prev); play(); setGlobalPlaying(true); setGlobalTrackIndex((number-1)); setCurrentlyPlayingSongKey(id)}}></button>
                   <div className='col-0-5 song-number'>
                     <div className='number-wrapper'> 
-                        <span>{number}</span>
+                        <span style={currentlyPlayingSongKey == id? {left: '-10px'} : {left: '0px'}}>{currentlyPlayingSongKey == id ? <CgLoadbarSound /> : number}</span>
                     </div>
                   </div>
                   <div className='col-10 col-sm-8 col-md-8 song-information'>
                     <div className='information-wrapper'> 
                         <div className='song-title'>
-                            <span>{content.title}</span>
+                            <span style={currentlyPlayingSongKey == id ? {color:'#1ed76b'} : {color:'white'}}>{content.title}</span>
                         </div>
                         <div className='song-artist'>
                             <span>{content.explicit? <BsExplicitFill style={{position:'relative', top:'-1px'}}/> : ''} {content.author}</span>
@@ -47,7 +52,7 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content,
                   </div>
                 </div>
         </li>
-    </div>
+      </div>
   )
 }
 
