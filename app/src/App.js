@@ -11,6 +11,7 @@ import Account from "./components/Account";
 import Settings from "./components/Settings";
 import Album from "./components/Album";
 import Player from "./components/Player";
+import ForgotPassword from "./components/ForgotPassword"
 import { PlayerProvider } from "./contexts/PlayerContext";
 import { PlayerContext } from "./contexts/PlayerContext";
 
@@ -22,6 +23,7 @@ function App() {
         <Routes>                                                                       
           <Route exact path="/" element={<Welcome/>}/>
           <Route path="/CreateAccount" element={<CreateAccount/>}/>
+          <Route path="/forgot-password" exact Component={ForgotPassword}/>
           <Route path="/Login" element={<Login/>}/>
           <Route path="/Library" element={<Library/>}></Route>
           <Route path="/Account" element={<Account/>}></Route>
