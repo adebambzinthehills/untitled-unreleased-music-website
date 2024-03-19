@@ -14,6 +14,7 @@ import { get } from 'lodash';
 import { getFunctions, httpsCallable } from "firebase/functions";
 
 function Account() {
+    const {playerOn } = useContext(PlayerContext); 
     const { getCurrentUserIdString, deleteAccount } = useAuth(); 
 
     const [artistInformation, setArtistInformation] = useState({
@@ -433,6 +434,7 @@ function Account() {
                             <button className='deleteAccountBtn' onClick={() => handleDeleteAccount()}>Delete Account</button>
                         </div>
                     </div>
+                    {playerOn && <div className='player-block'></div>}
                 </div>
             </div>
         </div>
