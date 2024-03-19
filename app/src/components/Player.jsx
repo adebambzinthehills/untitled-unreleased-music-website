@@ -33,7 +33,8 @@ function Player() {
         miniplayerEnabled, enableMiniplayer, removeMiniplayer, 
         enableFullscreenPlayer, disableFullscreenPlayer, playerUpdated, setGlobalPlaying, globalPlaying,
         globalShuffle, setGlobalShuffle, currentlyPlayingProjectKey,
-        globalTrackIndex, setGlobalTrackIndex, playerPageKey
+        globalTrackIndex, setGlobalTrackIndex, playerPageKey,
+        shuffleController, setShuffleController
     } = useContext(PlayerContext);  
 
     const { playerTracklist, setPlayerTracks} = useContext(PlayerContext);
@@ -112,11 +113,40 @@ function Player() {
     }, [playerTracklist])
 
     useEffect(() => {
+        var defaultIndex;
         if(globalShuffle){
-            setShufflePlayer(true)
+            setShufflePlayer(true);
+            
+            if(shuffleController){
+                let newOrder = shuffle(tracksStorage, trackIndex);
+                setShuffleTracks(newOrder); 
+                playlistOrder = newOrder;
+                setTracklist(newOrder);
+                setTrackIndex(0);
+
+                console.log('Shuffling!')
+            }
         }
         else {
-            setShufflePlayer(false)
+            setShufflePlayer(false);
+
+            if(shuffleController){
+                for(var i = 0; i < tracksStorage.length; i++){
+
+                    console.log('current ',currentTrack.key)
+                    console.log(':3', tracksStorage[i].key)
+                    if(tracksStorage[i].key == currentTrack.key){
+                        defaultIndex = i;
+                    }
+                }
+                
+                playlistOrder = tracksStorage;
+                setTracklist(playlistOrder);
+                console.log('Current Index', defaultIndex)
+                setTrackIndex(defaultIndex)
+                setCurrentTrack(tracksStorage[defaultIndex]); 
+                console.log("Index! : ", defaultIndex)
+            }
         }
     }, [globalShuffle])
 
@@ -265,6 +295,7 @@ function Player() {
 
     const handleShuffle = () => {
         setShufflePlayer(!shufflePlayer);
+        setShuffleController(false)
         setGlobalShuffle(prev => !prev)
 
         var defaultIndex;
@@ -272,9 +303,9 @@ function Player() {
 
             for(var i = 0; i < tracksStorage.length; i++){
 
-                console.log('current ',currentTrack.id)
-                console.log(':3', tracksStorage[i].id)
-                if(tracksStorage[i].id == currentTrack.id){
+                console.log('current ',currentTrack.key)
+                console.log(':3', tracksStorage[i].key)
+                if(tracksStorage[i].key == currentTrack.key){
                     defaultIndex = i;
                 }
             }

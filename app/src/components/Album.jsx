@@ -34,7 +34,7 @@ function Album({player}) {
         setPlayerUpdated, playerUpdated, setExternalPlayerBackground,
         globalPlaying, setGlobalPlaying,
         currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey,
-        globalShuffle, setGlobalShuffle, setPlayerPageKey} = useContext(PlayerContext);
+        globalShuffle, setGlobalShuffle, setPlayerPageKey, setShuffleController} = useContext(PlayerContext);
 
 
     const [tracks, setTracksState] = useState([]);
@@ -352,6 +352,25 @@ function Album({player}) {
         }
     };
 
+    function formatAlbumTimeMobile(time){
+        if (time && !isNaN(time)) {
+            const minutes = Math.floor(time / 60);
+            if(minutes >= 60){
+                const hours = Math.floor(time / 3600)
+                const formatMinutes =`${Math.floor((time % 3600) / 60)} min`;
+                const seconds = Math.floor();
+                const formatSeconds =`${seconds} sec`;
+                return `${hours} hr ${formatMinutes}`;
+            }
+            else {
+                const formatMinutes =`${minutes} min`;
+                const seconds = Math.floor(time % 60);
+                const formatSeconds =`${seconds} sec`;
+                return `${formatMinutes}`;
+            }
+        }
+    };
+
     async function ReadInformationFromFirebase(currentUser){
         const docRef = doc(db, "users", currentUser, 'information', currentUser);
         const docSnap = await getDoc(docRef);
@@ -378,9 +397,19 @@ function Album({player}) {
         })
     }, [])
 
+    function handlePlayPress(){
+        if(tracks.length > 0){
+            setPlayerTracklist(tracks); setPlayerUpdated(prev => !prev);setCurrentlyPlayingProjectKey(key); play(); setGlobalPlaying(prev => !prev);
+        }
+        else{
+            alert("There are no tracks to be played!")
+        }
+    }
+
     function handleAlbumShuffle() {
         setShuffle(!shuffle); 
         if(key == currentlyPlayingProjectKey){
+            setShuffleController(true)
             setGlobalShuffle(prev => !prev)
         }
     }
@@ -485,7 +514,7 @@ function Album({player}) {
                     </div>
                     <div className='music-content-functions'>
                         <div className='content-button-wrapper'>
-                            <button className='content-play-button' onClick={() => {setPlayerTracklist(tracks); setPlayerUpdated(prev => !prev);setCurrentlyPlayingProjectKey(key); play(); setGlobalPlaying(prev => !prev);}}><span>{globalPlaying && key == currentlyPlayingProjectKey ? (<IoMdPause className='pause'/>):(<FaPlay></FaPlay>)}</span></button>
+                            <button className='content-play-button' onClick={() => {handlePlayPress()}}><span>{globalPlaying && key == currentlyPlayingProjectKey ? (<IoMdPause className='pause'/>):(<FaPlay></FaPlay>)}</span></button>
                         </div>
                         <div className='content-other-functions'>
                             <div className='content-icon-wrapper'>
@@ -551,7 +580,7 @@ function Album({player}) {
                         <span>{information.date[0]} {monthNames[(information.date[1] - 1)]} {information.date[2]}</span>
                     </div>
                     {mobileView && <div className='bottom-information time'>
-                        <span>{information.songs} {information.songs == 1 ? 'song': 'songs'} {information.songs == 0? '': '•'} {information.songs > 0 ?formatAlbumTime(information.duration) : ''}</span>
+                        <span>{information.songs} {information.songs == 1 ? 'song': 'songs'} {information.songs == 0? '': '•'} {information.songs > 0 ?formatAlbumTimeMobile(information.duration) : ''}</span>
                     </div>}
                     <div className='bottom-information label'>
                         <span>&copy; {information.label}</span>
