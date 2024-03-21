@@ -35,6 +35,33 @@
     position: relative;
     width:100%;
 }
+
+
+
+@media screen and (max-width:580px){
+    .music-header-content-wrapper h1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2; /* number of lines to show */
+        line-height: 30px;        /* fallback */
+        max-height: 60px;       /* fallback */
+    
+    }
+}
+
+@media screen and (min-width:580px) {
+    .music-header-content-wrapper h1 {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+    }
+    
+}
+
 .music-content-information span {
     font-weight: 500;
 }
@@ -135,6 +162,13 @@
 
     .music-content-information h1 {
     font-size:3rem;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+
+    .music-content-information h1 {
+    font-size:2.5rem;
     }
 }
 
@@ -279,7 +313,7 @@
 
 .content-other-functions {
     display: flex;
-    width: 100px;
+    width: 150px;
 }
 
 .content-icon-wrapper {
@@ -294,6 +328,17 @@
     height: 60px;
     width: 50px;
     background-color: inherit;
+}
+
+.content-information-button > span > svg {
+    fill: #a7a7a7;
+    width: 40px;
+    height: 40px;
+    left:-4px;
+}
+
+.content-information-button:hover > span > svg {
+    fill:white;
 }
 
 .green-content-shuffle-dot {
@@ -940,4 +985,175 @@
 
 .project-select__control {
     color:black;
+}
+
+/* FULLSCREEN INFORMATION HELPER */
+
+.information-fullscreen-wrapper{
+    position: fixed;
+    top:0;
+    bottom:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(32 32 32 / 40%);
+    z-index: 5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.information-fullscreen{
+    width: 80%;
+    background-color: rgb(50 50 50);
+    margin: auto;
+    height: 60%;
+    border-radius: 16px;
+    position: relative;
+    z-index: 12;
+}
+
+.information-fullscreen-click-off {
+    position: absolute;
+    top:0;
+    left:0;
+    bottom:0;
+    right:0;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+}
+
+.information-fullscreen-header {
+    height: 100%;
+    width: 90%;
+}
+
+.information-fullscreen-header-wrapper {
+    height:30px;
+
+    padding-left:4%;
+    padding-top: 2%;
+    display: flex;
+}
+
+.information-fullscreen-header-button-wrapper {
+    width: 10%;
+    display: flex;
+    justify-content: center;
+    flex-shrink: 0;
+    align-items: center;
+}
+
+.information-fullscreen-header-button {
+    background-color: transparent;
+    border:none;
+    width: 25px;
+    height: 25px;
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+.information-fullscreen-header-button > span > svg {
+    fill:#d3d3d3;
+    width: 100%;
+    height: 100%;
+    top:-2px;
+}
+
+.information-fullscreen-header-button:hover > span > svg {
+    fill:white;
+    width: 100%;
+    height: 100%;
+}
+
+.information-fullscreen-header h4 {
+    font-weight: 600;
+}
+
+.information-fullscreen-content {
+    padding-left: 4%;
+    padding-right:4%;
+    padding-top:1%;
+    margin: 0 auto;
+}
+
+.information-fullscreen-content p {
+    font-size: 0.9rem;
+}
+
+
+@media screen and (min-width: 800px) {
+    .information-fullscreen{
+        height:40%
+    }
+}
+
+@media screen and (min-width: 800px) {
+    .information-fullscreen{
+        height:40%
+    }
+}
+
+@media screen and (min-width: 940px) {
+    .information-fullscreen{
+        height:35%
+    }
+}
+
+
+@media screen and (min-width: 720px) {
+    .information-fullscreen{
+        height:35%
+    }
+    .information-fullscreen hr {
+        margin-top: 30px;
+    }
+}
+
+@media screen and (min-width: 500px) {
+    .information-fullscreen{
+        height:52%
+    }
+}
+@media screen and (min-width: 580px) {
+    .information-fullscreen{
+        height:47%
+    }
+}
+
+@media screen and (max-width: 460px) {
+    .information-fullscreen{
+        top:-5%;
+        height:73%
+    }
+}
+
+@media screen and (max-width: 410px) {
+    .information-fullscreen-header-wrapper {
+        height: 50px;
+    }
+    .information-fullscreen{
+        height:77%
+    }
+}
+
+@media screen and (max-height:750px) {
+    .information-fullscreen-content p {
+        font-size: 0.8rem;
+    }
+    
+}
+
+/* @media screen and (max-height:650px) {
+    .information-fullscreen-content p {
+        font-size: 0.75rem;
+    }
+    
+} */
+
+@media screen and (max-width: 380px) {
+    .information-fullscreen{
+        height:75%
+    }
 }
