@@ -112,7 +112,7 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
         <div className='palette-container'>
             <div className='palette-button-wrapper'>
                 <button className='palette-button' onClick={() => handleVisibility()}
-                    data-bs-toggle="tooltip" data-bs-placement="top" title="The colour library used to generate the colour background of the image may not always be accurate, so this palette gives you some options that may be more accurate to what the background would look like on Spotify."
+                    data-bs-toggle="tooltip" data-bs-placement="top" title="Change the colour background of the project, by clicking on one of the colour values!"
                 ><span><FaPalette/></span></button>
             </div>
             {paletteVisible && <div className='palette-menu'>
