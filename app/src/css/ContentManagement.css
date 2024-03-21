@@ -331,6 +331,7 @@
 @media screen and (max-width:560px) {
     .album-manager{
         height: 90%;
+        top:-2%;
     }
 
     .album-manager-content {
@@ -346,7 +347,7 @@
     }
 
     .album-manager-content {
-        height: 60%;
+        height: 70%;
     }
 
     .album-manager-image-wrapper {
@@ -370,13 +371,13 @@
     }
 
     .album-manager-controls {
-        height: 20%;
-        align-items:last baseline;
+        height: 10%;
+        align-items:center;
     }
 
     .album-manager-footer {
         height: 10%;
-        font-size: 0.6rem;
+        font-size: 0.625rem;
     }
 
     .album-manager-controls-save-create {
@@ -385,10 +386,14 @@
 
 }
 
-@media screen and (max-width:560px) and (min-height:700px) {
+@media screen and (max-width:560px) and (min-height:780px) {
     .album-manager-controls {
-        height: 20%;
+        height: 10%;
         align-items:last baseline;
+    }
+
+    .album-manager-content {
+        height:60%;
     }
 
     .album-manager-image-wrapper {
@@ -399,7 +404,52 @@
     }
 }
 
+@media screen and (max-width:560px) and (min-height:850px) {
+    .album-manager-controls {
+        height: 10%;
+        align-items:first baseline;
+    }
+}
 
+@media screen and (max-width:560px) and (max-height:780px){
+    .album-manager-image-wrapper {
+        width: 150px;
+        height: 150px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+    .album-manager-controls {
+        height: 10%;
+        align-items:center;
+    }
+
+    .album-manager-content {
+        height: 60%;;
+    }
+
+}
+
+
+@media screen and (max-width:768px) {
+    .hover-information {
+        display: flex;
+    }
+    
+}
+
+
+@media screen and (max-width: 400px) and (max-height: 700px) {
+    .album-manager-image-wrapper {
+        width: 120px;
+        height: 120px;
+        margin: 0 auto;
+        margin-bottom: 20px;
+    }
+    
+    .album-manager-entry-content input {
+        height: 35px;;
+    }
+}
 /* SONG MANAGEMENT */
 
 
