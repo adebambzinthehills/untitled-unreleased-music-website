@@ -34,7 +34,8 @@ function Player() {
         enableFullscreenPlayer, disableFullscreenPlayer, playerUpdated, setGlobalPlaying, globalPlaying,
         globalShuffle, setGlobalShuffle, currentlyPlayingProjectKey,
         globalTrackIndex, setGlobalTrackIndex, playerPageKey,
-        shuffleController, setShuffleController, currentlyPlayingSongKey, setCurrentlyPlayingSongKey
+        shuffleController, setShuffleController, currentlyPlayingSongKey, setCurrentlyPlayingSongKey,
+        tracksReordered, setTracksReordered, tracksReorderedIndex
     } = useContext(PlayerContext);  
 
     const { playerTracklist, setPlayerTracks} = useContext(PlayerContext);
@@ -109,6 +110,12 @@ function Player() {
         setTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
         setShuffleTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
         setTracklist(playerTracklist)
+
+        if(tracksReordered){
+            setTrackIndex(tracksReorderedIndex);
+            setCurrentTrack(playerTracklist[tracksReorderedIndex]);
+            setTracksReordered(false)
+        }
 
     }, [playerTracklist])
 

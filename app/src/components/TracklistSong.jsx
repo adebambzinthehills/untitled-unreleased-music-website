@@ -5,7 +5,7 @@ import { PlayerContext } from '../contexts/PlayerContext';
 import { BsExplicitFill } from "react-icons/bs";
 import { CgLoadbarSound } from "react-icons/cg";
 
-import Draggable from 'react-draggable'
+import { Draggable } from 'react-beautiful-dnd';
 
 
 function TracklistSong({number, title, duration, artist, edit, setMode, content, setSelectedSongKey, id, tracks, projectKey}) {
@@ -13,8 +13,10 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content,
   const {playerOn, play, stop, toggle, setGlobalTrackIndex, setPlayerTracklist, setCurrentlyPlayingProjectKey, setGlobalPlaying, setPlayerUpdated, currentlyPlayingSongKey, setCurrentlyPlayingSongKey} = useContext(PlayerContext);
 
   return (
-      <div>
-        <li className>
+    <Draggable key={id} draggableId={id} index={number}>
+    {(provided) => (
+      <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={{...provided.draggableProps.style}} >
+        <li>
                 <div className='row tracklist-row'>
                 <button className='tracklist-song-button' onClick={() => {setCurrentlyPlayingProjectKey(projectKey); setPlayerTracklist(tracks); setPlayerUpdated(prev => !prev); play(); setGlobalPlaying(true); setGlobalTrackIndex((number-1)); setCurrentlyPlayingSongKey(id)}}></button>
                   <div className='col-0-5 song-number'>
@@ -53,6 +55,8 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content,
                 </div>
         </li>
       </div>
+    )}
+    </Draggable>
   )
 }
 

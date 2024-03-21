@@ -37,7 +37,8 @@ function Album({player}) {
         setPlayerUpdated, playerUpdated, setExternalPlayerBackground,
         globalPlaying, setGlobalPlaying,
         currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey,
-        globalShuffle, setGlobalShuffle, setPlayerPageKey, setShuffleController} = useContext(PlayerContext);
+        globalShuffle, setGlobalShuffle, setPlayerPageKey, setShuffleController,
+        setTracksReordered, setTracksReorderedIndex} = useContext(PlayerContext);
 
 
     const [tracks, setTracksState] = useState([]);
@@ -594,7 +595,7 @@ function Album({player}) {
                 </div>
             </div>
 
-            <Tracklist songs={tracks.length} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode} setSelectedSongKey={setSelectedSongKey} projectKey={key}></Tracklist>
+            <Tracklist songs={tracks.length} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode} setSelectedSongKey={setSelectedSongKey} projectKey={key} setTracksReordered={setTracksReordered} setTracksReorderedIndex={setTracksReorderedIndex}></Tracklist>
             <div className='container information'>
                 <div className='bottom-information-wrapper'>
                     <div className='bottom-information date'>

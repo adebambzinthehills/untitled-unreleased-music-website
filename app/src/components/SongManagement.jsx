@@ -396,6 +396,9 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                         <span> Please note: Audio files uploaded to this site should be of .mp3 format. You can update the information of the music whilst listening,
                             but if any errors occur, please refresh the page!
                         </span>
+                        <br></br>
+                        <span style={{fontSize:'0.65rem', color:'white', textAlign:'center', marginTop:'5px'}}>To reorder tracks, drag a song by the options button.</span>
+
                     </div>
                 </div>
             </div>
