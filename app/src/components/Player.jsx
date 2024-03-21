@@ -833,10 +833,12 @@ function Player() {
     }, [volume])
 
     useEffect(() => {
-        volumeBarRef.current.style.setProperty(
-            '--volume-progress', `${volume}%`
-            );
-    }, [])
+        if(volumeBarRef.current){
+            volumeBarRef.current.style.setProperty(
+                '--volume-progress', `${volume}%`
+                );
+        }
+    }, [playerFullscreen])
 
     
   return (
