@@ -84,7 +84,7 @@ function Player() {
     const playerAppearanceStyle = playerFullscreen? {display: 'block'} : {display: 'none'};
 
 
-    const { key } = useParams();
+    const { pathname } = useLocation();
     useEffect(() => {
 
         const documentBody = document.body;
@@ -178,41 +178,62 @@ function Player() {
     const {externalPlayerBackgroundState } = useContext(PlayerContext);
 
     useEffect(() => {
-
-        setPlayerBackgroundColour(externalPlayerBackgroundState);
+        console.log(pathname);
+        if(pathname == "/library"){
+            setPlayerBackgroundColour(currentTrack.colour)
+        }
+        else{
+            setPlayerBackgroundColour(externalPlayerBackgroundState);
+        }
         console.log("Background!");
 
     }, [externalPlayerBackgroundState, currentlyPlayingProjectKey])
 
     useEffect(() => {
-        setPlayerBackgroundColour(externalPlayerBackgroundState);
+        if(pathname == "/library"){
+            setPlayerBackgroundColour(currentTrack.colour)
+        }
+        else{
+            setPlayerBackgroundColour(externalPlayerBackgroundState);
+        }
         console.log("Background!");
         console.log(playerPageKey)
     }, [])
 
+    useEffect(() => {
+        if(pathname == "/library"){
+            setPlayerBackgroundColour(currentTrack.colour)
+        }
+        else{
+            setPlayerBackgroundColour(externalPlayerBackgroundState);
+        }
+        console.log("Background!");
+        console.log(playerPageKey)
+    }, [currentTrack])
+
     // console.log("State !!! :/ : " , externalPlayerBackgroundState)
     
     useEffect(() => {
-        let image = (currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail
+        // let image = (currentTrack.thumbnail == '' || currentTrack.thumbnail == null ) ? playerImgSrc : currentTrack.thumbnail
 
-        const awaitPromise = new Promise((resolve) => {
-            const contentImage = new Image();
-            contentImage.src = image;
-            contentImage.crossOrigin = 'anonymous';
-            contentImage.onload = () => {
-                const colorThief = new ColorThief();
-                resolve(colorThief.getColor(contentImage));
-            }
-        })
+        // const awaitPromise = new Promise((resolve) => {
+        //     const contentImage = new Image();
+        //     contentImage.src = image;
+        //     contentImage.crossOrigin = 'anonymous';
+        //     contentImage.onload = () => {
+        //         const colorThief = new ColorThief();
+        //         resolve(colorThief.getColor(contentImage));
+        //     }
+        // })
 
-        awaitPromise.then((res) => {
-            console.log(res);
-            setPlayerBackgroundColour(externalPlayerBackgroundState)
+        // awaitPromise.then((res) => {
+        //     console.log(res);
+        //     setPlayerBackgroundColour(externalPlayerBackgroundState)
 
-        }).catch((err) => {
-            console.log(err);
-            alert("Couldn't display player background colour!");
-        })
+        // }).catch((err) => {
+        //     console.log(err);
+        //     alert("Couldn't display player background colour!");
+        // })
 
         setCurrentlyPlayingSongKey(currentTrack.key)
 

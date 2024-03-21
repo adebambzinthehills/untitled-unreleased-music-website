@@ -225,6 +225,9 @@ function Album({player}) {
                     else {
                         updatedProject.colour = backgroundColour;
                     }
+                    for(let i = 0; i < updatedProject.songs.length; i++){
+                        updatedProject.songs[i].colour = updatedProject.colour
+                    }
                     // setProject(updatedProject);
                     tempProjects.push(updatedProject);
                     console.log("Updated project values (colour): ", updatedProject);

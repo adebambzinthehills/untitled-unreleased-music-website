@@ -97,6 +97,9 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
                 if(project.key == projectKey){
                     console.log("Writing new colour to the database!")
                     project.colour = colour
+                    for(let i = 0; i < project.songs.length; i++){
+                        project.songs[i].colour = colour
+                    }
                 }
                 tempProjects.push(project)
             }

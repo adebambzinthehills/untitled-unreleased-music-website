@@ -143,7 +143,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                                                 album: project.projectTitle, 
                                                                 author: project.artist,
                                                                 path: path,
-                                                                explicit: explicitChecked
+                                                                explicit: explicitChecked,
+                                                                colour: project.colour
                                                             });
                                                     }
                                                     else{
@@ -163,7 +164,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                                         album: project.projectTitle, 
                                                         author: project.artist,
                                                         path: path,
-                                                        explicit: explicitChecked
+                                                        explicit: explicitChecked,
+                                                        colour: project.colour
                                                     }
                                                 ]
                                             }
@@ -224,7 +226,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                                     album: project.projectTitle, 
                                     author: project.artist,
                                     path: currentTrackPath,
-                                    explicit: explicitChecked
+                                    explicit: explicitChecked,
+                                    colour: project.colour
                                 });
                         }
                         else{
