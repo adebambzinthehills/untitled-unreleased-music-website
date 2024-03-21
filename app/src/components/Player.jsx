@@ -111,10 +111,21 @@ function Player() {
         setShuffleTracksStorage(JSON.parse(JSON.stringify(playerTracklist)))
         setTracklist(playerTracklist)
 
-        if(tracksReordered){
-            setTrackIndex(tracksReorderedIndex);
-            setCurrentTrack(playerTracklist[tracksReorderedIndex]);
-            setTracksReordered(false)
+        if(tracksReordered ){
+            console.log("Yes!")
+            console.log("Tracklist reordered!")
+            if((_.isEqual(currentTrack, playerTracklist[tracksReorderedIndex]))){
+                setTrackIndex(tracksReorderedIndex);
+                setCurrentTrack(playerTracklist[tracksReorderedIndex]);
+            }
+            else {
+                var index = playerTracklist.findIndex((track) => {
+                    return track.key == currentlyPlayingSongKey
+                });
+                setTrackIndex(index)
+                setCurrentTrack(playerTracklist[index])
+            }
+            setTracksReordered(false);
         }
 
     }, [playerTracklist])

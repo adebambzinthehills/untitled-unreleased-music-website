@@ -38,7 +38,7 @@ function Album({player}) {
         globalPlaying, setGlobalPlaying,
         currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey,
         globalShuffle, setGlobalShuffle, setPlayerPageKey, setShuffleController,
-        setTracksReordered, setTracksReorderedIndex} = useContext(PlayerContext);
+        setTracksReordered, tracksReordered, setTracksReorderedIndex} = useContext(PlayerContext);
 
 
     const [tracks, setTracksState] = useState([]);
@@ -53,6 +53,22 @@ function Album({player}) {
                 setPlayerUpdated(!playerUpdated)
                 setPlayerTracklist(tracks)
             }
+        }
+        if(tracksReordered){
+            console.log("sadaf")
+            ReadProjectsFromFirebase(getCurrentUserIdString()).then((res) => {
+            let projects = res;
+            let tempProjects = []
+            for (let i = 0; i < projects.length; i++){
+                let currentProject = projects[i];
+                if(projects[i].key == key){
+                    currentProject.songs = tracks;
+                }
+                tempProjects.push(currentProject)
+                console.log(currentProject)
+            }
+            writeProjectsToFirebase(tempProjects)
+            })
         }
     }, [tracks])
 

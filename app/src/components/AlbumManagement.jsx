@@ -158,6 +158,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
     function handleClick() {
         const input = document.getElementsByClassName('management-input')[0];
         input.click();
+        console.log("2Hi1")
     }
 
     function handleNewProject() {
