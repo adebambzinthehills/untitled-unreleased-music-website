@@ -187,7 +187,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
       <div className='search-bar-wrapper container'>
         <div className='library-search-bar-content'>
           <div className='search-bar-item'>
-            <input className='search-bar' placeholder='Search for one of your projects here!' value={search} onChange={(e) => handleSearch(e.target.value)}></input>
+            <input className='search-bar' placeholder='Search for one of your projects here..' value={search} onChange={(e) => handleSearch(e.target.value)}></input>
           </div>
           { false && <div className='search-bar-row'>
             <button>Albums</button>
