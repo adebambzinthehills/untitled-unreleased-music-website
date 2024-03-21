@@ -31,9 +31,9 @@ function Header({colour}) {
                     <Link to="/library"><h3>Preview</h3></Link>
                 </div>
                 <div className='right'>
-                    <div className='headerIcon'>
+                    {/* <div className='headerIcon'>
                         <button className='settingsLinkButton' onClick={() => toSettings()}><IoSettingsSharp/></button>
-                    </div>
+                    </div> */}
                     <div className="headerIcon"> 
                         <button className='accountLinkButton' onClick={() => toAccount()}><MdAccountCircle/></button>
                     </div>
