@@ -869,8 +869,8 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
             </div>
             <div className='album-manager-footer'>
                 <div>
-                    <span> Please note: Images uploaded should have a resolution of 600x600 pixels or more to get the proper scaling effect
-                        in the fullscreen album window. Furthermore, please ensure that you have the rights to the images you upload.
+                    <span> We accept non standard image sizes, but please be aware that these will automatically cropped to a square size. 
+                    For the proper scaling effect, we recommend that your images should be at least 600x600 pixels in resolution.
                     </span>
                 </div>
             </div>
