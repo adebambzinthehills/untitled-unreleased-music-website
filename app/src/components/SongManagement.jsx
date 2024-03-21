@@ -390,7 +390,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
                 </div>
                 <div className='song-manager-footer'>
                     <div>
-                        <span> Please note: Audio files uploaded to this site should be of .mp3 format.
+                        <span> Please note: Audio files uploaded to this site should be of .mp3 format. You can update the information of the music whilst listening,
+                            but if any errors occur, please refresh the page!
                         </span>
                     </div>
                 </div>
