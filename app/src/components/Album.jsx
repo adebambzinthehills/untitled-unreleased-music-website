@@ -351,10 +351,17 @@ function Album({player}) {
                 return `${hours} hr ${formatMinutes}`;
             }
             else {
-                const formatMinutes =`${minutes} min`;
-                const seconds = Math.floor(time % 60);
-                const formatSeconds =`${seconds} sec`;
-                return `${formatMinutes} ${formatSeconds}`;
+                if(minutes >= 1){
+                    const formatMinutes =`${minutes} min`;
+                    const seconds = Math.floor(time % 60);
+                    const formatSeconds =`${seconds} sec`;
+                    return `${formatMinutes} ${formatSeconds}`;
+                }
+                else{
+                    const seconds = Math.floor(time % 60);
+                    const formatSeconds =`${seconds} sec`;
+                    return `${formatSeconds}`;
+                }
             }
         }
     };
