@@ -477,6 +477,11 @@
 
     .library-search-bar-content{
         display: block;
+        height: 30px;
+    }
+
+    .library-search-bar-block {
+        height: 50px;
     }
 }
 
