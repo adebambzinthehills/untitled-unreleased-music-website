@@ -399,8 +399,9 @@ function Account() {
                             </div>
                         </div>
                     </div>
-                    <div className='section' style={{display:'flex', justifyContent:'center', fontWeight:'500', color:'#a7a7a7', fontSize:'0.8rem', marginTop:'-10px'}}>
-                        <span>Your Profile Picture</span>
+                    <div className='section' style={{display:'block', justifyContent:'center', fontWeight:'500', color:'#a7a7a7', fontSize:'0.8rem', marginTop:'-10px', textAlign: 'center'}}>
+                        <span style={{color:'#d7d7d7'}}>Your Profile Picture</span>
+                        <p style={{fontSize:'0.8em'}}>This will be displayed in the album page, next to the artist name. Press on the image to change it.</p>
                     </div>
                     <div className='section'>
                         <div className='editDetailsHeader container'>
@@ -411,30 +412,29 @@ function Account() {
                                 <h4>Artist Name</h4>
                                 <input className='account' placeholder='Enter an artist name, the default is [artistname]' ref={artistNameRef} value={artistName} onChange={(e) => setArtistName(e.target.value)}></input>
                             </div>
+                            <p style={{fontSize:'0.7rem', color:'#a7a7a7', textAlign:'center'}}>This will be displayed in your project, tracklist and player when listening to music.</p>
+
                             {/* <div className='form-group'>
                                 <h4>Email Address</h4>
                                 <input disabled className='account'></input>
                             </div> */}
-                            <div className='row'>
-                                <div className='col-md-3 col-sm-12 accountButton'>
-                                    <button type="submit" className=' cancelChanges'> Cancel</button> 
-                                </div>
-                                <div className='col-md-9 col-sm-12 accountButton'>
+                            <div className='row' style={{display: 'flex', justifyContent:'center'}}>
+                                <div className='col-md-9 col-sm-12 accountButton' style={{display: 'flex', justifyContent:'center', width:'70%'}}>
                                     <button type="submit" className=' detailsButton' onClick={() => handleSave()} > Save Changes </button> 
                                 </div>
                             </div>
                             
                         </div>
                     </div>
-                    <div className='section'>
+                    {/* <div className='section'>
                         <div className='editDetailsHeader container'>
                             <h2>Customisation</h2>
                         </div>
                         <div>
-                            <button id="tooltip-enable">Enable Tooltips</button>
-                            <button id="tooltip-disable">Disable Tooltips</button>
+                            <button id="tooltipEnable">Enable Tooltips</button>
+                            <button id="tooltipDisable">Disable Tooltips</button>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="accountButtonsSection row section">
                         <div className='col-md-6 col-sm-12 accountButton'>
                             <button className='logOutBtn' onClick={() => handleLogOut()}>Log Out</button>
@@ -442,6 +442,8 @@ function Account() {
                         <div className='col-md-6 col-sm-12 accountButton'>
                             <button className='deleteAccountBtn' onClick={() => handleDeleteAccount()}>Delete Account</button>
                         </div>
+                        <p style={{fontSize:'0.7rem', color:'#a7a7a7', textAlign:'center'}}>Please be aware that deleting your account will also remove all of your projects, images and tracks from the database. This operation cannot be undone!</p>
+
                     </div>
                     {playerOn && <div className='player-block'></div>}
                 </div>
