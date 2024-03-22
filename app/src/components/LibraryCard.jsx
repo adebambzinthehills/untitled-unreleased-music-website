@@ -8,8 +8,9 @@ import { FaRegTrashCan } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 import { PlayerContext } from '../contexts/PlayerContext';
 import { IoMdPause } from 'react-icons/io';
+import { Draggable } from 'react-beautiful-dnd';
 
-function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date, label, songList, setSelectedProjectKey, setSelectedProject}) {
+function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date, label, songList, setSelectedProjectKey, setSelectedProject, number}) {
 
   const [buttonClick, setButtonClicked] = useState(false);
   const [editButtonClicked, setEditButtonClicked] = useState(false);
@@ -47,7 +48,9 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
 
 
   return (
-    <div className='card-container grid-item'>
+    <Draggable key={id} draggableId={id} index={number}>
+    {(provided) => (
+    <div className='card-container grid-item' ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={{...provided.draggableProps.style}}>
       <div className='card-click'>
         <button className='card-click-button' onClick={() => cardClickHandler()}></button>
       </div>
@@ -85,6 +88,8 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
         <button className='card-play-button' onClick={() => {handleCardPlay()}} ><span>{globalPlaying && id == currentlyPlayingProjectKey ? (<IoMdPause className='pause'/>):(<FaPlay/>)}</span></button>
       </div>
     </div>
+    )}
+    </Draggable>
   )
 }
 

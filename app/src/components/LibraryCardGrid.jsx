@@ -23,6 +23,8 @@ import { useState } from 'react';
 import { PlayerContext } from '../contexts/PlayerContext'
 import AlbumManagement from './AlbumManagement'
 
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+
 import "../css/App.css"
 
 function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSelectedProjectKey, setSelectedProject, setSearchActive}) {
@@ -147,7 +149,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
         // console.log("KEy: ", key);
 
         tempArray = [...tempArray,
-          <LibraryCard key={key} id={key} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
+          <LibraryCard key={key} id={key} number={i} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
           edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue} setSelectedProjectKey={setSelectedProjectKey} setSelectedProject={setSelectedProject}></LibraryCard>
         ];
         // console.log('Temp', tempArray[0].props.title)
@@ -182,6 +184,29 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
   <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist" songs={30}></LibraryCard>
   ];
 
+  function handleOnDropEnd(result) {
+    console.log(result.source.index)
+    console.log("Drag end!")
+    if (!result.destination) return;
+
+    var items = Array.from(userCards);
+    console.log(items)
+    // const tracklistItems = Array.from(tracklist)
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    console.log(reorderedItem)
+    // const [reorderedTracklistItem] = tracklistItems.splice(result.source.index, 1);
+    items.splice(result.destination.index , 0, reorderedItem);
+
+    items = items.filter((element) => {
+      return element !== undefined
+    });
+    console.log(items)
+    // tracklistItems.splice(result.destination.index, 0, reorderedTracklistItem);
+
+    setUserCards(items);
+
+  }
+
   return (
     <div className='libraryWrapper' style={staticStyle}>
       <div className='search-bar-wrapper container'>
@@ -196,9 +221,16 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
         </div>
         <div className='library-search-bar-block'></div>
       </div>
-      <div className='grid-card-container'>
-        {userCards.length > 0 ? userCards : ''}
-      </div>
+      <DragDropContext onDragEnd={handleOnDropEnd}>
+        <Droppable droppableId='cards' direction='horizontal'>
+        {(provided) => (
+          <div className='grid-card-container' ref={provided.innerRef} {...provided.droppableProps}>
+            {userCards.length > 0 ? userCards : ''}
+            {provided.placeholder}
+          </div>
+        )}
+        </Droppable>
+      </DragDropContext>
       {gridHeightOver && <div className='footer-block'></div>}  
       {playerOn && <div className='player-block'></div>}
       <div className='library-footer' style={footerStaticStyle}>
