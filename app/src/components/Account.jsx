@@ -401,7 +401,7 @@ function Account() {
                     </div>
                     <div className='section' style={{display:'block', justifyContent:'center', fontWeight:'500', color:'#a7a7a7', fontSize:'0.8rem', marginTop:'-10px', textAlign: 'center'}}>
                         <span style={{color:'#d7d7d7'}}>Your Profile Picture</span>
-                        <p style={{fontSize:'0.8em'}}>This will be displayed in the album page, next to the artist name. Press on the image to change it.</p>
+                        <p style={{fontSize:'0.8em'}}>GUIDANCE: This will be displayed in the album page, next to the artist name. Press on the image to change it.</p>
                     </div>
                     <div className='section'>
                         <div className='editDetailsHeader container'>
@@ -412,7 +412,7 @@ function Account() {
                                 <h4>Artist Name</h4>
                                 <input className='account' placeholder='Enter an artist name, the default is [artistname]' ref={artistNameRef} value={artistName} onChange={(e) => setArtistName(e.target.value)}></input>
                             </div>
-                            <p style={{fontSize:'0.7rem', color:'#a7a7a7', textAlign:'center'}}>This will be displayed in your project, tracklist and player when listening to music.</p>
+                            <p style={{fontSize:'0.7rem', color:'#a7a7a7', textAlign:'center'}}>GUIDANCE: This will be displayed in your project, tracklist and player when listening to music.</p>
 
                             {/* <div className='form-group'>
                                 <h4>Email Address</h4>
@@ -442,7 +442,7 @@ function Account() {
                         <div className='col-md-6 col-sm-12 accountButton'>
                             <button className='deleteAccountBtn' onClick={() => handleDeleteAccount()}>Delete Account</button>
                         </div>
-                        <p style={{fontSize:'0.7rem', color:'#a7a7a7', textAlign:'center'}}>Please be aware that deleting your account will also remove all of your projects, images and tracks from the database. This operation cannot be undone!</p>
+                        <p style={{fontSize:'0.7rem', color:'#a7a7a7', textAlign:'center'}}>GUIDANCE: Please be aware that deleting your account will also remove all of your projects, images and tracks from the database. This operation cannot be undone!</p>
 
                     </div>
                     {playerOn && <div className='player-block'></div>}

@@ -870,7 +870,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
             </div>
             <div className='album-manager-footer'>
                 <div>
-                    <span> We accept non standard image sizes, but please be aware that these will automatically cropped to a square size. 
+                    <span>GUIDANCE: We accept non standard image sizes, but please be aware that these will automatically cropped to a square size. 
                     For the proper scaling effect, we recommend that your images should be at least 600x600 pixels in resolution.
                     </span>
                 </div>
