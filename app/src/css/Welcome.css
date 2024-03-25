@@ -32,3 +32,15 @@
 .welcome-content {
     
 }
+
+@media screen and (max-height:700px){
+    .login{
+        position: static;
+    }
+}
+
+@media screen and (max-width:400px){
+    .login{
+        position: static;
+    }
+}
