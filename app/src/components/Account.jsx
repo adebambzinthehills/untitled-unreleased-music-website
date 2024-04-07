@@ -298,22 +298,17 @@ function Account() {
             }).catch((err) => {
                 console.log("Error deleting information! : ",err)
             });
-            try {
-                logOut()
-                console.log("Logged out!")
-            }
-            catch(err) {
-                console.log("Error logging out!", err);
-            }
-            await deleteAccount().then(() => {
-                console.log("Deleted account!")
-            }).catch((err) => {
-                console.log("Error deleting account! : ", err)
-            });
+            // try {
+            //     logOut()
+            //     console.log("Logged out!")
+            // }
+            // catch(err) {
+            //     console.log("Error logging out!", err);
+            // }
             const storage = getStorage();
             const path = `${getCurrentUserIdString()}/`
             const storageRef = ref(storage, path);
-            listAll(storageRef).then((res) => {
+            await listAll(storageRef).then((res) => {
                 console.log(res.prefixes);
 
                 //delete top level information (profile image)! 
@@ -367,7 +362,15 @@ function Account() {
                         })
                     })
                 }   
+            }).catch((err) => {
+                console.log(err)
             })
+
+            await deleteAccount().then(() => {
+                console.log("Deleted account!")
+            }).catch((err) => {
+                console.log("Error deleting account! : ", err)
+            });
             navigate("/");
 
         }
