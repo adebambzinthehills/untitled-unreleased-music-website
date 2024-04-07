@@ -543,7 +543,7 @@ function Album({player}) {
                                 
                         </div>
                     </div>
-                    <div className='music-content-functions'>
+                    {!mobileView && <div className='music-content-functions'>
                         <div className='content-button-wrapper'>
                             <button className='content-play-button' onClick={() => {handlePlayPress()}}><span>{globalPlaying && key == currentlyPlayingProjectKey ? (<IoMdPause className='pause'/>):(<FaPlay></FaPlay>)}</span></button>
                         </div>
@@ -575,7 +575,41 @@ function Album({player}) {
                         <div className='content-palette-wrapper'>
                             <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock} image={information.image} changeBackgroundState={setBackgroundColour} projectKey={key}/>
                         </div>
-                    </div>
+                    </div>}
+                    {mobileView && <div className='music-content-functions'>
+                        <div className='content-other-functions mobile'>
+                            <div className='content-icon-wrapper'>
+                                <button className='content-dots-button' onClick={() => {setThreeDotsClicked(true); setEditAlbumButtonClicked(true)}}><span><BsThreeDots/></span></button>
+                                {/* {threeDotsClicked && (
+                                <div className='content-header-sub-menu' onMouseLeave={() => setThreeDotsClicked(false)}>
+                                    <ul>
+                                    <li><button onClick={() => setEditAlbumButtonClicked(true)}><span><FaRegEdit></FaRegEdit></span> Edit Album</button></li>
+                                    <li><button disabled><span><CiFolderOn></CiFolderOn></span> Move to Folder</button></li>
+                                    <li><button><span><FaRegTrashCan></FaRegTrashCan></span> Delete Album</button></li>
+                                    </ul>
+                                </div>
+                                )} */}
+                            </div>
+                            <div className='content-icon-wrapper'>
+                                <button className="content-information-button" onClick={() => setInformationButtonClicked(true)}>
+                                    <span>
+                                        <IoMdInformationCircle/>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        {/* <div className='content-palette-wrapper'>
+                            <PaletteColourPicker setBackgroundColour={setMusicHeaderColourState} setPaletteActive={setPaletteActive} setPaletteBlock={setPaletteBlock} image={information.image} changeBackgroundState={setBackgroundColour} projectKey={key}/>
+                        </div> */}
+                        
+                        <div className='content-button-wrapper mobile'>
+                            <div className='content-icon-wrapper mobile'>
+                                <button className={contentShuffleButton} onClick={()=> {handleAlbumShuffle()}}><span><TiArrowShuffle/></span></button>
+                                <span className={contentShuffleDotVisible}><GoDotFill/></span>
+                            </div>
+                            <button className='content-play-button mobile' onClick={() => {handlePlayPress()}}><span>{globalPlaying && key == currentlyPlayingProjectKey ? (<IoMdPause className='pause'/>):(<FaPlay></FaPlay>)}</span></button>
+                        </div>
+                    </div>}
                     {paletteBlock && <div className='palette-small-screen-block'>
 
                     </div>}

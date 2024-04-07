@@ -18,12 +18,12 @@ function Account() {
     const { getCurrentUserIdString, deleteAccount } = useAuth(); 
 
     const [artistInformation, setArtistInformation] = useState({
-        artistName: '',
-        email: '',
+        artistName: '[artistname]',
         profileImage: ''
     })
 
     const [artistName, setArtistName] = useState('')
+    const [profileImageBlob, setProfileImageBlob] = useState('');
     const artistNameRef = useRef();
 
     async function writeInformationToFirebase(information){
@@ -98,6 +98,8 @@ function Account() {
         input.click();
     }
 
+    
+
     function setNewImage() {
         if(artistPhoto.current.files[0] != null){
             let reader = new FileReader();
@@ -157,51 +159,13 @@ function Account() {
                     outputImage.toBlob((blob) => {
                         croppedFile = blob;
                         console.log(croppedFile)
-                        
+
                         var imagePath = URL.createObjectURL(blob)
 
                         setArtistImage({backgroundImage: 'url(' + imagePath + ')', backgroundSize: '100% 100%'});
                         setArtistImageValue(imagePath);
-
-                        let path = `${getCurrentUserIdString()}/profile-image`;
-
-                        const storage = getStorage();
-                        const storageRef = ref(storage, path);
-
-                        var metadata = {
-                            contentType: "image"
-                        }
-
-                        console.log(storageRef.fullPath);
-
-                        
-                        let file;
-                        if(crop){
-                            file = croppedFile;
-                            metadata = {
-                                contentType: 'image/jpeg'
-                            }
-                        }
-                        else {
-                            file = artistPhoto.current.files[0]
-                        }
-                        console.log(file)
-
-                        uploadBytes(storageRef, file, metadata).then((snapshot) => {
-                            console.log("Hey! I just uploaded an image file to my storage!")
-
-                            console.log('State! : ', artistInformation)
-
-                            getDownloadURL(storageRef).then((url) => {
-                                    let newArtistInformation = {
-                                        artistName: artistName.trim(),
-                                        email: 'artistInformation.email',
-                                        profileImage: url
-                                    }
-                                    writeInformationToFirebase(newArtistInformation);
-
-                            });
-                        });   
+                        setProfileImageBlob(blob)
+  
                     });
                 }
             }
@@ -211,8 +175,50 @@ function Account() {
         else{
             setArtistImage({backgroundImage: ''});
             setArtistImageValue('')
+            setProfileImageBlob('')
         }
 
+    }
+
+    function uploadImage(){
+        if(artistPhoto.current.files[0] != null){
+            var imagePath = URL.createObjectURL(profileImageBlob)
+            let path = `${getCurrentUserIdString()}/profile-image`;
+
+            const storage = getStorage();
+            const storageRef = ref(storage, path);
+
+            var metadata = {
+                contentType: "image"
+            }
+
+            console.log(storageRef.fullPath);
+
+            
+            let file = profileImageBlob;
+            metadata = {
+                contentType: 'image/jpeg'
+            }
+
+            uploadBytes(storageRef, file, metadata).then((snapshot) => {
+                console.log("Hey! I just uploaded an image file to my storage!")
+
+                console.log('State! : ', artistInformation)
+
+                getDownloadURL(storageRef).then((url) => {
+                        let newArtistInformation = {
+                            artistName: artistName.trim(),
+                            profileImage: url
+                        }
+                        writeInformationToFirebase(newArtistInformation);
+
+                });
+            });
+        }
+        else{
+            setArtistImage({backgroundImage: ''});
+            setArtistImageValue('')
+        }
     }
 
 
@@ -220,11 +226,13 @@ function Account() {
 
     useEffect(() => {
         ReadInformationFromFirebase(getCurrentUserIdString()).then((res) => {
-            setArtistInformation(res);
+            if(res.artistName != undefined && res.profileImage != undefined){
+                setArtistInformation(res);
 
-            setArtistImage((prev) => ({backgroundImage: 'url(' + res.profileImage + ')', backgroundSize: '100% 100%'}));
-            setArtistName(res.artistName);
-            setArtistImageValue(res.profileImage)
+                setArtistImage((prev) => ({backgroundImage: 'url(' + res.profileImage + ')', backgroundSize: '100% 100%'}));
+                setArtistName(res.artistName);
+                setArtistImageValue(res.profileImage)
+            }
         })
     }, [])
 
@@ -253,10 +261,11 @@ function Account() {
 
         let newArtistInformation = {
             artistName: artistNameVal,
-            email: artistInformation.email,
             profileImage: artistImageValue
         }
-
+        if(profileImageBlob != undefined && profileImageBlob != ''){
+            uploadImage(profileImageBlob)
+        }
         writeInformationToFirebase(newArtistInformation)
         setArtistInformation(newArtistInformation);
 
@@ -392,7 +401,7 @@ function Account() {
                                     <img/>
                                 </div>
                                 {/* this below should display none and take up full width and height of div */}
-                                <input className="profile-management-input" type="file" accept='image/jpg, image/png, image/jpeg, image/webp' ref={artistPhoto} onChange={() => setNewImage()}/>
+                                <input className="profile-management-input" type="file" accept='image/jpg, image/png, image/jpeg, image/webp' ref={artistPhoto} onChange={() => {setNewImage()}}/>
                                 <div className='profile-management-input-click-div'>
                                     <button className='profile-management-input-button' onClick={() => handleClick()}></button>
                                 </div>

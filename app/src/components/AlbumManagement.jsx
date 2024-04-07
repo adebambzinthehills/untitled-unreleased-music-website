@@ -5,6 +5,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { ImCross } from "react-icons/im";
 import LibraryCard from './LibraryCard';
 import grey from '../images/grey.jpeg'
+import green from '../images/green.jpeg'
 import Select from 'react-select';
 import { useAuth } from '../contexts/AuthContext';
 import { doc, setDoc, getDoc } from "firebase/firestore"; 
@@ -54,7 +55,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
     const [firebaseUpdate, setFirebaseUpdate] = useState(false);
 
     const [loadingProject, setLoadingProject] = useState(true)
-    const [projectArtistName, setProjectArtistName] = useState('');
+    const [projectArtistName, setProjectArtistName] = useState('[artistname]');
     const [projectProfilePicture, setProjectProfilePicture] = useState('');
 
     const projectOptions = [
@@ -178,7 +179,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
             let day = "";
             let year = "";
             let newImageSrc = "";
-            let albumImage = grey;
+            let albumImage = green;
             let newImageAdded = false;
             let artist = "[artistname]"
             var key;
@@ -700,7 +701,9 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
 
     async function writeProjectsToFirebase(projects){
         var currentUser = getCurrentUserIdString();
-        await setDoc(doc(db, "users", currentUser), {projects});
+        console.log("Projects passed in to writing method: ", projects)
+        const docRef = doc(db, "users", currentUser)
+        await setDoc(docRef, {projects});
         ReadProjectsFromFirebase(currentUser).then((res) => {
             setProjects(res)
         })
@@ -777,8 +780,10 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
 
     useEffect(() => {
         ReadInformationFromFirebase(getCurrentUserIdString()).then((res) => {
-            setProjectArtistName(res.artistName)
-            setProjectProfilePicture(res.profileImage)
+            if(res.artistName != undefined && res.profileImage != undefined){
+                setProjectArtistName(res.artistName)
+                setProjectProfilePicture(res.profileImage)
+            }
         })
     }, [])
 

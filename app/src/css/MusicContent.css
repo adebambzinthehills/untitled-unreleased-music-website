@@ -104,7 +104,7 @@
     border-radius:15px;
     height:20px;
     width:20px;
-    background-color: white;
+    background-color: #1ed76b;
     margin-right:5px;
     margin-top:1px;
     flex-shrink: 0;
@@ -220,6 +220,16 @@
     height: 60px;
     margin-right:10px;
 }
+.content-button-wrapper.mobile {
+    display: flex;
+    width: 150px;
+}
+
+.content-button-wrapper.mobile 
+.content-icon-wrapper.mobile > button > span > svg {
+    width: 2.2em;
+    height:2.2em;
+}
 
 .content-play-button {
     width: 60px;
@@ -230,6 +240,12 @@
     z-index: 3;
     flex-shrink: 0;
 }
+
+.content-play-button.mobile {
+    top:-3px;
+    position: relative;
+}
+
 
 .content-play-button > span > svg {
     width: 1.2em;
@@ -314,6 +330,9 @@
 .content-other-functions {
     display: flex;
     width: 150px;
+}
+.content-other-functions.mobile {
+    width:100%;
 }
 
 .content-icon-wrapper {
