@@ -14,7 +14,7 @@ function CreateAccount() {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
 
-    const { currentUser, signup, logOut } = useAuth();
+    const { currentUser, signup, logOut, signInWithGoogle } = useAuth();
     const [waiting, setWaiting] = useState(false);
 
     useEffect(() => {
@@ -50,12 +50,22 @@ function CreateAccount() {
 
     }
 
+    async function googleSignIn(){
+        signInWithGoogle().then(() => {
+            navigate("/library");
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.log(errorCode, errorMessage);
+        });
+    }
+
     return (
         <div className='fullBackgroundBlack'>
             <div className='container'>
                 <div className='enterDetails'>
                     <h1>Create an Account for Preview</h1>
-                    <button className='googleButton'>
+                    <button className='googleButton' onClick={() => googleSignIn()}>
                         <img alt='Google Logo' src={googleLogo}/>
                         <span>Sign up with Google</span>
                     </button>

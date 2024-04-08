@@ -40,10 +40,12 @@ h1 {
 
 .enterDetails {
     width: 100%;
-   padding: 10%;
-   max-width: 800px;
-   margin-left: auto;
-   margin-right: auto;
+    padding: 8%;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    height: 100%;
+    max-height: 100vh;
 }
 
 .detailsButton {
