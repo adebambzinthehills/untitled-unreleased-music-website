@@ -85,13 +85,19 @@ function Account() {
         playerOff();
         try{
             await logOut();
-            navigate("/");
+            navigate("/login");
         }
         catch(e){
             alert("Unable to log out!");
             console.log(e);
         }
     }
+
+    useEffect(() => {
+        if(getCurrentUserIdString() == null || getCurrentUserIdString() == undefined){
+            navigate("/login")
+        }
+    }, [])
 
     function handleClick() {
         const input = document.getElementsByClassName('profile-management-input')[0];
