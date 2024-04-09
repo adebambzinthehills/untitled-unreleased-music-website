@@ -50,7 +50,7 @@ function Player() {
     const [repeatCount, setRepeatCount] = useState(0);
     const [repeatOn, setRepeatOn] = useState(false);
     const [playPress, setPlayPress] = useState(false);
-    const [volume, setVolume] = useState(100);
+    const [volume, setVolume] = useState(60);
     const [muteVolume, setMuteVolume] = useState(false);
 
     const [isPlaying, setIsPlaying] = useState(false);
@@ -261,12 +261,10 @@ function Player() {
 
 
     let newPlayerColourValues = [];
-    let newPlayerScrollbarColourValues = [96,96,96];
+    let newPlayerScrollbarColourValues = [];
     for(let i = 0; i < playerBackgroundColour.length; i++){
         newPlayerColourValues.push(playerBackgroundColour[i] - 40);
-        if(playerBackgroundColour[i] > 120){
-            newPlayerScrollbarColourValues[i] = playerBackgroundColour[i] - 60;
-        }
+        newPlayerScrollbarColourValues.push(playerBackgroundColour[i] * 0.95);
     }
     newPlayerColourValues = 'rgb(' + newPlayerColourValues + ')';
     newPlayerScrollbarColourValues = 'rgb(' + newPlayerScrollbarColourValues + ')';
