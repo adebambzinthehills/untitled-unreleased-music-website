@@ -50,7 +50,7 @@ function Player() {
     const [repeatCount, setRepeatCount] = useState(0);
     const [repeatOn, setRepeatOn] = useState(false);
     const [playPress, setPlayPress] = useState(false);
-    const [volume, setVolume] = useState(60);
+    const [volume, setVolume] = useState(100);
     const [muteVolume, setMuteVolume] = useState(false);
 
     const [isPlaying, setIsPlaying] = useState(false);
