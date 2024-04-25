@@ -579,7 +579,11 @@ function Album({player}) {
                     {mobileView && <div className='music-content-functions'>
                         <div className='content-other-functions mobile'>
                             <div className='content-icon-wrapper'>
-                                <button className='content-dots-button' onClick={() => {setThreeDotsClicked(true); setEditAlbumButtonClicked(true)}}><span><BsThreeDots/></span></button>
+                                <button className='content-dots-button' 
+                                style={{padding: 'initial'}}
+                                onClick={() => {setThreeDotsClicked(true); setEditAlbumButtonClicked(true)}}>
+                                    <span style={{display: 'flex', justifyContent: 'left'}}><BsThreeDots/></span>
+                                </button>
                                 {/* {threeDotsClicked && (
                                 <div className='content-header-sub-menu' onMouseLeave={() => setThreeDotsClicked(false)}>
                                     <ul>
