@@ -839,7 +839,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                             <input className='album-entry' ref={labelText} placeholder='Who is the publisher/label?'  data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed at the bottom of the project page, below the tracklist."></input>
                         </div>
                         <div className='album-manager-field-wrapper'>
-                            <div className='label-wrapper'><label htmlFor="">Release Date</label></div>
+                            <div className='label-wrapper'><label htmlFor="">Release Date (Required)</label></div>
                             <input className='album-entry' ref={releaseDate} type='date' placeholder="What's your project release date?" data-bs-toggle="tooltip" data-bs-placement="top" title="This will be displayed next to the project title, and again at the bottom of project page, much like Spotify's interface."></input>
                         </div>
                         <div className='album-manager-field-wrapper'>
