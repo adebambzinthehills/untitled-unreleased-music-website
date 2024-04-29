@@ -24,6 +24,7 @@ function CreateAccount() {
         }
     }, [currentUser, navigate]);
     
+    //handles the submission of the form
     async function formHandler(e){
         e.preventDefault();
         
@@ -31,7 +32,6 @@ function CreateAccount() {
             return alert("The passwords entered don't match each other. Please try again!")
         }
 
-        // try {
             setWaiting(true);
             signup(email, password).then((userCreds) => {
                 navigate("/library");
@@ -40,9 +40,6 @@ function CreateAccount() {
                 const errorMessage = error.message;
                 console.log(errorCode, errorMessage);
             });
-        //   } catch (e) {
-        //     alert("Failed to Sign Up!");
-        //   }
           
           //button becomes activated again.
           setWaiting(false);

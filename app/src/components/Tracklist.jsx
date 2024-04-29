@@ -7,6 +7,7 @@ function Tracklist({songs, artist, player, edit, setMode, tracks, setTracks, set
   const [songNumber, setSongNumber] = useState(tracks.length);
   const [tracklist, setTracklist] = useState([]);
 
+  //generate new tracklist song elements based on tracks, does so with every update
   useEffect(() => {
     console.log("Tracks in Tracklist!: ", tracks)
     let tempTracklist = []
@@ -23,9 +24,7 @@ function Tracklist({songs, artist, player, edit, setMode, tracks, setTracks, set
   }, [tracks]);
 
   
-  // const onDragEnd = useCallback(() => {
-  //   // the only one that is required
-  // }, []);
+  //handle drag and drop functionality
   function handleOnDropEnd(result) {
     console.log(result.source.index)
     console.log("Drag end!")
@@ -33,17 +32,15 @@ function Tracklist({songs, artist, player, edit, setMode, tracks, setTracks, set
 
     var items = Array.from(tracks);
     console.log(items)
-    // const tracklistItems = Array.from(tracklist)
+    
     const [reorderedItem] = items.splice(result.source.index - 1, 1);
     console.log(reorderedItem)
-    // const [reorderedTracklistItem] = tracklistItems.splice(result.source.index, 1);
     items.splice(result.destination.index - 1 , 0, reorderedItem);
 
     items = items.filter((element) => {
       return element !== undefined
     });
     console.log(items)
-    // tracklistItems.splice(result.destination.index, 0, reorderedTracklistItem);
 
     setTracks(items);
     setTracksReordered(true)

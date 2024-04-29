@@ -12,6 +12,7 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
     const [palette, setPalette] = useState([]);
     const [paletteVisible, setPaletteVisible] = useState(false);
 
+    //control whether palette menu is visible
     function handleVisibility() {
         setPaletteVisible(!paletteVisible);
 
@@ -25,7 +26,7 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
         setPaletteBlock(!paletteVisible)
     }
 
-
+    //get colours
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
             const contentImage = new Image();
@@ -72,6 +73,7 @@ function PaletteColourPicker({setBackgroundColour, setPaletteActive, setPaletteB
 
     const { getCurrentUserIdString } = useAuth();
 
+    //handles new colour choice for the project, updates states and writes to database
     function handleColourPicker(key){
         const colour = palette[key];
 

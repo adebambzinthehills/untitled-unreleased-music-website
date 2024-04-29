@@ -44,6 +44,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
 
   const {playerOn, play, stop, toggle, fullscreenPlayerEnabled} = useContext(PlayerContext);
 
+  //add more space at the bottom of page when the player is enabled
   useEffect(() => {
     if(playerOn){
       document.getElementsByClassName('library-footer')[0].style.bottom = '110px';
@@ -54,6 +55,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
     console.log(playerOn)
   }, [playerOn]);
 
+  // used to enable fullscreen player in the library page
   useEffect(() => {
     if(fullscreenPlayerEnabled){
       setMakeElementsStatic(true);
@@ -63,6 +65,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
     }
   }, [fullscreenPlayerEnabled]);
 
+  //change overflow when modal appears
   useEffect(() => {
     if(newProjectButtonClicked){
       document.body.style.overflow = 'hidden';
@@ -72,7 +75,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
     }
   }, [newProjectButtonClicked])
 
-
+  //monitor the height of the grid and add extra space at the bottom if it exceeds a certain height.
   const [gridHeightOver, setGridHeightOver] = useState(false);
   useEffect(() => {
     let gridHeight = document.body.getElementsByClassName('grid-card-container')[0].clientHeight;
@@ -106,9 +109,6 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
         var songList = currentProject.songs;
         var key = currentProject.key;
 
-        // console.log('@Songs: ', songs);
-        // console.log("KEy: ", key);
-
         tempArray = [...tempArray,
           <LibraryCard key={key} id={key} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
           edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue} setSelectedProjectKey={setSelectedProjectKey} setSelectedProject={setSelectedProject}></LibraryCard>
@@ -126,6 +126,7 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
   }
 
   useEffect(() => {
+    //search and filter cards
     const filteredItems = projects.filter((project) => project.projectTitle.toLocaleLowerCase().includes(search.toLocaleLowerCase().trim()))
     console.log(filteredItems)
     
@@ -144,15 +145,10 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
         var songs = Object.keys(currentProject.songs).length;
         var songList = currentProject.songs;
         var key = currentProject.key;
-
-        // console.log('@Songs: ', songs);
-        // console.log("KEy: ", key);
-
         tempArray = [...tempArray,
           <LibraryCard key={key} id={key} number={i} title={title} artist={artist} image={albumImage} type={projectTypeChoice} songs={songs} songList={songList} 
           edit={setNewProjectButtonClicked} setMode={setAlbumManagerMode} label={label} date={dateValue} setSelectedProjectKey={setSelectedProjectKey} setSelectedProject={setSelectedProject}></LibraryCard>
         ];
-        // console.log('Temp', tempArray[0].props.title)
         setSearchActive(true)
         setUserCards(tempArray)
         setCardsMemory(tempArray)
@@ -184,6 +180,8 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
   <LibraryCard title="All Songs" artist="[artistname]" image={likedsongs} type="Playlist" songs={30}></LibraryCard>
   ];
 
+
+  //re orders the cards when they have been re ordered through drag and drop
   function handleOnDropEnd(result) {
     console.log(result.source.index)
     console.log("Drag end!")
@@ -191,17 +189,14 @@ function LibraryCardGrid({userCards, setUserCards, projects, setProjects, setSel
 
     var items = Array.from(userCards);
     console.log(items)
-    // const tracklistItems = Array.from(tracklist)
     const [reorderedItem] = items.splice(result.source.index, 1);
     console.log(reorderedItem)
-    // const [reorderedTracklistItem] = tracklistItems.splice(result.source.index, 1);
     items.splice(result.destination.index , 0, reorderedItem);
 
     items = items.filter((element) => {
       return element !== undefined
     });
     console.log(items)
-    // tracklistItems.splice(result.destination.index, 0, reorderedTracklistItem);
 
     setUserCards(items);
 

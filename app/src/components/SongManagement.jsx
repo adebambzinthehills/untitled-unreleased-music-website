@@ -26,11 +26,13 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
     const [explicitChecked, setExplicitChecked] = useState(false);
     const file = useRef();
 
+    //click file input manually.
     function handleClick() {
         const input = document.getElementById('insertSong');
         input.click();
     }
 
+    //display file name
     function handleInputDisplay() {
         const input = document.getElementById('insertSong');
         input.style.display = 'block';
@@ -69,6 +71,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
             setExplicitChecked(currentTrack.explicit)
         }
     }, [selectedSongKey]);
+
+    //add new song, upload information to database
 
     function handleSongManager(){
 
@@ -267,9 +271,8 @@ function SongManagement({clickOff, editClickOff, editMode, setMode, edit, tracks
 
     }
 
-
+    //delete song information from firebase storage and from firestore
     function deleteSong() {
-        console.log("#nooticer")
         if(window.confirm("Are you sure you want to delete this track?")){
             ReadProjectsFromFirebase(currentUser).then((result) => {
                 let tempProjects = [];

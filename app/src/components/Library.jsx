@@ -52,6 +52,8 @@ function Library({player, playerToggle}) {
     }
   }, [fullscreenPlayerEnabled]);
 
+
+  //responsible for whether cards show, due to length of projects or currently searching
   useEffect(() => {
     if(firstCreationSuccessful || userCards.length > 0 || searchActive ){
       setHasProjects(true)

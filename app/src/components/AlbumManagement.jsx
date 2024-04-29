@@ -65,6 +65,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
       ];
     const [projectTypeChoice, setProjectTypeChoice] = useState(projectOptions[0]);
 
+    //used to style the dropdown for project type choice
     const customStyles = {
         control: (provided) => ({
           ...provided,
@@ -97,9 +98,12 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
         
     };
 
+    //get pathname from url
     const location = useLocation().pathname;
     console.log(location)
 
+
+    //update states in library/project page
     useEffect(() => {
         let informationValues = ""
         if(location == "/library"){
@@ -139,7 +143,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
         else {
             informationValues = information
         }
-
+        //if in edit mode in the project page
         if(edit && (location.toLocaleLowerCase() != "/library")){
 
             setTempImage({backgroundImage: 'url(' +  informationValues.image + ')', backgroundSize: '100% 100%'});
@@ -156,17 +160,18 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
         }
     }, []);
 
+    //manually click the file to open it (as it is hidden in the page)
     function handleClick() {
         const input = document.getElementsByClassName('management-input')[0];
         input.click();
-        console.log("2Hi1")
     }
-
+    //get information and upload to the database, creating new project and updating states
     function handleNewProject() {
 
             console.log("Current projects!: ", projects)
             var currentProjects = projects;
 
+            //define defaults
             let title = "New Album #";
             if(edit == false){
                 title = title + (cards.length + 1)
@@ -212,7 +217,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
             }
 
             console.log(allowCreation)
-
+            //if there is a new file input into application
             if(entryPhoto.current.files[0] != null){
                 newImageAdded = true;
                 if(newImageAdded){
@@ -231,7 +236,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
                         inputImage.src = albumImage;
 
 
-                        // CROP FUNCTIONALITY -> PQINA.NL
+                        // CROP FUNCTIONALITY
 
                         inputImage.onload = () => {
                             let croppedFile = "";
@@ -625,7 +630,7 @@ function AlbumManagement({clickOff, edit, mode, setMode, cards, setCards, setAlb
         
       }
 
-    
+    //placeholder image, using crop functionality
     function setNewImage() {
         if(entryPhoto.current.files[0] != null){
             let reader = new FileReader();

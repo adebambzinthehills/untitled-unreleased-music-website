@@ -86,6 +86,8 @@ function Player() {
 
 
     const { pathname } = useLocation();
+    
+    //change page overflow on fullscreen mode
     useEffect(() => {
 
         const documentBody = document.body;
@@ -104,6 +106,7 @@ function Player() {
         setLoading(false)
     }, [])
 
+    //handle reordered tracklist
     useEffect(() => {
         console.log("RE-RENDERING PLAYER!!!!!!!")
         console.log("Current player tracklist! : ", playerTracklist);
@@ -114,10 +117,12 @@ function Player() {
         if(tracksReordered ){
             console.log("Yes!")
             console.log("Tracklist reordered!")
+            //maintain current track position in the new queue
             if((_.isEqual(currentTrack, playerTracklist[tracksReorderedIndex]))){
                 setTrackIndex(tracksReorderedIndex);
                 setCurrentTrack(playerTracklist[tracksReorderedIndex]);
             }
+            //find new position for currently playing track in new queue
             else {
                 var index = playerTracklist.findIndex((track) => {
                     return track.key == currentlyPlayingSongKey
@@ -130,6 +135,7 @@ function Player() {
 
     }, [playerTracklist])
 
+    //shuffle controls with global project header connection
     useEffect(() => {
         var defaultIndex;
         if(globalShuffle){
@@ -151,8 +157,8 @@ function Player() {
             if(shuffleController){
                 for(var i = 0; i < tracksStorage.length; i++){
 
-                    console.log('current ',currentTrack.key)
-                    console.log(':3', tracksStorage[i].key)
+                    // console.log('current ',currentTrack.key)
+                    // console.log(':3', tracksStorage[i].key)
                     if(tracksStorage[i].key == currentTrack.key){
                         defaultIndex = i;
                     }
@@ -168,11 +174,13 @@ function Player() {
         }
     }, [globalShuffle])
 
+    //update shuffle track list every time state changes
     useEffect(() => {
         console.log(shuffleTracksStorage)
         setShuffleTracks(shuffleTracksStorage);
     }, [shuffleTracksStorage])
 
+    //used to set a specific song to play, using the global index from the tracklist
     useEffect(() => {
         if(globalTrackIndex != undefined){
             console.log("Global tracklist index: ", globalTrackIndex)
@@ -186,6 +194,7 @@ function Player() {
         console.log("New tracklist! : ", tracklist)
     }, [tracklist])
 
+    //determine which track order to use, normal queue or the shuffle queue
     useEffect(() => {
         playlistOrder = shufflePlayer ? shuffleTracks : tracksStorage;
         setTracklist(playlistOrder);
@@ -194,6 +203,9 @@ function Player() {
     }, [shuffleTracks])
 
     const {externalPlayerBackgroundState } = useContext(PlayerContext);
+
+
+    //set the colour of the player
 
     useEffect(() => {
         console.log(pathname);
@@ -259,7 +271,7 @@ function Player() {
 
 
 
-
+    // determines the player scrollbar colour
     let newPlayerColourValues = [];
     let newPlayerScrollbarColourValues = [];
     for(let i = 0; i < playerBackgroundColour.length; i++){
@@ -281,7 +293,8 @@ function Player() {
         backgroundColor: newPlayerScrollbarColourValues
     }
 
-    //fisher-yates-durnstenfield shuffle feb 17
+
+    //fisher-yates-durnstenfield shuffle algorithm
 
     function shuffle(editList, currentPlayingIndex) {
         var list = JSON.parse(JSON.stringify(editList));
@@ -306,7 +319,7 @@ function Player() {
         console.log('tempList reference: ', tempList);
 
 
-        //i actually don't know why some are undefined so i will prune
+        //some elements are undefined so they are removed
         tempList = tempList.filter((element) => {
             return element !== undefined
         });
@@ -335,6 +348,7 @@ function Player() {
         return newList;
     }
 
+    //shuffle controls for the player itself 
     const handleShuffle = () => {
         setShufflePlayer(!shufflePlayer);
         setShuffleController(false)
@@ -382,6 +396,7 @@ function Player() {
         playlistOrder = shufflePlayer ? shuffleTracks : tracksStorage;
     }, [playlistOrder])
 
+    //repeat functionality for music
     function handleRepeat(){
         let newCount = (repeatCount + 1) % 3;
 
@@ -400,6 +415,7 @@ function Player() {
 
     };
 
+    //handle the play and pause functionality from the player and global playing
     function handlePlayPress() {
         setPlayPress(!playPress);
         setIsPlaying(!isPlaying);
@@ -417,8 +433,10 @@ function Player() {
         }
     }, [globalPlaying])
 
+
+
     // ----------- IMPORTANT CODE FOR PLAYING BELOW -------------
-     
+    //update play time scrollbar at set interval.
     const repeatAnimationFrame = useCallback(() => {
 
         if(playerOn){
@@ -426,7 +444,7 @@ function Player() {
             const currentTime = music.current.currentTime;
 
             setTimeProgress(currentTime);
-            
+            //property used to connect with CSS and change background colour
             progressBarRef.current.value = currentTime;
             progressBarRef.current.style.setProperty(
                 '--range-progress',
@@ -445,6 +463,7 @@ function Player() {
         
     }, [music, duration, progressBarRef, setTimeProgress]);
 
+    //handle animation with the music, and playback & pause
     useEffect(() => {
         if(isPlaying){
             music.current.play().catch((err) => console.log("Error playing! : ", err));
@@ -462,6 +481,7 @@ function Player() {
     const screenSize = window.innerWidth;
     const [miniplayerTracker, setMiniplayerTracker] = useState(false);
 
+    //change the type of player depending on screen size.
     useEffect(() => {
         if(screenSize <= 600){
             enableMiniplayer();
@@ -482,6 +502,7 @@ function Player() {
     }
 
     function onLoadedMetadata (){
+        //waits for song to load then gets information
         const seconds = music.current.duration;
         setDuration(seconds);
         progressBarRef.current.max = seconds;
@@ -489,12 +510,14 @@ function Player() {
       };
 
     useEffect(() => {
+        //waits for song to load then gets information
         const seconds = music.current.duration;
         setDuration(seconds);
         progressBarRef.current.max = seconds;
         miniplayerProgressBarRef.current.max = seconds
     }, [playerFullscreen])
 
+    //format song duration
     function formatTime(time){
         if (time && !isNaN(time)) {
           const minutes = Math.floor(time / 60);
@@ -515,12 +538,14 @@ function Player() {
     //confirm state update when track
     useEffect(() => { console.log('New track index', trackIndex)}, [trackIndex] )
 
+    //skip functionality in line with Spotify's functionality
     function handleSkip() {
         let currentIndex = trackIndex;
         
         if(!(repeatCount == 2)){
             if(repeatCount == 0){
                 if(currentIndex >= (tracklist.length - 1) ){
+                    //stop playback at end of queue
                     currentIndex = 0
                     setPlayPress(false);
                     setIsPlaying(false);  
@@ -541,6 +566,7 @@ function Player() {
             }
             else{
                 if(trackIndex >= tracklist.length - 1 ){
+                    //go back to the beginning at end of queue
                     setTrackIndex(0);
                     currentIndex = 0
                     setCurrentTrack(tracklist[currentIndex]);
@@ -558,6 +584,7 @@ function Player() {
             }
         }
         else {
+            //stay on the same song after it ends
             progressBarRef.current.currentTime = 0;
             miniplayerProgressBarRef.current.currentTime = 0;
             music.current.currentTime = 0;
@@ -565,6 +592,8 @@ function Player() {
         }
     }
 
+
+    //rewind functionality
     function handleReload() {
         let currentIndex = trackIndex;
         if(!(repeatCount == 2)){
@@ -634,8 +663,9 @@ function Player() {
     const songTitleWrapper = useRef();
     const artistNameWrapper = useRef();
     
-    // console.log("PLayer fullscreen value outside of handleResize: ", playerFullscreen)
 
+    //get width information from ref elements, perform calculations and apply classes
+    //a lot of console.logs are commented that were used to test
     function handleResize() {
 
         function applyClassesAndScroll(wrapperWidths, widths, wrappers, items, fullscreen){
@@ -711,53 +741,6 @@ function Player() {
             var items = [fullscreenSongTitle, fullscreenArtistName, fullscreenAlbumTitle];
 
             applyClassesAndScroll(fullscreenWrapperWidths, fullscreenWidths, wrappers, items, true);
-    
-            /*for(let i = 0; i < fullscreenWrapperWidths.length; i++){
-                if(fullscreenWidths[i] > fullscreenWrapperWidths[i]){
-                    console.log("Fullscreen: Span width is greater than wrapper width at postion ", i , "!");
-                    console.log(wrappers[i].current.className)
-
-                    if(i == 2){
-                        if(!wrappers[i].current.className.includes(" justify-left")){
-                            wrappers[i].current.className = wrappers[i].current.className + " justify-left";
-                        }
-                    }
-
-                    if(!wrappers[i].current.className.includes(" scrollable")){
-                        wrappers[i].current.className = wrappers[i].current.className + " scrollable";
-                    }
-
-                    items[i].current.style.setProperty(
-                        '--transform-width',
-                        `${-(fullscreenWidths[i] - fullscreenWrapperWidths[i])}px`
-                    );
-                    wrappers[i].current.style.setProperty(
-                        '--transform-width',
-                        `${-(fullscreenWidths[i] - fullscreenWrapperWidths[i])}px`
-                    );
-
-                    console.log(fullscreenWidths[i] - fullscreenWrapperWidths[i]);
-                }
-                else {
-                    console.log(wrappers[i].current.className)
-                    if(wrappers[i].current.className.includes(" scrollable")){
-                        let tempClassName = wrappers[i].current.className.replace(" scrollable", "");
-                        wrappers[i].current.className = tempClassName;
-                    }
-
-                    if(wrappers[i].current.className.includes(" justify-left")){
-                        let tempClassName = wrappers[i].current.className.replace(" justify-left", "");
-                        wrappers[i].current.className = tempClassName;
-                    }
-
-                    items[i].current.style.setProperty(
-                        '--transform-width', 0
-                    );
-                    wrappers[i].current.style.setProperty(
-                        '--transform-width', 0
-                    );
-                }
-            }*/
             
         }
         if (!playerFullscreen){
@@ -794,6 +777,9 @@ function Player() {
         // console.log('Artist Title: ', artistTitleSpanWidth);
         // console.log("Resizing window!");
     }
+
+    //this code is used to run the above function in different conditions
+    //on load, on going to fullscreen player, on new track
     
     useEffect(() => {
         handleResize();
@@ -816,6 +802,9 @@ function Player() {
     useEffect(() => {
         handleResize();
     }, [trackIndex, playerFullscreen])
+
+
+    //volume controls
 
     useEffect(() => {
         if (music) {

@@ -26,6 +26,8 @@ function Account() {
     const [profileImageBlob, setProfileImageBlob] = useState('');
     const artistNameRef = useRef();
 
+    //reading and writing information
+
     async function writeInformationToFirebase(information){
         var currentUser = getCurrentUserIdString();
         await setDoc(doc(db, "users", currentUser, 'information', currentUser), {information});
@@ -43,7 +45,6 @@ function Account() {
     
         if(docSnap.exists()){
             data = docSnap.data().information;
-            // console.log("Data! ", data)
         }
         else {
             console.log("There were no documents to be found!")
@@ -77,7 +78,6 @@ function Account() {
     const [artistImage, setArtistImage] = useState({backgroundImage: ''});
     const [artistImageValue ,setArtistImageValue] = useState('')
     
-    //const { logOut } = useAuth();
     const navigate = useNavigate();
     const artistPhoto = useRef();
 
@@ -92,7 +92,7 @@ function Account() {
             console.log(e);
         }
     }
-
+    //code to re-navigate if not logged in
     useEffect(() => {
         if(getCurrentUserIdString() == null || getCurrentUserIdString() == undefined){
             navigate("/login")
@@ -118,7 +118,7 @@ function Account() {
                 inputImage.src = image;
 
 
-                // CROP FUNCTIONALITY -> PQINA.NL
+                // CROP FUNCTIONALITY 
 
                 inputImage.onload = () => {
                     let croppedFile = "";
@@ -188,6 +188,7 @@ function Account() {
 
     function uploadImage(){
         if(artistPhoto.current.files[0] != null){
+            //create blob and upload image to firebase
             var imagePath = URL.createObjectURL(profileImageBlob)
             let path = `${getCurrentUserIdString()}/profile-image`;
 
@@ -229,7 +230,7 @@ function Account() {
 
 
 
-
+    //onload read information and set states appropriately
     useEffect(() => {
         ReadInformationFromFirebase(getCurrentUserIdString()).then((res) => {
             if(res.artistName != undefined && res.profileImage != undefined){
@@ -255,6 +256,7 @@ function Account() {
         }
     }, [artistName])
 
+    //save information and write to database
     function handleSave() {
         let artistNameVal= ''
         if(artistName.trim() == ""){
@@ -304,13 +306,6 @@ function Account() {
             }).catch((err) => {
                 console.log("Error deleting information! : ",err)
             });
-            // try {
-            //     logOut()
-            //     console.log("Logged out!")
-            // }
-            // catch(err) {
-            //     console.log("Error logging out!", err);
-            // }
             const storage = getStorage();
             const path = `${getCurrentUserIdString()}/`
             const storageRef = ref(storage, path);

@@ -10,8 +10,6 @@ function Login({loggedIn, setLoggedIn}){
 
     return (
       <div className='login container'>
-        {/* <RiFolderMusicLine className='welcomeIcon'/> */}
-        {/* <img className='loginImg' src={icon} alt="spotify white logo"/> */}
         <div className='welcome-content'>
           <h1>Welcome to Preview!</h1>
           <p>This website is built for artists to simulate what 

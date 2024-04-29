@@ -44,8 +44,10 @@ function Album({player}) {
     const [tracks, setTracksState] = useState([]);
     const [selectedSongKey, setSelectedSongKey] = useState("")
 
+    //update track information when tracks changes
     useEffect(() => {
         if(loading == false && tracks.length != 0 ){
+            //if currently listening to project then update tracklist in player
             if(key == currentlyPlayingProjectKey){
 
                 console.log("Updating player tracks!");
@@ -55,6 +57,7 @@ function Album({player}) {
             }
         }
         if(tracksReordered){
+            //write new track order to firebase after reorder
             console.log("sadaf")
             ReadProjectsFromFirebase(getCurrentUserIdString()).then((res) => {
             let projects = res;
@@ -131,7 +134,7 @@ function Album({player}) {
     
     useEffect(() => {
         
-
+        //read information from firebase and set states 
         ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
             
             let projectDuration = 0;
@@ -169,6 +172,7 @@ function Album({player}) {
     }, [project])
 
     useEffect(() => {
+        //on page load, read from firebase and update states
         ReadProjectsFromFirebase(getCurrentUserIdString()).then((result) => {
             setProjects(result)
             for(let i = 0; i < result.length ; i++){
@@ -221,13 +225,13 @@ function Album({player}) {
     function updateColourInDatabase(colour){
         let currentUser = getCurrentUserIdString()
         
-        //set colour based on image NOT the choice e.g. default settings on first opening
+        //set colour based on image NOT the choice e.g. default settings on first new project or image
         if(backgroundColour == ""){
             console.log("BG COLOUR IS EMPTY FOR SOME REASON!!!!!")
             setBackgroundColour(colour);
             setMusicHeaderColourState(musicHeaderColor);
         }
-
+        //update colour information in database
         ReadProjectsFromFirebase(currentUser).then((result) => {
 
             let tempProjects = [];
@@ -245,7 +249,6 @@ function Album({player}) {
                     for(let i = 0; i < updatedProject.songs.length; i++){
                         updatedProject.songs[i].colour = updatedProject.colour
                     }
-                    // setProject(updatedProject);
                     tempProjects.push(updatedProject);
                     console.log("Updated project values (colour): ", updatedProject);
                 }
@@ -270,6 +273,7 @@ function Album({player}) {
         setProjects(ReadProjectsFromFirebase(currentUser))
     }
 
+    //get colour information from color-thief
     useEffect(() => {
         const awaitPromise = new Promise((resolve) => {
             const contentImage = new Image();
@@ -292,9 +296,7 @@ function Album({player}) {
     }, [information, backgroundColour])
 
 
-    // try{document.body.getElementsByClassName('header')[0].style.backgroundColor = 'rgb(' + backgroundColour + ')';}
-    // catch(err){}
-
+    //change page overflow on fullscreen viewer
     useEffect(() => {
         
         if(fullAlbumCover){
@@ -306,13 +308,6 @@ function Album({player}) {
         }
 
     }, [fullAlbumCover]);
-
-    // useEffect(() => {
-
-    //     document.body.getElementsByClassName('content-background').style = musicHeaderColourState;
-    //     document.body.getElementsByClassName('header')[0].style = musicHeaderColourState.backgroundColor;
-
-    // }, [paletteActive])
 
 
     function goBack() {
@@ -326,6 +321,7 @@ function Album({player}) {
     const [informationButtonClicked, setInformationButtonClicked] = useState(false);
     const [editMode, setEditMode] = useState(false);
 
+     //change page overflow on modal open 
     useEffect(() => {
         if(editAlbumButtonClicked || addTracksButtonClicked || editTracksButtonClicked || informationButtonClicked){
           document.body.style.overflow = 'hidden';
@@ -338,7 +334,8 @@ function Album({player}) {
 
     //   const screenSize = window.innerWidth;
     const [mobileView, setMobileView] = useState(false);
-  
+    
+    //responsive mobile threshold
     function handleResize(){
         if(window.innerWidth <= 600){
             setMobileView(true);
@@ -357,6 +354,7 @@ function Album({player}) {
         };
     }, []);
 
+    //convert songs length to time format
     function formatAlbumTime(time){
         if (time && !isNaN(time)) {
             const minutes = Math.floor(time / 60);
@@ -428,6 +426,7 @@ function Album({player}) {
         })
     }, [])
 
+    //play music from the project header
     function handlePlayPress(){
         if(tracks.length > 0){
             setPlayerTracklist(tracks); setPlayerUpdated(prev => !prev);setCurrentlyPlayingProjectKey(key); play(); setGlobalPlaying(prev => !prev);
@@ -436,7 +435,8 @@ function Album({player}) {
             alert("There are no tracks to be played!")
         }
     }
-
+    
+    //shuffle project from header
     function handleAlbumShuffle() {
         setShuffle(!shuffle); 
         if(key == currentlyPlayingProjectKey){
@@ -461,6 +461,7 @@ function Album({player}) {
     const projectHeaderRef = useRef();
     const spanWrapperRef = useRef()
     
+    //used to handle long artist names, changing styles to make them fit.
     function handleDynamicClass() {
 
         if(artistNameRef.current != null && spanWrapperRef.current != null && projectHeaderRef.current != null) {
@@ -648,7 +649,6 @@ function Album({player}) {
                     </div>
                 </div>
             </div>
-
             <Tracklist songs={tracks.length} tracks={tracks} setTracks={setTracks} player={player} edit={setEditTracksButtonClicked} setMode={setEditMode} setSelectedSongKey={setSelectedSongKey} projectKey={key} setTracksReordered={setTracksReordered} setTracksReorderedIndex={setTracksReorderedIndex}></Tracklist>
             <div className='container information'>
                 <div className='bottom-information-wrapper'>

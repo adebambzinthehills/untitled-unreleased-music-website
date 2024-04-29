@@ -27,7 +27,6 @@ function CreateAccount() {
     async function formHandler(e){
         e.preventDefault();
 
-        // try {
         setWaiting(true);
         resetPassword(email, password).then(() => {
             alert("Password email sent! Please check your inbox.")
@@ -36,9 +35,6 @@ function CreateAccount() {
             console.log("Error sending password reset email! : ", error)
             alert("Error sending password reset email!")
         });
-        //   } catch (e) {
-        //     alert("Failed to Sign Up!");
-        //   }
           
           //button becomes activated again.
         setWaiting(false);

@@ -76,7 +76,7 @@ export function PlayerProvider({children}){
         console.log("Changing player background!");
         setExternalPlayerBackgroundState(colourVal)
     }
-
+    //create and export states to children
     return(
         <PlayerContext.Provider value={{playerOn, play, stop, toggle, playerImgSrc, 
         changePlayerImage, miniplayerEnabled, enableMiniplayer, removeMiniplayer,

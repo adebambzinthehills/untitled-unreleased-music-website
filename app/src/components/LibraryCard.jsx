@@ -21,6 +21,7 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
 
   const {playerOn, play, stop, toggle, setGlobalPlaying, globalPlaying, currentlyPlayingProjectKey, setCurrentlyPlayingProjectKey} = useContext(PlayerContext);
 
+  //navigates to the project page.
   function cardClickHandler(){
     console.log(id, image, title, songs, type, artist, setMode, date, label);
     var path = '/project/' + id;
@@ -28,6 +29,7 @@ function LibraryCard({id, title, artist, image, type, songs, edit, setMode, date
     navigate(path, { state : {image: image, title: title, artist: artist, type: type, songs: songs, date: date, label: label}});
   }
 
+  //enables playback and interacts with playerContext
   function handleCardPlay(){
     if(songList.length > 0){
       console.log("SONG LIST!", songList)

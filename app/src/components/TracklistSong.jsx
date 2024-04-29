@@ -18,6 +18,7 @@ function TracklistSong({number, title, duration, artist, edit, setMode, content,
       <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps} style={{...provided.draggableProps.style}} >
         <li>
                 <div className='row tracklist-row'>
+                  {/* below button connects with player context to update states in the player */}
                 <button className='tracklist-song-button' onClick={() => {setCurrentlyPlayingProjectKey(projectKey); setPlayerTracklist(tracks); setPlayerUpdated(prev => !prev); play(); setGlobalPlaying(true); setGlobalTrackIndex((number-1)); setCurrentlyPlayingSongKey(id)}}></button>
                   <div className='col-0-5 song-number'>
                     <div className='number-wrapper'> 
