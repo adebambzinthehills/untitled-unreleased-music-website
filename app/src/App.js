@@ -8,7 +8,6 @@ import Library from "./components/Library";
 import "./css/App.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import Account from "./components/Account";
-import Settings from "./components/Settings";
 import Album from "./components/Album";
 import Player from "./components/Player";
 import ForgotPassword from "./components/ForgotPassword"
@@ -27,7 +26,6 @@ function App() {
           <Route path="/Login" element={<Login/>}/>
           <Route path="/Library" element={<Library/>}></Route>
           <Route path="/Account" element={<Account/>}></Route>
-          <Route path="/Settings" element={<Settings/>}></Route>
           <Route path="/project/:key" exact Component={Album}></Route>
         </Routes>
         {playerOn && <Player/>}
